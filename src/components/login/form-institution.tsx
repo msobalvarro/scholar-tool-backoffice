@@ -11,8 +11,10 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '../ui/input'
+import { useNavigate } from 'react-router'
 
 export const FormInstitution = () => {
+  const navigate = useNavigate()
   const [, setStatus] = useState<StatusType>('idle')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,12 +25,12 @@ export const FormInstitution = () => {
     setStatus('loading')
     try {
       await authLoginUserInstitutionService(email, password)
-      setStatus('success')
+      navigate('/')
+      window.location.reload()
     } catch (error) {
       toast('Error al iniciar sesión', {
         description: String(error)
       })
-
       setStatus({ error: String(error) })
     }
   }
@@ -54,7 +56,7 @@ export const FormInstitution = () => {
                 className='text-gray-400 transition-colors' size={20} />
             </div>
             <Input
-              className='w-full h-12 pl-10 pr-4 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
+              className='text-black w-full h-12 pl-10 pr-4 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
               id='username'
               placeholder='admin@escuela.edu'
               required
@@ -78,7 +80,7 @@ export const FormInstitution = () => {
                 className='text-gray-400 transition-colors' size={20} />
             </div>
             <Input
-              className='w-full h-12 pl-10 pr-12 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
+              className='text-black w-full h-12 pl-10 pr-12 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
               id='password'
               placeholder='••••••••'
               required
