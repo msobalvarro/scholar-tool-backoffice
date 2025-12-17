@@ -10,7 +10,7 @@ import {
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Input } from '../ui/input'
+import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router'
 
 export const FormInstitution = () => {
@@ -38,15 +38,16 @@ export const FormInstitution = () => {
   return (
     <div
       className='w-full max-w-md mx-auto bg-white dark:bg-card-dark rounded-2xl shadow-xl border border-input-border-light dark:border-input-border-dark p-6 sm:p-10 relative overflow-hidden text-slate-700'>
-      <div className='absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-blue-400'></div>
+      <div className='absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-blue-400' />
+
       <div className='mb-8'>
         <h1 className='text-3xl font-black tracking-tight mb-2'>Bienvenido Administrador</h1>
         <p className='text-gray-500 dark:text-gray-400 text-sm sm:text-base'>
           Ingresa tus credenciales para acceder al sistema en modo administrador.
         </p>
       </div>
-      <form onSubmit={submitHandler} className='flex flex-col gap-5'>
 
+      <form onSubmit={submitHandler} className='flex flex-col gap-5'>
         <div className='space-y-2'>
           <label className='text-sm font-semibold' htmlFor='username'>Correo Electronico</label>
 
@@ -56,7 +57,7 @@ export const FormInstitution = () => {
                 className='text-gray-400 transition-colors' size={20} />
             </div>
             <Input
-              className='text-black w-full h-12 pl-10 pr-4 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
+              className='w-full h-12 pl-10 pr-4 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
               id='username'
               placeholder='admin@escuela.edu'
               required
@@ -80,7 +81,7 @@ export const FormInstitution = () => {
                 className='text-gray-400 transition-colors' size={20} />
             </div>
             <Input
-              className='text-black w-full h-12 pl-10 pr-12 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
+              className='w-full h-12 pl-10 pr-12 rounded-lg bg-background-light dark:bg-background-dark border border-input-border-light dark:border-input-border-dark text-[#111418] dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm sm:text-base'
               id='password'
               placeholder='••••••••'
               required
