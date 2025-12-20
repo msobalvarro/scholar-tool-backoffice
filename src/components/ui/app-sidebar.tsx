@@ -106,8 +106,8 @@ export function AppSidebar() {
                     className={cn(
                       'transition-all duration-200 h-10 px-3',
                       isActivePath(item.url)
-                        ? 'bg-accent/10 text-accent hover:bg-accent/15 hover:text-accent font-medium'
-                        : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
+                        ? 'bg-accent/10 text-accent hover:bg-accent/70 hover:text-white font-medium'
+                        : 'text-muted-foreground hover:bg-black/10'
                     )}
                   >
                     <Link to={item.url} className='flex items-center gap-3'>
