@@ -1,5 +1,24 @@
 export type StatusType = 'idle' | 'loading' | 'success' | { error: string }
 
+export type Theme = "dark" | "light" | "system"
+
+export type ThemeProviderProps = {
+  children: React.ReactNode
+  defaultTheme?: Theme
+  storageKey?: string
+}
+
+export type ThemeProviderState = {
+  theme: Theme
+  setTheme: (theme: Theme) => void
+}
+
+export type UsersResponse = {
+  name: string
+  email: string
+  [key: string]: any
+}
+
 export type UserInstitutionResponse = {
   _id: string
   name: string
@@ -40,4 +59,34 @@ export type LoginUserTeacherResponse = {
   user: Teacher
   token: string
   institution: Institution
+}
+
+
+export type ResponsablePerson = {
+  fullName: string
+  identification: string
+  email: string | null
+  phoneNumber: string
+}
+
+export type StudentResponse = {
+  _id: string
+  birthday: Date
+  startDate: Date
+  firstName: string
+  lastName: string
+  institution: Institution
+  status: 'active' | 'inactive'
+  gender: 'male' | 'female'
+  photo?: string
+  email?: string
+  responsable?: ResponsablePerson
+}
+
+export type CreateStudentRequest = Omit<StudentResponse, '_id' | 'institution' | 'responsable' | 'status'> & {
+  responsableId: string
+}
+
+export type UpdateStudentRequest = Omit<StudentResponse, 'institution' | 'responsable'> & {
+  responsableId: string
 }

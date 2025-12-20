@@ -28,8 +28,6 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log(error)
-
     if (error.response.status === 401) {
       localStorage.clear()
 
@@ -39,13 +37,3 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-
-// fetcher.ts
-export const axiosFetcher = async <T>(url: string): Promise<T> => {
-  const { data } = await axiosInstance.get<T>(url)
-  return data
-}
-
-
-

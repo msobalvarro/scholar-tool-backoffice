@@ -4,6 +4,7 @@ import { LoginTeacher } from './(logout)/login-teacher'
 import { LoginInstitution } from './(logout)/login-insitution'
 import { DashboardView } from './(logged)/institution/dashboard.view'
 import { StudentsView } from './(logged)/institution/students.view'
+import { StudentProfileView } from './(logged)/institution/student-profile.view'
 
 export const ProtectedRoutesTeacher = () => (
   <LayoutTeacher>
@@ -19,6 +20,7 @@ export const ProtectedRoutesUserInstitution = () => (
     <Routes>
       <Route path='/' element={<DashboardView />} />
       <Route path='/students' element={<StudentsView />} />
+      <Route path='/students/:studentId' element={<StudentProfileView />} />
     </Routes>
   </LayoutTeacher>
 )
