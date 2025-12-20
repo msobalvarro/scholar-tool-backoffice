@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router'
 import { useStudentActions } from '@/hooks/API/use-students'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { EditStudentModal } from './edit-student-modal'
 
 interface StudentTableProps {
   data: StudentResponse[]
@@ -40,6 +41,8 @@ export const StudentTable = ({ data }: StudentTableProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'asc' })
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedStudent, setSelectedStudent] = useState<StudentResponse | null>(null)
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar a este estudiante?')) {
@@ -47,6 +50,11 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       toast.success("Estudiante eliminado exitosamente")
       queryClient.invalidateQueries({ queryKey: ['students'] })
     }
+  }
+
+  const handleEdit = (student: StudentResponse) => {
+    setSelectedStudent(student)
+    setIsEditModalOpen(true)
   }
 
   const filteredData = useMemo(() => {
@@ -210,8 +218,8 @@ export const StudentTable = ({ data }: StudentTableProps) => {
                   </td>
                   <td className="p-4 align-middle">
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${student.status === 'active'
-                        ? 'bg-green-50 text-green-700 ring-green-600/20'
-                        : 'bg-red-50 text-red-700 ring-red-600/20'
+                      ? 'bg-green-50 text-green-700 ring-green-600/20'
+                      : 'bg-red-50 text-red-700 ring-red-600/20'
                       }`}>
                       {student.status}
                     </span>
@@ -231,6 +239,9 @@ export const StudentTable = ({ data }: StudentTableProps) => {
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => navigate(`/students/${student._id}`)}>
                           Ver detalles
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(student)}>
+                          Editar estudiante
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-red-600"
@@ -273,6 +284,12 @@ export const StudentTable = ({ data }: StudentTableProps) => {
           </Button>
         </div>
       </div>
+
+      <EditStudentModal
+        student={selectedStudent}
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+      />
     </div>
   )
 }

@@ -6,15 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ArrowLeft, Edit, Mail, Phone, Calendar, User } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { EditStudentModal } from '@/components/students/edit-student-modal'
 
 export const StudentProfileView = () => {
-  const { studentId } = useParams()
   const navigate = useNavigate()
-  const { data: students, isLoading } = useStudents()
-
-  // In a real app, we would fetch a single student by ID. 
-  // Since useStudents fetches all, we find the one we need.
-  const student = students?.find(s => s._id === studentId)
+  const { studentId } = useParams()
+  const { data: student, isLoading } = useStudents(studentId!)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -57,7 +56,7 @@ export const StudentProfileView = () => {
               <div className="mt-2 flex items-center gap-3 text-sm text-muted-foreground">
                 <span className="font-mono text-xs">ID: {student._id.slice(-8).toUpperCase()}</span>
                 <span>•</span>
-                <span>10º Grado</span> {/* Mock Data */}
+                <span>10º Grado</span>
                 <span>•</span>
                 <Badge variant={student.status === 'active' ? 'default' : 'destructive'} className="capitalize">
                   {student.status}
@@ -70,7 +69,7 @@ export const StudentProfileView = () => {
               <User className="mr-2 h-4 w-4" />
               Reporte
             </Button>
-            <Button>
+            <Button onClick={() => setIsEditModalOpen(true)}>
               <Edit className="mr-2 h-4 w-4" />
               Editar Perfil
             </Button>
@@ -170,7 +169,12 @@ export const StudentProfileView = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-base">Información Personal</CardTitle>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-primary"
+                  onClick={() => setIsEditModalOpen(true)}
+                >
                   <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
@@ -242,6 +246,12 @@ export const StudentProfileView = () => {
           </div>
         </div>
       </div>
+
+      <EditStudentModal
+        student={student}
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+      />
     </div>
   )
 }
