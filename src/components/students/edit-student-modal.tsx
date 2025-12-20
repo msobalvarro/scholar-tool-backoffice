@@ -49,7 +49,10 @@ export const EditStudentModal = ({ student, open, onOpenChange }: EditStudentMod
 
     setIsLoading(true)
     try {
-      await updateStudent(formData as UpdateStudentRequest)
+      await updateStudent({
+        ...formData,
+        birthday: new Date(formData?.birthday || '')
+      } as UpdateStudentRequest)
       toast.success('Estudiante actualizado correctamente')
       queryClient.invalidateQueries({ queryKey: ['students'] })
       onOpenChange(false)

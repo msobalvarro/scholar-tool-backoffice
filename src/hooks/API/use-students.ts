@@ -63,13 +63,11 @@ export const useStudentActions = () => {
       const { data } = await axiosInstance.delete<StudentResponse>(`/students/${_id}`)
       return data
     } catch (error) {
-      const err = error instanceof AxiosError
-        ? error.response?.data.message
-        : String(error)
-
-      setError(err)
-
-      throw error
+      setError(
+        error instanceof AxiosError
+          ? error.response?.data.message
+          : String(error)
+      )
     }
   }
 

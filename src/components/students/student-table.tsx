@@ -65,7 +65,6 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       student.firstName.toLowerCase().includes(lowerQuery) ||
       student.lastName.toLowerCase().includes(lowerQuery) ||
       student.email?.toLowerCase().includes(lowerQuery) ||
-      student.institution.name.toLowerCase().includes(lowerQuery) ||
       student.responsable?.fullName.toLowerCase().includes(lowerQuery)
     )
   }, [data, searchQuery])
@@ -168,9 +167,6 @@ export const StudentTable = ({ data }: StudentTableProps) => {
                 </Button>
               </th>
               <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                Institución
-              </th>
-              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
                 <Button
                   variant="ghost"
                   onClick={() => handleSort('status')}
@@ -208,13 +204,10 @@ export const StudentTable = ({ data }: StudentTableProps) => {
                     </div>
                   </td>
                   <td className="p-4 align-middle capitalize">
-                    {student.gender}
+                    {student.gender === 'male' ? 'Masculino' : 'Femenino'}
                   </td>
                   <td className="p-4 align-middle">
                     {student.responsable?.fullName || '-'}
-                  </td>
-                  <td className="p-4 align-middle">
-                    {student.institution.name}
                   </td>
                   <td className="p-4 align-middle">
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${student.status === 'active'
