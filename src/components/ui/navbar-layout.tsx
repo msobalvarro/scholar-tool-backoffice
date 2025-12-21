@@ -1,15 +1,23 @@
-import { UserCard } from '../navbar/user-card'
-import { ModeToggle } from './mode-toggle'
 import { SidebarTrigger } from './sidebar'
+import { ModeToggle } from './mode-toggle'
+import { DropdownNotifications } from './dropdown-notifications'
+import { NavbarUserMenu } from './navbar-user-menu'
 
-export const NavbarLayout = () => (
-  <nav className='flex items-center p-4 border-b-2 bg-[#FFFFFF10]'>
-    <SidebarTrigger />
+export function NavbarLayout() {
+  return (
+    <nav className='sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background/60 px-4 backdrop-blur'>
+      <div className='flex items-center gap-4'>
+        <SidebarTrigger />
+      </div>
 
-    <div className='flex-1 flex items-center justify-end gap-4'>
-      <ModeToggle />
+      <div className='flex items-center gap-2 md:gap-4'>
+        <div className='flex items-center gap-2'>
+          <ModeToggle />
+          <DropdownNotifications />
+        </div>
 
-      <UserCard />
-    </div>
-  </nav>
-)
+        <NavbarUserMenu />
+      </div>
+    </nav>
+  )
+}

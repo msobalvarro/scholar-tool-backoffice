@@ -71,7 +71,7 @@ export type ResponsablePerson = {
 
 export type StudentResponse = {
   _id: string
-  birthday: Date
+  birthday: Date | string
   startDate: Date
   firstName: string
   lastName: string

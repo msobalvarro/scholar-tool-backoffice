@@ -33,7 +33,7 @@ export const StudentProfileView = () => {
   }
 
   return (
-    <div className='container mx-auto space-y-8 py-8'>
+    <div className='container mx-auto space-y-8'>
       <div>
         <Button
           variant='ghost'

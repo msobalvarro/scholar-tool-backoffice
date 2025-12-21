@@ -129,14 +129,11 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className='p-4 mt-auto border-t border-sidebar-border/30'>
-        <div className='flex items-center justify-between px-2'>
-          <div className='flex items-center gap-2'>
-            <div className={clsx('size-2 rounded-full animate-pulse', isOnline ? 'bg-emerald-500' : 'bg-red-500')} />
-            <span className='text-[11px] font-medium text-muted-foreground uppercase tracking-widest line-clamp-1'>
-              {isOnline ? 'Online' : 'Offline'}
-            </span>
-          </div>
-          <ModeToggle />
+        <div className='flex items-center gap-2'>
+          <div className={clsx('size-2 rounded-full animate-pulse', isOnline ? 'bg-emerald-500' : 'bg-red-500')} />
+          <span className='text-[11px] font-medium text-muted-foreground uppercase tracking-widest line-clamp-1'>
+            {isOnline ? 'Online' : 'Offline'}
+          </span>
         </div>
       </SidebarFooter>
     </Sidebar>

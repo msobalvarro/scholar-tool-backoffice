@@ -25,6 +25,7 @@ import { EditStudentModal } from './edit-student-modal'
 
 interface StudentTableProps {
   data: StudentResponse[]
+  searchQuery?: string
 }
 
 type SortConfig = {
@@ -32,12 +33,11 @@ type SortConfig = {
   direction: 'asc' | 'desc'
 }
 
-export const StudentTable = ({ data }: StudentTableProps) => {
+export const StudentTable = ({ data, searchQuery }: StudentTableProps) => {
   const navigate = useNavigate()
   const { deleteStudent } = useStudentActions()
   const queryClient = useQueryClient()
 
-  const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'asc' })
@@ -62,6 +62,7 @@ export const StudentTable = ({ data }: StudentTableProps) => {
 
     const lowerQuery = searchQuery.toLowerCase()
     return data.filter(student =>
+      student._id.includes(lowerQuery) ||
       student.firstName.toLowerCase().includes(lowerQuery) ||
       student.lastName.toLowerCase().includes(lowerQuery) ||
       student.email?.toLowerCase().includes(lowerQuery) ||
@@ -113,154 +114,137 @@ export const StudentTable = ({ data }: StudentTableProps) => {
   }
 
   return (
-    <div className='space-y-4'>
-      <div className='flex items-center justify-between'>
-        <div className='relative w-72'>
-          <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground' />
-          <Input
-            placeholder='Buscar estudiantes...'
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value)
-              setCurrentPage(1)
-            }}
-            className='pl-8 bg-white'
-          />
-        </div>
-      </div>
-
-      <div className='rounded bg-white'>
-        <div className='rounded-md border'>
-          <table className='w-full text-sm'>
-            <thead className='border-b bg-muted/50'>
+    <div className='space-y-4 bg-background rounded flex flex-col gap-4'>
+      <div className='border-t border-b'>
+        <table className='w-full text-sm'>
+          <thead className='border-b bg-muted/50'>
+            <tr>
+              <th onClick={() => handleSort('firstName')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
+                <div className='flex items-center'>
+                  Nombre
+                  <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+              </th>
+              <th onClick={() => handleSort('gender')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
+                <div className='flex items-center'>
+                  Género
+                  <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+              </th>
+              <th onClick={() => handleSort('responsable.fullName')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
+                <div className='flex items-center'>
+                  Responsable
+                  <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+              </th>
+              <th onClick={() => handleSort('status')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
+                <div className='flex items-center'>
+                  Estado
+                  <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+              </th>
+              <th className='h-12 px-4 text-right align-middle font-medium text-muted-foreground'>
+                <div className='flex items-center'>
+                  Acciones
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedData.length === 0 ? (
               <tr>
-                <th onClick={() => handleSort('firstName')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
-                  <div className='flex items-center'>
-                    Nombre
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                  </div>
-                </th>
-                <th onClick={() => handleSort('gender')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
-                  <div className='flex items-center'>
-                    Género
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                  </div>
-                </th>
-                <th onClick={() => handleSort('responsable.fullName')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
-                  <div className='flex items-center'>
-                    Responsable
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                  </div>
-                </th>
-                <th onClick={() => handleSort('status')} className='cursor-pointer h-12 px-4 text-left align-middle font-medium text-muted-foreground'>
-                  <div className='flex items-center'>
-                    Estado
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                  </div>
-                </th>
-                <th className='h-12 px-4 text-right align-middle font-medium text-muted-foreground'>
-                  <div className='flex items-center'>
-                    Acciones
-                  </div>
-                </th>
+                <td colSpan={6} className='p-4 text-center text-muted-foreground'>
+                  No se encontraron estudiantes
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {paginatedData.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className='p-4 text-center text-muted-foreground'>
-                    No se encontraron estudiantes
+            ) : (
+              paginatedData.map((student) => (
+                <tr key={student._id} className='border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted'>
+                  <td className='p-4 align-middle font-medium'>
+                    <div className='flex items-center gap-2'>
+                      <Avatar className='h-8 w-8'>
+                        <AvatarImage src={student.photo} alt={student.firstName} />
+                        <AvatarFallback>{student.firstName[0]}{student.lastName[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className='flex flex-col'>
+                        <span>{student.firstName} {student.lastName}</span>
+                        <span className='text-xs text-muted-foreground'>{student.email || '-'}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className='p-4 align-middle capitalize'>
+                    {student.gender === 'male' ? 'Masculino' : 'Femenino'}
+                  </td>
+                  <td className='p-4 align-middle'>
+                    {student.responsable?.fullName || '-'}
+                  </td>
+                  <td className='p-4 align-middle'>
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${student.status === 'active'
+                      ? 'bg-green-50 text-green-700 ring-green-600/20'
+                      : 'bg-red-50 text-red-700 ring-red-600/20'
+                      }`}>
+                      {student.status === 'active' ? 'Activo' : 'Inactivo'}
+                    </span>
+                  </td>
+                  <td className='p-4 align-middle text-left'>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant='ghost' className='h-8 w-8 p-0'>
+                          <span className='sr-only'>Open menu</span>
+                          <MoreHorizontal className='h-4 w-4' />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align='end'>
+                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(student._id)}>
+                          Copiar ID
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate(`/students/${student._id}`)}>
+                          Ver detalles
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(student)}>
+                          Editar estudiante
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className='text-red-600'
+                          onClick={() => handleDelete(student._id)}
+                        >
+                          Eliminar estudiante
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </td>
                 </tr>
-              ) : (
-                paginatedData.map((student) => (
-                  <tr key={student._id} className='border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted'>
-                    <td className='p-4 align-middle font-medium'>
-                      <div className='flex items-center gap-2'>
-                        <Avatar className='h-8 w-8'>
-                          <AvatarImage src={student.photo} alt={student.firstName} />
-                          <AvatarFallback>{student.firstName[0]}{student.lastName[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className='flex flex-col'>
-                          <span>{student.firstName} {student.lastName}</span>
-                          <span className='text-xs text-muted-foreground'>{student.email || '-'}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className='p-4 align-middle capitalize'>
-                      {student.gender === 'male' ? 'Masculino' : 'Femenino'}
-                    </td>
-                    <td className='p-4 align-middle'>
-                      {student.responsable?.fullName || '-'}
-                    </td>
-                    <td className='p-4 align-middle'>
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${student.status === 'active'
-                        ? 'bg-green-50 text-green-700 ring-green-600/20'
-                        : 'bg-red-50 text-red-700 ring-red-600/20'
-                        }`}>
-                        {student.status === 'active' ? 'Activo' : 'Inactivo'}
-                      </span>
-                    </td>
-                    <td className='p-4 align-middle text-left'>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align='end'>
-                          <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(student._id)}>
-                            Copiar ID
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => navigate(`/students/${student._id}`)}>
-                            Ver detalles
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleEdit(student)}>
-                            Editar estudiante
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className='text-red-600'
-                            onClick={() => handleDelete(student._id)}
-                          >
-                            Eliminar estudiante
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <div className='flex items-center justify-between space-x-2'>
+        <div className='text-sm text-muted-foreground'>
+          Mostrando {((currentPage - 1) * itemsPerPage) + 1} a {Math.min(currentPage * itemsPerPage, filteredData.length)} de {filteredData.length} entradas
         </div>
 
-        <div className='flex items-center px-4 justify-between space-x-2 py-4'>
-          <div className='text-sm text-muted-foreground'>
-            Mostrando {((currentPage - 1) * itemsPerPage) + 1} a {Math.min(currentPage * itemsPerPage, filteredData.length)} de {filteredData.length} entradas
-          </div>
-
-          <div className='flex  items-center space-x-2'>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className='h-4 w-4' />
-              Anterior
-            </Button>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-              <ChevronRight className='h-4 w-4' />
-            </Button>
-          </div>
+        <div className='flex  items-center space-x-2'>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className='h-4 w-4' />
+            Anterior
+          </Button>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+            <ChevronRight className='h-4 w-4' />
+          </Button>
         </div>
       </div>
 

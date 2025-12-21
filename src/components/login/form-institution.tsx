@@ -37,8 +37,8 @@ export const FormInstitution = () => {
 
   return (
     <div
-      className='w-full max-w-md mx-auto bg-white dark:bg-card-dark rounded-2xl shadow-xl border border-input-border-light dark:border-input-border-dark p-6 sm:p-10 relative overflow-hidden text-slate-700'>
-      <div className='absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-blue-400' />
+      className='w-full max-w-md mx-auto bg-background-light dark:bg-background-dark rounded-2xl shadow-xl border border-input-border-light dark:border-input-border-dark p-6 sm:p-10 relative overflow-hidden text-slate-700'>
+      <div className='absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-accent' />
 
       <div className='mb-8'>
         <h1 className='text-3xl font-black tracking-tight mb-2'>Bienvenido Administrador</h1>
@@ -49,7 +49,7 @@ export const FormInstitution = () => {
 
       <form onSubmit={submitHandler} className='flex flex-col gap-5'>
         <div className='space-y-2'>
-          <label className='text-sm font-semibold' htmlFor='username'>Correo Electronico</label>
+          <label className='text-sm font-semibold text-accent' htmlFor='username'>Correo Electronico</label>
 
           <div className='relative group'>
             <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
@@ -123,7 +123,7 @@ export const FormInstitution = () => {
       <div className='mt-8 text-center border-t border-input-border-light dark:border-input-border-dark pt-6'>
         <p className='text-sm text-gray-500 dark:text-gray-400'>
           <span>¿Problemas para acceder? </span>
-          <a className='text-blue-400 hover:underline transition-colors'
+          <a className='text-accent hover:underline transition-colors'
             href='#'>Contactar al administrador del sistema</a>
         </p>
       </div>
