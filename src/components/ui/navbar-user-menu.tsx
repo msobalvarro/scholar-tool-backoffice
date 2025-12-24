@@ -31,7 +31,7 @@ export function NavbarUserMenu() {
             <span className='text-xs text-muted-foreground'>{user?.email}</span>
           </div>
           <Avatar className='h-8 w-8 border border-border/50'>
-            <AvatarFallback className='bg-sky-600 text-[10px] text-white'>
+            <AvatarFallback className='bg-accent text-[10px] text-white'>
               {user?.name?.split(' ').map((n) => n[0]).join('')}
             </AvatarFallback>
           </Avatar>

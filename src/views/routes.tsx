@@ -3,8 +3,9 @@ import { Layout } from '@/components/ui/layout'
 import { LoginTeacher } from './(logout)/login-teacher'
 import { LoginInstitution } from './(logout)/login-insitution'
 import { DashboardView } from './(logged)/institution/dashboard.view'
-import { StudentsView } from './(logged)/institution/students.view'
-import { StudentProfileView } from './(logged)/institution/student-profile.view'
+import { StudentsView } from './(logged)/institution/student/students.view'
+import { StudentProfileView } from './(logged)/institution/student/student-profile.view'
+import { CreateStudentView } from './(logged)/institution/student/create-student.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -20,6 +21,7 @@ export const ProtectedRoutesUserInstitution = () => (
     <Routes>
       <Route path='/' element={<DashboardView />} />
       <Route path='/students' element={<StudentsView />} />
+      <Route path='/students/create' element={<CreateStudentView />} />
       <Route path='/students/:studentId' element={<StudentProfileView />} />
     </Routes>
   </Layout>
