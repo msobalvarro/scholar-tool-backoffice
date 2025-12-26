@@ -7,6 +7,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { StudentResponse, UpdateStudentRequest } from '@/utils/types'
@@ -124,30 +131,34 @@ export const EditStudentModal = ({ student, open, onOpenChange }: EditStudentMod
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold">Género</label>
-              <select
-                name="gender"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              <Select
                 value={formData.gender || ''}
-                onChange={handleChange}
-                required
+                onValueChange={(value) => setFormData((prev) => ({ ...prev, gender: value as "male" | "female" }))}
               >
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Masculino</SelectItem>
+                  <SelectItem value="female">Femenino</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold">Estado</label>
-            <select
-              name="status"
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            <Select
               value={formData.status || ''}
-              onChange={handleChange}
-              required
+              onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value as "active" | "inactive" }))}
             >
-              <option value="active">Activo</option>
-              <option value="inactive">Inactivo</option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Seleccionar estado" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Activo</SelectItem>
+                <SelectItem value="inactive">Inactivo</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {error && <p className='text-red-400 text-sm text-center'>{error}</p>}

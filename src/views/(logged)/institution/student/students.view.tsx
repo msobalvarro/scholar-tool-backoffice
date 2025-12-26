@@ -27,7 +27,7 @@ export const StudentsView = () => {
   }
 
   return (
-    <div className='flex flex-col gap-4 space-y-6 bg-background p-4 rounded-md shadow'>
+    <div className='flex flex-col gap-4 space-y-6 bg-background p-4 rounded-md shadow animate-in fade-in duration-500'>
       <div className='flex justify-between items-center'>
         <div className='flex flex-col'>
           <h1 className='text-3xl font-bold tracking-tight text-accent'>Estudiantes</h1>

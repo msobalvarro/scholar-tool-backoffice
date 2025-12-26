@@ -1,9 +1,45 @@
 import { User, Camera, Contact, GraduationCap, Users } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Link } from 'react-router'
 
 export const CreateStudentView = () => {
   return (
-    <div className='flex-1 overflow-y-auto p-6 md:p-8'>
-      <div className='space-y-8 pb-20'>
+    <div className='flex-1 overflow-y-auto p-6 md:p-8 animate-in fade-in duration-500'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/students">Estudiantes</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/students/create">Nuevo Estudiante</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-1">
+            Nuevo Estudiante
+          </h1>
+          <p className="text-gray-500 text-lg font-medium">
+            Ingresa la información personal del estudiante.
+          </p>
+        </div>
+      </div>
+
+      <div className='space-y-8'>
         <form className='space-y-8' onSubmit={(e) => e.preventDefault()}>
 
           <section className='rounded-xl border border-slate-200 bg-surface-light shadow-sm bg-background'>
@@ -46,12 +82,15 @@ export const CreateStudentView = () => {
                   </div>
                   <div className='space-y-1.5'>
                     <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Género</label>
-                    <select className='w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-accent focus:ring-1 focus:ring-accent dark:border-slate-600 dark:bg-slate-800 dark:text-white'>
-                      <option value=''>Seleccionar</option>
-                      <option value='male'>Masculino</option>
-                      <option value='female'>Femenino</option>
-                      <option value='other'>Otro</option>
-                    </select>
+                    <Select>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='male'>Masculino</SelectItem>
+                        <SelectItem value='female'>Femenino</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className='space-y-1.5'>
                     <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>CURP / ID Nacional</label>
@@ -112,28 +151,43 @@ export const CreateStudentView = () => {
               <div className='p-6 grid grid-cols-1 gap-4'>
                 <div className='space-y-1.5'>
                   <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Nivel Escolar</label>
-                  <select className='w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-accent focus:ring-1 focus:ring-accent dark:border-slate-600 dark:bg-slate-800 dark:text-white'>
-                    <option>Secundaria</option>
-                    <option>Preparatoria</option>
-                    <option>Universidad</option>
-                  </select>
+                  <Select defaultValue="Secundaria">
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Secundaria">Secundaria</SelectItem>
+                      <SelectItem value="Preparatoria">Preparatoria</SelectItem>
+                      <SelectItem value="Universidad">Universidad</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
                   <div className='space-y-1.5'>
                     <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Grado</label>
-                    <select className='w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-accent focus:ring-1 focus:ring-accent dark:border-slate-600 dark:bg-slate-800 dark:text-white'>
-                      <option>1º Año</option>
-                      <option>2º Año</option>
-                      <option>3º Año</option>
-                    </select>
+                    <Select defaultValue="1º Año">
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1º Año">1º Año</SelectItem>
+                        <SelectItem value="2º Año">2º Año</SelectItem>
+                        <SelectItem value="3º Año">3º Año</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className='space-y-1.5'>
                     <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Grupo</label>
-                    <select className='w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-accent focus:ring-1 focus:ring-accent dark:border-slate-600 dark:bg-slate-800 dark:text-white'>
-                      <option>A</option>
-                      <option>B</option>
-                      <option>C</option>
-                    </select>
+                    <Select defaultValue="A">
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="A">A</SelectItem>
+                        <SelectItem value="B">B</SelectItem>
+                        <SelectItem value="C">C</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <div className='space-y-1.5'>
@@ -170,13 +224,18 @@ export const CreateStudentView = () => {
                 </div>
                 <div className='space-y-1.5'>
                   <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Parentesco</label>
-                  <select className='w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-accent focus:ring-1 focus:ring-accent dark:border-slate-600 dark:bg-slate-800 dark:text-white'>
-                    <option>Madre</option>
-                    <option>Padre</option>
-                    <option>Abuelo/a</option>
-                    <option>Tío/a</option>
-                    <option>Otro</option>
-                  </select>
+                  <Select defaultValue="Madre">
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Madre">Madre</SelectItem>
+                      <SelectItem value="Padre">Padre</SelectItem>
+                      <SelectItem value="Abuelo/a">Abuelo/a</SelectItem>
+                      <SelectItem value="Tío/a">Tío/a</SelectItem>
+                      <SelectItem value="Otro">Otro</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className='space-y-1.5'>
                   <label className='text-sm font-medium text-slate-700 dark:text-slate-300'>Teléfono Móvil</label>
