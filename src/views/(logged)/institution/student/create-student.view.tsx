@@ -63,7 +63,6 @@ export const CreateStudentView = () => {
           </section>
 
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-
             <section className='rounded-xl border border-slate-200 bg-surface-light shadow-sm bg-background h-full'>
               <div className='border-b border-slate-100 px-6 py-4 dark:border-slate-800'>
                 <h2 className='text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2'>

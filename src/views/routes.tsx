@@ -6,6 +6,7 @@ import { DashboardView } from './(logged)/institution/dashboard.view'
 import { StudentsView } from './(logged)/institution/student/students.view'
 import { StudentProfileView } from './(logged)/institution/student/student-profile.view'
 import { CreateStudentView } from './(logged)/institution/student/create-student.view'
+import { GroupsView } from './(logged)/institution/groups/groups.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -23,6 +24,7 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/students' element={<StudentsView />} />
       <Route path='/students/create' element={<CreateStudentView />} />
       <Route path='/students/:studentId' element={<StudentProfileView />} />
+      <Route path='/groups' element={<GroupsView />} />
     </Routes>
   </Layout>
 )

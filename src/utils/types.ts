@@ -14,9 +14,9 @@ export type ThemeProviderState = {
 }
 
 export type UsersResponse = {
+  _id: string
   name: string
   email: string
-  [key: string]: any
 }
 
 export type UserInstitutionResponse = {
@@ -89,4 +89,25 @@ export type CreateStudentRequest = Omit<StudentResponse, '_id' | 'institution' |
 
 export type UpdateStudentRequest = Omit<StudentResponse, 'institution' | 'responsable'> & {
   responsableId: string
+}
+
+export type AcademicGroup = {
+  _id: string
+  name: string
+  subject: string
+  grade: string
+  semester: string
+  status: 'active' | 'inactive'
+  teacher: Teacher
+  studentCount: number
+}
+
+export type GroupStudent = {
+  _id: string
+  firstName: string
+  lastName: string
+  email: string
+  photo?: string
+  enrollmentId: string
+  status: 'regular' | 'conditional' | 'suspended'
 }
