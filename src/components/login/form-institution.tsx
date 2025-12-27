@@ -1,4 +1,4 @@
-import { authLoginUserInstitutionService } from '@/services/auth'
+import { authLoginUserInstitutionService } from '@/services/auth.service'
 import type { StatusType } from '@/utils/types'
 import {
   User,

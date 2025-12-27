@@ -24,7 +24,7 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/students' element={<StudentsView />} />
       <Route path='/students/create' element={<CreateStudentView />} />
       <Route path='/students/:studentId' element={<StudentProfileView />} />
-      <Route path='/groups' element={<GroupsView />} />
+      <Route path='/courses' element={<GroupsView />} />
     </Routes>
   </Layout>
 )

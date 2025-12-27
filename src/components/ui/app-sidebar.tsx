@@ -50,6 +50,11 @@ const ItemsOfInstitution = [
     icon: Book,
   },
   {
+    title: 'Cursos Académicos',
+    url: '/courses',
+    icon: BookUser,
+  },
+  {
     title: 'Calendario',
     url: '/calendar',
     icon: Calendar,
@@ -58,11 +63,6 @@ const ItemsOfInstitution = [
     title: 'Configuración',
     url: '/configuration',
     icon: Settings,
-  },
-  {
-    title: 'Grupos',
-    url: '/groups',
-    icon: BookUser,
   },
 ]
 

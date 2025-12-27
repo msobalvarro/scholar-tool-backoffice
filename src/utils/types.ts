@@ -111,3 +111,15 @@ export type GroupStudent = {
   enrollmentId: string
   status: 'regular' | 'conditional' | 'suspended'
 }
+
+export type CoursesResponse = {
+  _id: string
+  name: string
+  groupName: string
+  order: number
+  createdAt: Date
+  updatedAt: Date
+  breakTime: string
+  teacherLead: Teacher
+  studentCount: number
+}
