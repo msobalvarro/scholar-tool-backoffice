@@ -80,10 +80,25 @@ export const useStudentActions = () => {
     }
   }
 
+  const assignStudentToCourse = async (payload: { studentId: string, courseId: string }) => {
+    try {
+      const { data } = await axiosInstance.post('/students/course/assign', payload)
+      return data
+    } catch (error) {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+
+      setError(err)
+      throw error
+    }
+  }
+
   return {
     error,
     addStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    assignStudentToCourse
   }
 }

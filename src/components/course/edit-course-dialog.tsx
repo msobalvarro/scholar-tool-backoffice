@@ -1,12 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
-  PlusCircle,
+  Edit2,
   GraduationCap,
   Users,
   Calendar,
   Briefcase,
-  Clock,
-  Loader2
+  Clock
 } from 'lucide-react'
 import {
   Dialog,
@@ -25,75 +24,80 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useCourseStore } from '@/store/course.store'
 import { useCourseActions } from '@/hooks/API/use-course'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { toast } from 'sonner'
 import type { CreateCourseState } from '@/utils/types'
 
-interface CreateCourseModalProps {
+interface EditCourseDialogProps {
   isOpen: boolean
-  onClose: () => void
+  onOpenChange: (open: boolean) => void
 }
 
-export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) => {
-  const { data: teachers, isLoading: isLoadingTeachers } = useTeachers()
-  const { addCourse, isLoading: isCreating } = useCourseActions()
+export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps) => {
+  const { course, setCourse } = useCourseStore()
+  const { data: teachers } = useTeachers()
+  const { updateCourse, isLoading: isActionLoading } = useCourseActions()
 
   const [formData, setFormData] = useState<CreateCourseState>({
     name: '',
     groupName: '',
     teacherLeadId: '',
-    order: 1,
-    startBreakTime: '10:00',
-    endBreakTime: '11:00',
+    order: 0,
+    startBreakTime: '',
+    endBreakTime: ''
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!formData.name || !formData.groupName || !formData.teacherLeadId) {
-      toast.error('Por favor completa los campos obligatorios')
-      return
-    }
-
-    try {
-      await addCourse({
-        name: formData.name,
-        groupName: formData.groupName,
-        teacherLeadId: formData.teacherLeadId,
-        order: formData.order,
-        breakTime: `${formData.startBreakTime}-${formData.endBreakTime}`,
-      })
-
-      toast.success('Curso creado exitosamente')
-      onClose()
+  useEffect(() => {
+    if (course && isOpen) {
       setFormData({
-        name: '',
-        groupName: '',
-        teacherLeadId: '',
-        order: 1,
-        startBreakTime: '10:00',
-        endBreakTime: '11:00',
+        name: course.name,
+        groupName: course.groupName,
+        teacherLeadId: course.teacherLead._id,
+        order: course.order,
+        startBreakTime: course.breakTime.split('-')[0] || '',
+        endBreakTime: course.breakTime.split('-')[1] || ''
       })
-    } catch {
-      toast.error('Error al crear el curso')
+    }
+  }, [course, isOpen])
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!course) return
+    try {
+      const updatedCourse = await updateCourse({
+        id: course._id,
+        course: {
+          name: formData.name,
+          groupName: formData.groupName,
+          teacherLeadId: formData.teacherLeadId,
+          order: formData.order,
+          breakTime: `${formData.startBreakTime}-${formData.endBreakTime}`
+        }
+      })
+      setCourse(updatedCourse)
+      toast.success('Curso actualizado correctamente')
+      onOpenChange(false)
+    } catch (error) {
+      toast.error(String(error))
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-125 rounded-3xl p-8 border-none shadow-2xl bg-white'>
         <DialogHeader className='mb-6'>
           <div className='w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4'>
-            <PlusCircle className='w-6 h-6' />
+            <Edit2 className='w-6 h-6' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>Crear Nuevo Curso</DialogTitle>
+          <DialogTitle className='text-2xl font-bold text-gray-900'>Editar Curso</DialogTitle>
           <DialogDescription className='text-gray-400 mt-1'>
-            Ingresa los detalles para registrar un nuevo curso en el sistema.
+            Modifica los detalles del curso y guarda los cambios.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className='space-y-6'>
+        <form onSubmit={handleUpdate} className='space-y-6'>
           <div className='grid grid-cols-2 gap-4'>
             <div className='space-y-2 col-span-2'>
               <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
@@ -130,7 +134,6 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
               </label>
               <Input
                 type='number'
-                min={1}
                 value={formData.order}
                 onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
                 className='rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11'
@@ -148,7 +151,7 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
                 onValueChange={(value) => setFormData({ ...formData, teacherLeadId: value })}
               >
                 <SelectTrigger className='w-full rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11'>
-                  <SelectValue placeholder={isLoadingTeachers ? 'Cargando...' : 'Selecciona un profesor'} />
+                  <SelectValue placeholder='Selecciona un profesor' />
                 </SelectTrigger>
                 <SelectContent className='rounded-xl border-none shadow-xl'>
                   {teachers?.map((teacher) => (
@@ -190,24 +193,17 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
             <Button
               type='button'
               variant='ghost'
-              onClick={onClose}
+              onClick={() => onOpenChange(false)}
               className='rounded-xl h-11 flex-1 font-bold text-gray-500 hover:bg-gray-100'
             >
               Cancelar
             </Button>
             <Button
               type='submit'
-              disabled={isCreating}
+              disabled={isActionLoading}
               className='rounded-xl h-11 flex-1 font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200'
             >
-              {isCreating ? (
-                <>
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                  Creando...
-                </>
-              ) : (
-                'Crear Curso'
-              )}
+              {isActionLoading ? 'Guardando...' : 'Guardar Cambios'}
             </Button>
           </DialogFooter>
         </form>

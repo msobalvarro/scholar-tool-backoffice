@@ -128,7 +128,7 @@ export type CoursesResponse = {
 
 export type CourseStore = {
   course: CoursesResponse | null
-  setCourse: (c: CoursesResponse) => void
+  setCourse: (c: CoursesResponse | null) => void
 }
 
 export type CreateCourseRequest = {
@@ -146,4 +146,9 @@ export type CreateCourseState = {
   order: number
   startBreakTime: string
   endBreakTime: string
+}
+
+export type AssignStudentRequest = {
+  studentId: string
+  courseId: string
 }

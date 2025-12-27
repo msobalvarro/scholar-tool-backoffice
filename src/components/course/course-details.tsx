@@ -8,15 +8,23 @@ import {
   MinusCircle,
   LoaderCircle
 } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useCourseStore } from '@/store/course.store'
 import { useStudentsByGroupId } from '@/hooks/API/use-students'
+import { EditCourseDialog } from './edit-course-dialog'
+import { DeleteCourseDialog } from './delete-course-dialog'
+import { AssignStudentDialog } from './assign-student-dialog'
 
 export const CourseDetail = () => {
   const { course } = useCourseStore()
   const { data: students, isLoading } = useStudentsByGroupId(course?._id)
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
 
   if (isLoading) return (
     <div className='flex-1 bg-background rounded-2xl shadow-sm border flex flex-col overflow-hidden'>
@@ -64,10 +72,20 @@ export const CourseDetail = () => {
           </div>
         </div>
         <div className='flex items-center gap-2'>
-          <Button variant='ghost' size='icon' className='text-gray-400 hover:text-accent'>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='text-gray-400 hover:text-accent'
+            onClick={() => setIsEditDialogOpen(true)}
+          >
             <Edit2 className='w-5 h-5' />
           </Button>
-          <Button variant='ghost' size='icon' className='text-gray-400 hover:text-red-600'>
+          <Button
+            variant='ghost'
+            size='icon'
+            className='text-gray-400 hover:text-red-600'
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
             <Trash2 className='w-5 h-5' />
           </Button>
         </div>
@@ -85,7 +103,10 @@ export const CourseDetail = () => {
               />
             </div>
             <div className='flex items-center gap-2'>
-              <Button className='rounded-xl'>
+              <Button
+                className='rounded-xl'
+                onClick={() => setIsAssignDialogOpen(true)}
+              >
                 <UserPlus className='w-4 h-4 mr-2' />
                 Asignar Estudiante
               </Button>
@@ -148,6 +169,21 @@ export const CourseDetail = () => {
 
         </div>
       </div>
+
+      <EditCourseDialog
+        isOpen={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+      />
+
+      <DeleteCourseDialog
+        isOpen={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      />
+
+      <AssignStudentDialog
+        isOpen={isAssignDialogOpen}
+        onOpenChange={setIsAssignDialogOpen}
+      />
     </div>
   )
 }

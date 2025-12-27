@@ -12,8 +12,6 @@ export const useCourses = () => useQuery({
   }
 })
 
-
-
 export const useCourseActions = () => {
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
@@ -34,9 +32,43 @@ export const useCourseActions = () => {
     }
   })
 
+  const updateCourseMutation = useMutation({
+    mutationFn: async ({ id, course }: { id: string, course: Partial<CreateCourseRequest> }) => {
+      const { data } = await axiosInstance.patch<CoursesResponse>(`/courses/${id}`, course)
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+      setError(err)
+    }
+  })
+
+  const deleteCourseMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await axiosInstance.delete(`/courses/${id}`)
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+      setError(err)
+    }
+  })
+
   return {
     addCourse: addCourseMutation.mutateAsync,
-    isLoading: addCourseMutation.isPending,
+    updateCourse: updateCourseMutation.mutateAsync,
+    deleteCourse: deleteCourseMutation.mutateAsync,
+    isLoading: addCourseMutation.isPending || updateCourseMutation.isPending || deleteCourseMutation.isPending,
     error,
     resetError: () => setError(null)
   }
