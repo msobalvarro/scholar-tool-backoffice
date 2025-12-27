@@ -112,6 +112,8 @@ export type GroupStudent = {
   status: 'regular' | 'conditional' | 'suspended'
 }
 
+// export 
+
 export type CoursesResponse = {
   _id: string
   name: string
@@ -122,4 +124,26 @@ export type CoursesResponse = {
   breakTime: string
   teacherLead: Teacher
   studentCount: number
+}
+
+export type CourseStore = {
+  course: CoursesResponse | null
+  setCourse: (c: CoursesResponse) => void
+}
+
+export type CreateCourseRequest = {
+  name: string
+  groupName: string
+  teacherLeadId: string
+  order: number
+  breakTime: string
+}
+
+export type CreateCourseState = {
+  name: string
+  groupName: string
+  teacherLeadId: string
+  order: number
+  startBreakTime: string
+  endBreakTime: string
 }

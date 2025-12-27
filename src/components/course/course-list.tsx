@@ -1,17 +1,18 @@
 import type { CoursesResponse } from '@/utils/types'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { GroupCard } from './GroupCard'
+import { CourseCard } from './course-card'
+import { useCourseStore } from '@/store/course.store'
 
 interface GroupListProps {
   groups: CoursesResponse[]
-  selectedGroupId?: string | null
-  onSelectGroup: (id: string) => void
 }
 
-export const GroupList = ({ groups, selectedGroupId, onSelectGroup }: GroupListProps) => {
+export const CourseList = ({ groups }: GroupListProps) => {
+  const { setCourse, course } = useCourseStore()
+
   return (
-    <div className='bg-white rounded-2xl p-4 shadow-sm border border-gray-100 w-full lg:w-80 min-h-[50vh]'>
+    <div className='bg-background rounded-2xl p-4 shadow-sm border w-full lg:w-80 min-h-[50vh]'>
 
       <div className='relative mb-6'>
         <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400' />
@@ -23,11 +24,11 @@ export const GroupList = ({ groups, selectedGroupId, onSelectGroup }: GroupListP
 
       <div className='space-y-1 max-h-[calc(100vh-350px)] overflow-y-auto pr-1'>
         {groups.map((group) => (
-          <GroupCard
+          <CourseCard
             key={group._id}
             group={group}
-            isActive={selectedGroupId === group._id}
-            onClick={() => onSelectGroup(group._id)}
+            isActive={course?._id === group._id}
+            onClick={() => setCourse(group)}
           />
         ))}
       </div>

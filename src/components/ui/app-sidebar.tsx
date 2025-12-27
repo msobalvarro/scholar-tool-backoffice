@@ -35,7 +35,7 @@ const ItemsOfInstitution = [
     icon: Home,
   },
   {
-    title: 'Alumnos',
+    title: 'Estudiantes',
     url: '/students',
     icon: User,
   },

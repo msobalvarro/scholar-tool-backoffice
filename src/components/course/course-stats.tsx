@@ -15,22 +15,22 @@ export const GroupsStats = () => {
       icon: Users,
       color: "bg-green-50 text-green-600",
     },
-    {
-      title: "SIN ASIGNAR",
-      value: "12",
-      icon: UserPlus,
-      color: "bg-orange-50 text-orange-600",
-    },
-    {
-      title: "PROMEDIO / GRUPO",
-      value: "35",
-      icon: BarChart3,
-      color: "bg-purple-50 text-purple-600",
-    },
+    // {
+    //   title: "SIN ASIGNAR",
+    //   value: "12",
+    //   icon: UserPlus,
+    //   color: "bg-orange-50 text-orange-600",
+    // },
+    // {
+    //   title: "PROMEDIO / GRUPO",
+    //   value: "35",
+    //   icon: BarChart3,
+    //   color: "bg-purple-50 text-purple-600",
+    // },
   ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
       {stats.map((stat, index) => (
         <Card key={index} className="border-none shadow-sm">
           <CardContent className="p-6 flex items-center justify-between">

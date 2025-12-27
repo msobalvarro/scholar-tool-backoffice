@@ -8,20 +8,20 @@ interface GroupCardProps {
   onClick: () => void
 }
 
-export const GroupCard = ({ group, isActive, onClick }: GroupCardProps) => {
+export const CourseCard = ({ group, isActive, onClick }: GroupCardProps) => {
   return (
     <div
       onClick={onClick}
-      className={`p-4 rounded-xl cursor-pointer transition-all border-2 mb-3 ${isActive
-        ? 'border-blue-500 bg-white shadow-md relative group-active'
-        : 'border-transparent hover:bg-gray-50 bg-white'
+      className={`p-4 rounded-xl cursor-pointer transition-all border-3 mb-3 ${isActive
+        ? 'border-accent bg-background shadow-md relative group-active'
+        : 'border-transparent hover:bg-gray-50 bg-background'
         }`}
     >
       <div className='flex justify-between items-start mb-1'>
-        <h4 className={`font-bold ${isActive ? 'text-accent' : 'text-gray-900'}`}>
+        <h4 className={`font-bold ${isActive ? 'text-accent' : ''}`}>
           {group.name}
         </h4>
-        <Badge variant='secondary' className='bg-gray-100 text-gray-600 font-medium'>
+        <Badge variant='secondary' className='bg-accent/10 text-accent font-medium'>
           {group.studentCount} Alumnos
         </Badge>
       </div>

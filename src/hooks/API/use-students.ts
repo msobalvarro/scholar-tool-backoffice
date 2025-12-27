@@ -26,6 +26,15 @@ export function useStudents(idOrParams?: string | Record<string, unknown>, param
   })
 }
 
+export const useStudentsByGroupId = (groupId?: string) => useQuery({
+  queryKey: ['studentsByGroupId', groupId],
+  queryFn: async () => {
+    const { data } = await axiosInstance.get<StudentResponse[]>(`/students/course/${groupId}`)
+    return data
+  },
+  enabled: !!groupId
+})
+
 export const useStudentActions = () => {
   const [error, setError] = useState<string | null>(null)
 
