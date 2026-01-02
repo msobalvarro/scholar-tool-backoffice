@@ -18,6 +18,7 @@ export const useCourseActions = () => {
 
   const addCourseMutation = useMutation({
     mutationFn: async (course: CreateCourseRequest) => {
+      setError(null)
       const { data } = await axiosInstance.post<CoursesResponse>('/courses', course)
       return data
     },
@@ -34,6 +35,7 @@ export const useCourseActions = () => {
 
   const updateCourseMutation = useMutation({
     mutationFn: async ({ id, course }: { id: string, course: Partial<CreateCourseRequest> }) => {
+      setError(null)
       const { data } = await axiosInstance.patch<CoursesResponse>(`/courses/${id}`, course)
       return data
     },
@@ -50,6 +52,7 @@ export const useCourseActions = () => {
 
   const deleteCourseMutation = useMutation({
     mutationFn: async (id: string) => {
+      setError(null)
       const { data } = await axiosInstance.delete(`/courses/${id}`)
       return data
     },

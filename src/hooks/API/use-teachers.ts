@@ -1,6 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { axiosInstance } from '@/utils/axios-intance'
 import type { Teacher } from '@/utils/types'
+import { useState } from 'react'
+import { AxiosError } from 'axios'
 
 export const useTeachers = () => useQuery({
   queryKey: ['teachers'],
@@ -11,17 +13,62 @@ export const useTeachers = () => useQuery({
 })
 
 export const useTeacherActions = () => {
-  const postTeacher = async (teacher: Omit<Teacher, '_id' | 'institution'>) => {
-    return await axiosInstance.post('/teachers', teacher)
-  }
+  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient()
 
-  const patchTeacher = async (id: string, teacher: Partial<Teacher>) => {
-    return await axiosInstance.put(`/teachers/${id}`, teacher)
-  }
+  const createTeacherMutation = useMutation({
+    mutationFn: async (teacher: Omit<Teacher, '_id' | 'institution'>) => {
+      setError(null)
+      return await axiosInstance.post('/teachers', teacher)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teachers'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+      setError(err)
+    }
+  })
 
-  const deleteTeacher = async (id: string) => {
-    return await axiosInstance.delete(`/teachers/${id}`)
-  }
+  const updateTeacherMutation = useMutation({
+    mutationFn: async ({ id, teacher }: { id: string, teacher: Partial<Teacher> }) => {
+      setError(null)
+      return await axiosInstance.put(`/teachers/${id}`, teacher)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teachers'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+      setError(err)
+    }
+  })
 
-  return { postTeacher, patchTeacher, deleteTeacher }
+  const deleteTeacherMutation = useMutation({
+    mutationFn: async (id: string) => {
+      setError(null)
+      return await axiosInstance.delete(`/teachers/${id}`)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teachers'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data.message
+        : String(error)
+      setError(err)
+    }
+  })
+
+  return {
+    postTeacher: createTeacherMutation.mutateAsync,
+    patchTeacher: updateTeacherMutation.mutateAsync,
+    deleteTeacher: deleteTeacherMutation.mutateAsync,
+    error,
+    isLoading: createTeacherMutation.isPending || updateTeacherMutation.isPending || deleteTeacherMutation.isPending
+  }
 }
