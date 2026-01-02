@@ -152,3 +152,23 @@ export type AssignStudentRequest = {
   studentId: string
   courseId: string
 }
+
+export type AsignatureResponse = {
+  _id: string
+  name: string
+  description: string
+  status: 'active' | 'inactive'
+  institution: Institution
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type CreateAsignatureRequest = {
+  name: string
+  description: string
+  status?: 'active' | 'inactive'
+}
+
+export type UpdateAsignatureRequest = Partial<CreateAsignatureRequest> & {
+  _id: string
+}

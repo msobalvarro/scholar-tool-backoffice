@@ -46,7 +46,7 @@ const ItemsOfInstitution = [
   },
   {
     title: 'Materias',
-    url: '/subjects',
+    url: '/asignatures',
     icon: Book,
   },
   {

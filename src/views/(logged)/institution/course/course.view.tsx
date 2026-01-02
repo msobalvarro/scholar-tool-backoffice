@@ -6,13 +6,14 @@ import { Plus, Download } from 'lucide-react'
 import { useCourses } from '@/hooks/API/use-course'
 import { CreateCourseModal } from '@/components/course/create-course-modal'
 import { useState } from 'react'
+import { ViewContainer } from '@/components/ui/view-container'
 
 export const CoursesView = () => {
   const { data: dataCourses } = useCourses()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <div className='p-1 animate-in fade-in duration-500'>
+    <ViewContainer>
       {/* Page Header */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8'>
         <div>
@@ -56,6 +57,6 @@ export const CoursesView = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    </div>
+    </ViewContainer>
   )
 }

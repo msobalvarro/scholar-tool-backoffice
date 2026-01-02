@@ -11,7 +11,7 @@ import {
   ProtectedRoutesTeacher,
   ProtectedRoutesUserInstitution,
   PublicRoutes
-} from './views/routes'
+} from './views/router'
 
 function App() {
   const [isAuthTeacher] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_TEACHER)

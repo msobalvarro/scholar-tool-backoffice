@@ -8,6 +8,7 @@ import { StudentProfileView } from './(logged)/institution/student/student-profi
 import { CreateStudentView } from './(logged)/institution/student/create-student.view'
 import { CoursesView } from './(logged)/institution/course/course.view'
 import { TeachersView } from './(logged)/institution/teacher/teachers.view'
+import { AsignaturesView } from './(logged)/institution/asignatures/asignatures.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -27,6 +28,7 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/students/:studentId' element={<StudentProfileView />} />
       <Route path='/courses' element={<CoursesView />} />
       <Route path='/teachers' element={<TeachersView />} />
+      <Route path='/asignatures' element={<AsignaturesView />} />
     </Routes>
   </Layout>
 )

@@ -1,7 +1,9 @@
+import { ViewContainer } from "@/components/ui/view-container"
+
 export const DashboardView = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <ViewContainer>
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+    </ViewContainer>
   )
 }

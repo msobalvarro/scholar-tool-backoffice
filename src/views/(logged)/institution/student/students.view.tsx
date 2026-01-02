@@ -5,6 +5,7 @@ import { useStudents } from '@/hooks/API/use-students'
 import { Loader2, Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { ViewContainer } from '@/components/ui/view-container'
 
 export const StudentsView = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,7 +28,7 @@ export const StudentsView = () => {
   }
 
   return (
-    <div className='flex flex-col gap-4 space-y-6 bg-background p-4 rounded-md shadow animate-in fade-in duration-500'>
+    <ViewContainer className='flex flex-col gap-4 space-y-4'>
       <div className='flex justify-between items-center'>
         <div className='flex flex-col'>
           <h1 className='text-3xl font-bold'>Estudiantes</h1>
@@ -57,6 +58,6 @@ export const StudentsView = () => {
       </div>
 
       {students && <StudentTable data={students} searchQuery={searchQuery} />}
-    </div>
+    </ViewContainer>
   )
 }

@@ -8,10 +8,11 @@ import {
 } from '@/components/ui/select'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Link } from 'react-router'
+import { ViewContainer } from '@/components/ui/view-container'
 
 export const CreateStudentView = () => {
   return (
-    <div className='flex-1 overflow-y-auto p-6 md:p-8 animate-in fade-in duration-500'>
+    <ViewContainer className='flex-1 overflow-y-auto'>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -260,6 +261,6 @@ export const CreateStudentView = () => {
           </section>
         </form>
       </div>
-    </div>
+    </ViewContainer>
   )
 }

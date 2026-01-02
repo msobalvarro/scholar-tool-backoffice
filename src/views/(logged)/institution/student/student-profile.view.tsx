@@ -8,6 +8,7 @@ import { ArrowLeft, Edit, Mail, Phone, Calendar, User } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { EditStudentModal } from '@/components/students/edit-student-modal'
+import { ViewContainer } from '@/components/ui/view-container'
 
 export const StudentProfileView = () => {
   const navigate = useNavigate()
@@ -33,7 +34,7 @@ export const StudentProfileView = () => {
   }
 
   return (
-    <div className='container mx-auto space-y-8'>
+    <ViewContainer className='container mx-auto space-y-8'>
       <div>
         <Button
           variant='ghost'
@@ -245,6 +246,6 @@ export const StudentProfileView = () => {
         open={isEditModalOpen}
         onOpenChange={setIsEditModalOpen}
       />
-    </div>
+    </ViewContainer>
   )
 }

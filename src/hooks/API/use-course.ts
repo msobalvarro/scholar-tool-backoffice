@@ -73,6 +73,5 @@ export const useCourseActions = () => {
     deleteCourse: deleteCourseMutation.mutateAsync,
     isLoading: addCourseMutation.isPending || updateCourseMutation.isPending || deleteCourseMutation.isPending,
     error,
-    resetError: () => setError(null)
   }
 }

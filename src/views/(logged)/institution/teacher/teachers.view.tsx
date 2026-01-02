@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { ViewContainer } from '@/components/ui/view-container'
 import type { Teacher } from '@/utils/types'
 
 export const TeachersView = () => {
@@ -46,7 +47,7 @@ export const TeachersView = () => {
   }
 
   return (
-    <div className='p-8 max-w-7xl mx-auto'>
+    <ViewContainer>
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8'>
         <div>
           <h1 className='text-3xl font-extrabold text-[#111827]'>Gestión de Profesores</h1>
@@ -56,7 +57,7 @@ export const TeachersView = () => {
         </div>
         <Button
           onClick={() => setIsCreateOpen(true)}
-          className='bg-[#2563EB] hover:bg-blue-700 text-white font-bold px-6 py-6 rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-95'
+          className='bg-accent text-white font-bold px-6 py-6 rounded-xl shadow-lg transition-all active:scale-95'
         >
           <Plus className='mr-2 h-5 w-5 stroke-3' />
           Añadir Profesor
@@ -131,6 +132,6 @@ export const TeachersView = () => {
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
       />
-    </div>
+    </ViewContainer>
   )
 }
