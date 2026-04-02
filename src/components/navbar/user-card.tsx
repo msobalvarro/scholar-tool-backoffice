@@ -1,4 +1,4 @@
-import type { UsersResponse } from '@/utils/types'
+import type { UsersResponse } from '@/dtos/types'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { KEYSTORE_NAMES } from '@/utils/constant'
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar'
@@ -17,7 +17,7 @@ export const UserCard = () => {
       <div className='flex flex-col'>
         <span>{user?.name}</span>
         <span className='text-xs opacity-50'>{user?.email}</span>
-        
+
       </div>
     </div>
   )

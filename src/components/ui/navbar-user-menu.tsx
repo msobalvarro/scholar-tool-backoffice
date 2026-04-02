@@ -17,7 +17,7 @@ import {
 import { Avatar, AvatarFallback } from './avatar'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { KEYSTORE_NAMES } from '@/utils/constant'
-import type { UserInstitutionResponse } from '@/utils/types'
+import type { UserInstitutionResponse } from '@/dtos/types'
 
 export function NavbarUserMenu() {
   const [user] = useSimpleLocalStorage<UserInstitutionResponse>(KEYSTORE_NAMES.USER_INSTITUTION)

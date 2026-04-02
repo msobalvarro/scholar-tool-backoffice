@@ -69,27 +69,6 @@ export type ResponsablePerson = {
   phoneNumber: string
 }
 
-export type StudentResponse = {
-  _id: string
-  birthday: Date | string
-  startDate: Date
-  firstName: string
-  lastName: string
-  institution: Institution
-  status: 'active' | 'inactive'
-  gender: 'male' | 'female'
-  photo?: string
-  email?: string
-  responsable?: ResponsablePerson
-}
-
-export type CreateStudentRequest = Omit<StudentResponse, '_id' | 'institution' | 'responsable' | 'status'> & {
-  responsableId: string
-}
-
-export type UpdateStudentRequest = Omit<StudentResponse, 'institution' | 'responsable'> & {
-  responsableId: string
-}
 
 export type AcademicGroup = {
   _id: string
@@ -148,27 +127,3 @@ export type CreateCourseState = {
   endBreakTime: string
 }
 
-export type AssignStudentRequest = {
-  studentId: string
-  courseId: string
-}
-
-export type AsignatureResponse = {
-  _id: string
-  name: string
-  description: string
-  status: 'active' | 'inactive'
-  institution: Institution
-  createdAt: Date
-  updatedAt: Date
-}
-
-export type CreateAsignatureRequest = {
-  name: string
-  description: string
-  status?: 'active' | 'inactive'
-}
-
-export type UpdateAsignatureRequest = Partial<CreateAsignatureRequest> & {
-  _id: string
-}

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ViewContainer } from '@/components/ui/view-container'
-import type { Teacher } from '@/utils/types'
+import type { Teacher } from '@/dtos/types'
 
 export const TeachersView = () => {
   const { data: teachers = [], isLoading } = useTeachers()

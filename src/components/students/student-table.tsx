@@ -1,12 +1,10 @@
 import { useState, useMemo } from 'react'
-import type { StudentResponse } from '@/utils/types'
-import { Input } from '@/components/ui/input'
+import type { StudentResponse } from '@/dtos/outputs/student-output'
 import { Button } from '@/components/ui/button'
 import {
   ChevronLeft,
   ChevronRight,
   ArrowUpDown,
-  Search,
   MoreHorizontal
 } from 'lucide-react'
 import {

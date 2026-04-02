@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import type { Teacher } from '@/utils/types'
+import type { Teacher } from '@/dtos/types'
 import { Button } from '@/components/ui/button'
 import {
   ChevronLeft,

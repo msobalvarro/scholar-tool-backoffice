@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useAsignatures, useAsignatureActions } from '@/hooks/API/use-asignatures'
-import type { AsignatureResponse } from '@/utils/types'
+import type { AsignatureResponse } from '@/dtos/types'
 import { AsignatureFilters } from '@/components/asignatures/asignature-filters'
 import { AsignatureTable } from '@/components/asignatures/asignature-table'
 import { AsignaturePagination } from '@/components/asignatures/asignature-pagination'

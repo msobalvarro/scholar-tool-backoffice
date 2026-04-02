@@ -1,12 +1,10 @@
-import type {
-  CreateStudentRequest,
-  StudentResponse,
-  UpdateStudentRequest
-} from '@/utils/types'
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { axiosInstance } from '@/utils/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
+import type { CreateStudentRequest, UpdateStudentRequest } from '@/dtos/inputs/student.input'
+import type { StudentResponse } from '@/dtos/outputs/student-output'
 
 export function useStudents(params?: Record<string, unknown>): ReturnType<typeof useQuery<StudentResponse[]>>
 

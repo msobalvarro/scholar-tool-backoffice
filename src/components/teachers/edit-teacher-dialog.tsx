@@ -20,7 +20,7 @@ import { useTeacherActions } from '@/hooks/API/use-teachers'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Loader2, Save } from 'lucide-react'
-import type { Teacher } from '@/utils/types'
+import type { Teacher } from '@/dtos/types'
 
 interface EditTeacherDialogProps {
   teacher: Teacher | null
@@ -53,7 +53,10 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
 
     setIsLoading(true)
     try {
-      await patchTeacher(teacher._id, formData)
+      await patchTeacher({
+        id: teacher._id,
+        teacher: formData
+      })
       toast.success('Profesor actualizado correctamente')
       queryClient.invalidateQueries({ queryKey: ['teachers'] })
       onOpenChange(false)

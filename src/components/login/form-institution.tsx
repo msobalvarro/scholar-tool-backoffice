@@ -1,5 +1,5 @@
 import { authLoginUserInstitutionService } from '@/services/auth.service'
-import type { StatusType } from '@/utils/types'
+import type { StatusType } from '@/dtos/types'
 import {
   User,
   Lock,

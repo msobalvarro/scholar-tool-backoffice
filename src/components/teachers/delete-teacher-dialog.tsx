@@ -12,7 +12,7 @@ import { useTeacherActions } from '@/hooks/API/use-teachers'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Loader2, Trash2, AlertTriangle } from 'lucide-react'
-import type { Teacher } from '@/utils/types'
+import type { Teacher } from '@/dtos/types'
 
 interface DeleteTeacherDialogProps {
   teacher: Teacher | null

@@ -1,4 +1,4 @@
-import type { CoursesResponse } from '@/utils/types'
+import type { CoursesResponse } from '@/dtos/types'
 import { Badge } from '@/components/ui/badge'
 import { User } from 'lucide-react'
 

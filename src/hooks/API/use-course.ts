@@ -1,4 +1,4 @@
-import type { CoursesResponse, CreateCourseRequest } from '@/utils/types'
+import type { CoursesResponse, CreateCourseRequest } from '@/dtos/types'
 import { axiosInstance } from '@/utils/axios-intance'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'

@@ -16,11 +16,12 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import type { StudentResponse, UpdateStudentRequest } from '@/utils/types'
 import { useStudentActions } from '@/hooks/API/use-students'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import type { StudentResponse } from '@/dtos/outputs/student-output'
+import type { UpdateStudentRequest } from '@/dtos/inputs/student.input'
 
 interface EditStudentModalProps {
   student: StudentResponse | null

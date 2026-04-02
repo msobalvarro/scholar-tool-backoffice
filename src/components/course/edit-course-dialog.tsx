@@ -28,7 +28,7 @@ import { useCourseStore } from '@/store/course.store'
 import { useCourseActions } from '@/hooks/API/use-course'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { toast } from 'sonner'
-import type { CreateCourseState } from '@/utils/types'
+import type { CreateCourseState } from '@/dtos/types'
 
 interface EditCourseDialogProps {
   isOpen: boolean

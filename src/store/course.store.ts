@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { CourseStore } from '@/utils/types'
+import type { CourseStore } from '@/dtos/types'
 
 export const useCourseStore = create<CourseStore>((set) => ({
   course: null,

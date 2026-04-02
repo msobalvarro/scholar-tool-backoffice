@@ -1,4 +1,4 @@
-import type { ThemeProviderState } from '@/utils/types'
+import type { ThemeProviderState } from '@/dtos/types'
 import { createContext } from 'react'
 
 const initialState: ThemeProviderState = {
