@@ -7,3 +7,7 @@ export type CreateStudentRequest = Omit<StudentResponse, '_id' | 'institution' |
 export type UpdateStudentRequest = Omit<StudentResponse, 'institution' | 'responsable'> & {
   responsableId: string
 }
+
+export type CreateStudentPayload = {
+  student: CreateStudentRequest
+}

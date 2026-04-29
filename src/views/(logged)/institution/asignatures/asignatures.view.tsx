@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react'
 import { useAsignatures, useAsignatureActions } from '@/hooks/API/use-asignatures'
-import type { AsignatureResponse } from '@/dtos/types'
 import { AsignatureFilters } from '@/components/asignatures/asignature-filters'
 import { AsignatureTable } from '@/components/asignatures/asignature-table'
 import { AsignaturePagination } from '@/components/asignatures/asignature-pagination'
@@ -8,6 +7,7 @@ import { AsignatureForm } from '@/components/asignatures/asignature-form'
 import { toast } from 'sonner'
 import { CreateAsignatureDialog } from '@/components/asignatures/create-asignature-dialog'
 import { ViewContainer } from '@/components/ui/view-container'
+import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
 
 export const AsignaturesView = () => {
   const { data: asignatures, isLoading: isLoadingList } = useAsignatures()
