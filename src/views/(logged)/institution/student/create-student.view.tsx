@@ -1,8 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Link } from 'react-router'
 import { ViewContainer } from '@/components/ui/view-container'
-import { PersonalInformation } from '@/components/students/create/personal-information'
-import { DataResponsable } from '@/components/students/create/data-responsable'
+import { PersonalInformationForm } from '@/components/students/create/personal-information-form'
 
 export const CreateStudentView = () => {
   return (
@@ -34,11 +33,7 @@ export const CreateStudentView = () => {
         </div>
       </div>
 
-      <form className='flex space-x-8' onSubmit={(e) => e.preventDefault()}>
-        <PersonalInformation />
-
-        <DataResponsable />
-      </form>
+      <PersonalInformationForm />
     </ViewContainer>
   )
 }
