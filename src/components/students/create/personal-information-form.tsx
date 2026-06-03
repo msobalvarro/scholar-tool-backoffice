@@ -1,4 +1,4 @@
-import { User, Camera, Mail, Phone, MapPin, } from 'lucide-react'
+import { User, Camera, Mail, Phone, MapPin, Save, } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -10,10 +10,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CreateSelectRepresentative } from './create-select-representative'
+import { Button } from '@/components/ui/button'
 
 export const PersonalInformationForm = () => {
   return (
-    <form className='space-y-8 max-w-5xl mx-auto'>
+    <form className='space-y-8 '>
       {/* Sección de Información Personal */}
       <Card className='overflow-hidden border-none shadow-md from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-900/50'>
         <CardHeader className='border-b bg-white/50 dark:bg-slate-900/50 px-8 py-6'>
@@ -132,6 +133,14 @@ export const PersonalInformationForm = () => {
 
       {/* Sección de Datos del Tutor */}
       <CreateSelectRepresentative />
+
+
+      <div className='flex justify-end'>
+        <Button size='lg' className='bg-accent px-6' type='submit'>
+          <Save className='size-5 mr-2' />
+          Guardar
+        </Button>
+      </div>
     </form>
   )
 }
