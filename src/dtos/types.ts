@@ -61,12 +61,16 @@ export type LoginUserTeacherResponse = {
   institution: Institution
 }
 
+export type ResponsableType = 'father' | 'mother' | 'grandfather' | 'uncle' | 'other'
 
 export type ResponsablePerson = {
   fullName: string
   identification: string
   email: string | null
   phoneNumber: string
+  direction: string
+  isEmergencyContact: boolean
+  type: ResponsableType
 }
 
 
