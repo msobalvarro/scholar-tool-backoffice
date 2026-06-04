@@ -16,27 +16,21 @@ export const RepresentativeCardPreview = ({ representative: rep }: Representativ
   }
 
   return (
-    <div className='relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-card to-card/80 shadow-lg transition-all duration-300 hover:shadow-xl'>
-      {/* Decorative top accent bar */}
-      <div className='absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-accent/70 to-accent/40 rounded-t-2xl' />
+    <div className='relative overflow-hidden rounded-2xl border border-border/60 bg-linear-to-br from-card to-card/80 shadow-lg transition-all duration-300 hover:shadow-xl'>
+      <div className='absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-accent via-accent/70 to-accent/40 rounded-t-2xl' />
 
       <div className='p-6'>
-        {/* Header row */}
         <div className='flex items-start justify-between gap-4 mb-5'>
-          {/* Avatar + Name */}
           <div className='flex items-center gap-4'>
-            {/* Avatar */}
             <div className='relative shrink-0'>
-              <div className='h-14 w-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 border border-accent/20 flex items-center justify-center'>
+              <div className='h-14 w-14 rounded-2xl bg-linear-to-br from-accent/20 to-accent/10 border border-accent/20 flex items-center justify-center'>
                 <User className='h-7 w-7 text-accent' />
               </div>
-              {/* Online indicator */}
               <span className='absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-card flex items-center justify-center'>
                 <CheckCircle2 className='h-2.5 w-2.5 text-white' strokeWidth={3} />
               </span>
             </div>
 
-            {/* Name & badge */}
             <div className='min-w-0'>
               <p className='text-base font-bold text-foreground truncate leading-tight'>
                 {rep.fullName}
@@ -50,7 +44,6 @@ export const RepresentativeCardPreview = ({ representative: rep }: Representativ
             </div>
           </div>
 
-          {/* Delete button */}
           <Button
             type='button'
             size='sm'
@@ -63,10 +56,8 @@ export const RepresentativeCardPreview = ({ representative: rep }: Representativ
           </Button>
         </div>
 
-        {/* Divider */}
         <div className='h-px bg-border/50 mb-4' />
 
-        {/* Info grid */}
         <div className='grid gap-2.5'>
           {rep.identification && (
             <div className='flex items-center gap-3 group/item'>

@@ -21,7 +21,7 @@ import {
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from './mode-toggle'
-import { KEYSTORE_NAMES } from '@/utils/constant'
+import { KEYSTORE_NAMES } from '@/env'
 import type { UserInstitutionResponse } from '@/dtos/types'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { useOnlineStatus } from '@/hooks/use-online-status'

@@ -1,6 +1,6 @@
 import type { UsersResponse } from '@/dtos/types'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
-import { KEYSTORE_NAMES } from '@/utils/constant'
+import { KEYSTORE_NAMES } from '@/env'
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar'
 
 export const UserCard = () => {

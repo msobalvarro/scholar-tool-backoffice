@@ -1,10 +1,8 @@
+import { BASE_URL, KEYSTORE_NAMES } from '@/env'
 import axios from 'axios'
-import { KEYSTORE_NAMES } from './constant'
-
-const baseURL = import.meta.env.VITE_BASE_URL
 
 export const axiosInstance = axios.create({
-  baseURL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

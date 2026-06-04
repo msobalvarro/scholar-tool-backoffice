@@ -14,10 +14,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { representativeSchema } from '@/schemas/representative-schema'
 import { useRepresentativeStore } from '@/store/representatice.store'
-import { z } from 'zod'
 import { useCreateRepresentative } from '@/hooks/API/use-representativ'
-
-type RepresentativeFormValues = z.infer<typeof representativeSchema>
+import type { RepresentativeFormValues } from '@/dtos/inputs/responsable-input'
 
 export const CreateRepresentative = () => {
   const { setRepresentative } = useRepresentativeStore()
@@ -224,7 +222,6 @@ export const CreateRepresentative = () => {
               {createRepresentative.error.message}
             </p>
           }
-
 
           <Button
             type='button'

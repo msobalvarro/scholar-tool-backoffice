@@ -16,7 +16,7 @@ import {
 } from './dropdown-menu'
 import { Avatar, AvatarFallback } from './avatar'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
-import { KEYSTORE_NAMES } from '@/utils/constant'
+import { KEYSTORE_NAMES } from '@/env'
 import type { UserInstitutionResponse } from '@/dtos/types'
 
 export function NavbarUserMenu() {

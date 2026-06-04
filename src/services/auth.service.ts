@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/utils/axios-intance'
-import { KEYSTORE_NAMES } from '@/utils/constant'
+import { KEYSTORE_NAMES } from '@/env'
 import type { LoginUserInstitutionResponse } from '@/dtos/types'
 import { AxiosError } from 'axios'
 

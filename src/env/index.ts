@@ -7,3 +7,5 @@ export const KEYSTORE_NAMES = {
   USER: 'user',
   INSTITUTION: 'institution'
 }
+
+export const BASE_URL = import.meta.env.VITE_BASE_URL
