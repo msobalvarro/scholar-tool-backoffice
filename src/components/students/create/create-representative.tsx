@@ -1,4 +1,4 @@
-import { User, Mail, Phone, Heart, IdCard, MapPin, Download } from 'lucide-react'
+import { User, Mail, Phone, Heart, IdCard, MapPin, Download, Loader2 } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -15,11 +15,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { representativeSchema } from '@/schemas/representative-schema'
 import { useRepresentativeStore } from '@/store/representatice.store'
 import { z } from 'zod'
+import { useCreateRepresentative } from '@/hooks/API/use-representativ'
 
 type RepresentativeFormValues = z.infer<typeof representativeSchema>
 
 export const CreateRepresentative = () => {
   const { setRepresentative } = useRepresentativeStore()
+  const createRepresentative = useCreateRepresentative()
 
   const {
     register,
@@ -39,8 +41,12 @@ export const CreateRepresentative = () => {
     },
   })
 
-  const onSubmit = (data: RepresentativeFormValues) => {
-    setRepresentative(data)
+  const onSubmit = async (data: RepresentativeFormValues) => {
+    const response = await createRepresentative.mutateAsync(data)
+
+    if (response) {
+      setRepresentative(response)
+    }
   }
 
   return (
@@ -49,6 +55,8 @@ export const CreateRepresentative = () => {
         <div className='space-y-2 lg:col-span-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Nombre Completo
+
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <div className='relative'>
             <User className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
@@ -68,6 +76,8 @@ export const CreateRepresentative = () => {
         <div className='space-y-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Identificación
+
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <div className='relative'>
             <IdCard className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
@@ -87,6 +97,7 @@ export const CreateRepresentative = () => {
         <div className='space-y-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Parentesco
+            <span className='text-red-500 ml-1'>*</span>ƒ
           </label>
           <Controller
             name='type'
@@ -116,6 +127,8 @@ export const CreateRepresentative = () => {
         <div className='space-y-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Teléfono Móvil
+
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <div className='relative'>
             <Phone className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
@@ -136,6 +149,8 @@ export const CreateRepresentative = () => {
         <div className='space-y-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Correo Electrónico
+
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <div className='relative'>
             <Mail className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
@@ -156,6 +171,8 @@ export const CreateRepresentative = () => {
         <div className='space-y-2 lg:col-span-3'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Dirección
+
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <div className='relative'>
             <MapPin className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
@@ -202,13 +219,30 @@ export const CreateRepresentative = () => {
         </div>
 
         <div className='lg:col-span-3 flex justify-end gap-3 mt-10'>
+          {createRepresentative.error &&
+            <p className='text-xs font-medium text-red-500 mt-1'>
+              {createRepresentative.error.message}
+            </p>
+          }
+
+
           <Button
             type='button'
+            disabled={createRepresentative.isPending}
             className='bg-accent px-6 hover:bg-accent/90'
             onClick={handleSubmit(onSubmit)}
           >
-            <Download className='size-4 mr-1' />
-            Crear y Guardar Tutor
+            {createRepresentative.isPending ? (
+              <>
+                <Loader2 className='size-4 mr-1 animate-spin' />
+                Creando...
+              </>
+            ) : (
+              <>
+                <Download className='size-4 mr-1' />
+                Crear y Guardar Tutor
+              </>
+            )}
           </Button>
         </div>
       </div>

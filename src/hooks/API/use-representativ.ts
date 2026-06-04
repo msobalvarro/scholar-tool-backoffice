@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { axiosInstance } from '@/utils/axios-intance'
 import type { ResponsablePerson } from '@/dtos/types'
+import type { IRepresentativeCreated } from '@/dtos/outputs/representative-output'
 
 export const useSearchRepresentative = (query: string) =>
   useQuery({
@@ -13,3 +14,11 @@ export const useSearchRepresentative = (query: string) =>
     },
     enabled: query.trim().length > 0
   })
+
+export const useCreateRepresentative = () => useMutation({
+  mutationFn: async (data: ResponsablePerson) => {
+    const { data: response } = await axiosInstance.post<IRepresentativeCreated>('/responsable', data)
+    return response
+  },
+  mutationKey: ['representatives', 'create'],
+})
