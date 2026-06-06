@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { ResponsablePerson } from '@/dtos/types'
 import { useRepresentativeStore } from '@/store/representatice.store'
+import { getRepresentativeTypeTranslation } from '@/constants/responsable.constant'
 
 interface RepresentativeCardPreviewProps {
   representative: ResponsablePerson
@@ -39,7 +40,7 @@ export const RepresentativeCardPreview = ({ representative: rep }: Representativ
                 variant='secondary'
                 className='mt-1 text-[10px] font-semibold px-2 py-0 bg-accent/10 text-accent border border-accent/20 rounded-full'
               >
-                Representante
+                {getRepresentativeTypeTranslation(rep.type)}
               </Badge>
             </div>
           </div>

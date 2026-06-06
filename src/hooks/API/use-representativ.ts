@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { axiosInstance } from '@/utils/axios-intance'
 import type { ResponsablePerson } from '@/dtos/types'
 import type { IRepresentativeCreated } from '@/dtos/outputs/representative-output'
+import { axiosInstance } from '@/adapters/axios-intance'
 
 export const useSearchRepresentative = (query: string) =>
   useQuery({

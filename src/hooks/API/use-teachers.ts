@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { axiosInstance } from '@/utils/axios-intance'
 import type { Teacher } from '@/dtos/types'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
+import { axiosInstance } from '@/adapters/axios-intance'
 
 export const useTeachers = () => useQuery({
   queryKey: ['teachers'],

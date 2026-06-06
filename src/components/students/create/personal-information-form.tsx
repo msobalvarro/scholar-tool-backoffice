@@ -11,10 +11,22 @@ import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { CreateSelectRepresentative } from './create-select-representative'
 import { Button } from '@/components/ui/button'
+import { useRepresentativeStore } from '@/store/representatice.store'
+import { useCourses } from '@/hooks/API/use-course'
 
 export const PersonalInformationForm = () => {
+  const { data: dataCourses } = useCourses()
+  const { representative } = useRepresentativeStore()
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    console.log("se envio el formulario")
+    console.log(representative)
+
+  }
+
   return (
-    <form className='space-y-8 '>
+    <form className='space-y-8 ' onSubmit={onSubmit}>
       {/* Sección de Información Personal */}
       <Card className='overflow-hidden border-none shadow-md from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-900/50'>
         <CardHeader className='border-b bg-white/50 dark:bg-slate-900/50 px-8 py-6'>
@@ -92,7 +104,6 @@ export const PersonalInformationForm = () => {
                   <SelectContent>
                     <SelectItem value='male'>Masculino</SelectItem>
                     <SelectItem value='female'>Femenino</SelectItem>
-                    <SelectItem value='other'>Otro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -125,6 +136,22 @@ export const PersonalInformationForm = () => {
                   <Mail className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400' />
                   <Input className='pl-9' placeholder='alumno@email.com' type='email' />
                 </div>
+              </div>
+
+              <div className='space-y-2'>
+                <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>Nivel Académico <span className='text-red-500'>*</span></label>
+                <Select required>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {dataCourses?.map((course) => (
+                      <SelectItem key={course._id} value={course.name}>
+                        {course.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>

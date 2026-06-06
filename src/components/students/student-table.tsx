@@ -219,7 +219,7 @@ export const StudentTable = ({ data, searchQuery }: StudentTableProps) => {
         </table>
       </div>
 
-      <div className='flex items-center justify-between space-x-2'>
+      <div className='flex items-center justify-between p-4'>
         <div className='text-sm text-muted-foreground'>
           Mostrando {((currentPage - 1) * itemsPerPage) + 1} a {Math.min(currentPage * itemsPerPage, filteredData.length)} de {filteredData.length} entradas
         </div>

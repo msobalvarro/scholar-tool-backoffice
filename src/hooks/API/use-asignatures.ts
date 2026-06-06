@@ -1,9 +1,9 @@
 import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
 import type { CreateAsignatureRequest, UpdateAsignatureRequest } from '@/dtos/inputs/asignture-input'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { axiosInstance } from '@/utils/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
+import { axiosInstance } from '@/adapters/axios-intance'
 
 export function useAsignatures(params?: Record<string, unknown>): ReturnType<typeof useQuery<AsignatureResponse[]>>
 

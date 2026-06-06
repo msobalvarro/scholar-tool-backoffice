@@ -95,7 +95,7 @@ export const CreateRepresentative = () => {
         <div className='space-y-2'>
           <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
             Parentesco
-            <span className='text-red-500 ml-1'>*</span>ƒ
+            <span className='text-red-500 ml-1'>*</span>
           </label>
           <Controller
             name='type'

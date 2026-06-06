@@ -1,5 +1,5 @@
+import { axiosInstance } from '@/adapters/axios-intance'
 import type { CoursesResponse, CreateCourseRequest } from '@/dtos/types'
-import { axiosInstance } from '@/utils/axios-intance'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useState } from 'react'

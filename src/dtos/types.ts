@@ -95,8 +95,6 @@ export type GroupStudent = {
   status: 'regular' | 'conditional' | 'suspended'
 }
 
-// export 
-
 export type CoursesResponse = {
   _id: string
   name: string
