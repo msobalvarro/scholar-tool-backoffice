@@ -105,7 +105,9 @@ export type CoursesResponse = {
   breakTime: string
   teacherLead: Teacher
   studentCount: number
+  maxCapacity: number
 }
+
 
 export type CourseStore = {
   course: CoursesResponse | null
@@ -118,13 +120,10 @@ export type CreateCourseRequest = {
   teacherLeadId: string
   order: number
   breakTime: string
+  maxCapacity: number
 }
 
-export type CreateCourseState = {
-  name: string
-  groupName: string
-  teacherLeadId: string
-  order: number
+export type CreateCourseState = CreateCourseRequest & {
   startBreakTime: string
   endBreakTime: string
 }
