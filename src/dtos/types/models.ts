@@ -11,7 +11,7 @@ export type ResponsablePerson = {
 
 export type Student = {
   _id?: string
-  birthday: Date
+  birthday: string
   firstName: string
   lastName: string
   institution: Institution

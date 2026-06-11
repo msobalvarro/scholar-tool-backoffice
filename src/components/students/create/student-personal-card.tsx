@@ -212,12 +212,12 @@ export const StudentPersonalCard = ({
 
             <div className='space-y-2'>
               <label className='text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-tight'>
-                Nivel Académico <span className='text-red-500'>*</span>
+                Curso <span className='text-red-500'>*</span>
               </label>
               <Controller
-                name='academicLevel'
+                name='courseId'
                 control={control}
-                rules={{ required: 'El nivel académico es obligatorio' }}
+                rules={{ required: 'El curso es obligatorio' }}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className={`w-full ${errors.courseId ? 'border-destructive focus-visible:ring-destructive' : ''}`}>
@@ -225,7 +225,7 @@ export const StudentPersonalCard = ({
                     </SelectTrigger>
                     <SelectContent>
                       {dataCourses?.map((course) => (
-                        <SelectItem key={course._id} value={course.name}>
+                        <SelectItem key={course._id} value={course._id}>
                           {course.name}
                         </SelectItem>
                       ))}

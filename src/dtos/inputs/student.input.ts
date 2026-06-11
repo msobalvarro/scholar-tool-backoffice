@@ -1,11 +1,13 @@
 import type { UseFormRegister, Control, FieldErrors } from 'react-hook-form'
 import type { CoursesResponse } from '@/dtos/types'
 import type { StudentResponse } from '../outputs/student-output'
+import type { Student } from '../types/models'
 
 export type StudentGender = 'male' | 'female'
 
-export type CreateStudentRequest = Omit<StudentResponse, '_id' | 'institution' | 'responsable' | 'status'> & {
+export type CreateStudentRequest = Omit<Student, '_id' | 'institution' | 'responsable' | 'status'> & {
   responsableId: string
+  courseId: string
 }
 
 export type UpdateStudentRequest = Omit<StudentResponse, 'institution' | 'responsable'> & {
