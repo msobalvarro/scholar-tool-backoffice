@@ -29,10 +29,9 @@ export const AsignaturesView = () => {
 
   const filteredData = useMemo(() => {
     if (!asignatures) return []
-    const lowerQuery = searchQuery.toLowerCase()
+    const lowerQuery = searchQuery.toLocaleLowerCase()
     return asignatures.filter(a =>
-      a.name.toLowerCase().includes(lowerQuery) ||
-      a.description.toLowerCase().includes(lowerQuery)
+      `${a.name} ${a.description}`.toLocaleLowerCase().includes(lowerQuery)
     )
   }, [asignatures, searchQuery])
 
