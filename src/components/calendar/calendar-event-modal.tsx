@@ -19,14 +19,14 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { toast } from 'sonner'
-import type { CalendarEvent } from './types'
-import { CATEGORIES } from './types'
+import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import { CATEGORIES } from '@/constants/calendar-events.constant'
 
 interface CalendarEventModalProps {
   isOpen: boolean
   onClose: () => void
   selectedDate: dayjs.Dayjs
-  onSaveEvent: (event: Omit<CalendarEvent, 'id'>) => void
+  onSaveEvent: (event: Omit<CalendarEventResponse, '_id'>) => void
 }
 
 export const CalendarEventModal = ({
@@ -39,7 +39,7 @@ export const CalendarEventModal = ({
   const [formDate, setFormDate] = useState('')
   const [formStartTime, setFormStartTime] = useState('08:00')
   const [formEndTime, setFormEndTime] = useState('09:00')
-  const [formCategory, setFormCategory] = useState<CalendarEvent['category']>('exam')
+  const [formCategory, setFormCategory] = useState<CalendarEventResponse['type']>('exam')
   const [formDescription, setFormDescription] = useState('')
 
   // Pre-fill fields when modal opens
@@ -72,14 +72,14 @@ export const CalendarEventModal = ({
       return
     }
 
-    onSaveEvent({
-      title: formTitle.trim(),
-      description: formDescription.trim() || undefined,
-      date: formDate,
-      startTime: formStartTime,
-      endTime: formEndTime,
-      category: formCategory
-    })
+    // onSaveEvent({
+    //   title: formTitle.trim(),
+    //   description: formDescription.trim() || undefined,
+    //   date: formDate,
+    //   startTime: formStartTime,
+    //   endTime: formEndTime,
+    //   category: formCategory
+    // })
   }
 
   return (

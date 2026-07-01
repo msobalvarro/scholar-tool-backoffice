@@ -9,8 +9,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import type { CalendarEvent } from './types'
-import { MONTH_NAMES, DAY_NAMES, CATEGORIES } from './types'
+import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
 
 interface CalendarGridProps {
   currentMonth: dayjs.Dayjs
@@ -21,7 +21,7 @@ interface CalendarGridProps {
   onToday: () => void
   onChangeMonth: (month: number) => void
   onChangeYear: (year: number) => void
-  events: CalendarEvent[]
+  events: CalendarEventResponse[]
 }
 
 export const CalendarGrid = ({
@@ -35,7 +35,7 @@ export const CalendarGrid = ({
   onChangeYear,
   events
 }: CalendarGridProps) => {
-  
+
   // Calculate 42 days (6 weeks) to display in the grid
   const generateDays = () => {
     const startOfMonth = currentMonth.startOf('month')
@@ -191,7 +191,7 @@ export const CalendarGrid = ({
                     {dayEvents.slice(0, 4).map((evt, eIdx) => (
                       <span
                         key={eIdx}
-                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${CATEGORIES[evt.category].color}`}
+                        className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${CATEGORIES[evt.type].color}`}
                         title={evt.title}
                       />
                     ))}
