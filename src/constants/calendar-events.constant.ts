@@ -1,4 +1,4 @@
-import type { CalendarEventResponse, CalendarEventCategoryStyle } from '@/dtos/outputs/calenda-events-output'
+import type { CalendarEventResponse, CalendarEventCategoryStyle } from '@/dtos/outputs/calendar-events-output'
 
 export const MONTH_NAMES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import {
@@ -18,74 +17,42 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { toast } from 'sonner'
-import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import type { CreateCalendarEventDto } from '@/dtos/outputs/calendar-events-output'
 import { CATEGORIES } from '@/constants/calendar-events.constant'
+import { Controller, useForm } from 'react-hook-form'
+import { createCalendarEventSchema } from '@/schemas/calendar-event-schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface CalendarEventModalProps {
   isOpen: boolean
   onClose: () => void
-  selectedDate: dayjs.Dayjs
-  onSaveEvent: (event: Omit<CalendarEventResponse, '_id'>) => void
+  selectedDate?: dayjs.Dayjs
+  onSaveEvent?: () => void
 }
 
 export const CalendarEventModal = ({
   isOpen,
   onClose,
-  selectedDate,
-  onSaveEvent
 }: CalendarEventModalProps) => {
-  const [formTitle, setFormTitle] = useState('')
-  const [formDate, setFormDate] = useState('')
-  const [formStartTime, setFormStartTime] = useState('08:00')
-  const [formEndTime, setFormEndTime] = useState('09:00')
-  const [formCategory, setFormCategory] = useState<CalendarEventResponse['type']>('exam')
-  const [formDescription, setFormDescription] = useState('')
-
-  // Pre-fill fields when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setFormTitle('')
-      setFormDate(selectedDate.format('YYYY-MM-DD'))
-      setFormStartTime('08:00')
-      setFormEndTime('09:00')
-      setFormCategory('exam')
-      setFormDescription('')
+  const { handleSubmit, control, register, formState: { errors } } = useForm<CreateCalendarEventDto>({
+    resolver: zodResolver(createCalendarEventSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      courseId: null,
+      date: new Date(),
+      type: 'exam'
     }
-  }, [isOpen, selectedDate])
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const onSubmit = (payload: CreateCalendarEventDto) => {
 
-    if (!formTitle.trim()) {
-      toast.error('El título del evento es obligatorio.')
-      return
-    }
-
-    if (!formDate) {
-      toast.error('La fecha es obligatoria.')
-      return
-    }
-
-    if (formStartTime > formEndTime) {
-      toast.error('La hora de inicio no puede ser posterior a la hora de fin.')
-      return
-    }
-
-    // onSaveEvent({
-    //   title: formTitle.trim(),
-    //   description: formDescription.trim() || undefined,
-    //   date: formDate,
-    //   startTime: formStartTime,
-    //   endTime: formEndTime,
-    //   category: formCategory
-    // })
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md bg-card border border-border">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="mb-4">
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CalendarIcon className="w-5 h-5 text-accent" />
@@ -103,13 +70,14 @@ export const CalendarEventModal = ({
                 Título del Evento <span className="text-rose-500">*</span>
               </label>
               <Input
-                id="evt-title"
-                placeholder="Ej. Examen de Ciencias o Entrega de Ensayos"
-                value={formTitle}
-                onChange={(e) => setFormTitle(e.target.value)}
+                {...register('title')}
                 className="bg-background border-border"
-                required
               />
+              {errors.title && (
+                <p className='text-xs font-medium text-destructive mt-1'>
+                  {errors.title.message}
+                </p>
+              )}
             </div>
 
             {/* Date Selection & Category Selection */}
@@ -119,67 +87,62 @@ export const CalendarEventModal = ({
                   Fecha <span className="text-rose-500">*</span>
                 </label>
                 <Input
-                  id="evt-date"
                   type="date"
-                  value={formDate}
-                  onChange={(e) => setFormDate(e.target.value)}
+                  {...register('date')}
                   className="bg-background border-border w-full text-foreground"
-                  required
                 />
+                {errors.date && (
+                  <p className='text-xs font-medium text-destructive mt-1'>
+                    {errors.date.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="evt-category" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Categoría
+                <label htmlFor="evt-start" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  Hora
                 </label>
-                <Select
-                  value={formCategory}
-                  onValueChange={(val: any) => setFormCategory(val)}
-                >
-                  <SelectTrigger id="evt-category" className="bg-background border-border w-full text-foreground">
-                    <SelectValue placeholder="Seleccionar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(CATEGORIES).map(([key, val]) => (
-                      <SelectItem key={key} value={key}>
-                        <div className="flex items-center gap-2">
-                          <span className={`w-2.5 h-2.5 rounded-full ${val.color}`} />
-                          {val.label}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  type='time'
+                  {...register('date')}
+                  className="bg-background border-border w-full text-foreground"
+                />
+                {errors.date && (
+                  <p className='text-xs font-medium text-destructive mt-1'>
+                    {errors.date.message}
+                  </p>
+                )}
               </div>
             </div>
 
-            {/* Start Time & End Time */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="evt-start" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Hora de Inicio
-                </label>
-                <Input
-                  id="evt-start"
-                  type="time"
-                  value={formStartTime}
-                  onChange={(e) => setFormStartTime(e.target.value)}
-                  className="bg-background border-border w-full"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="evt-end" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Hora de Fin
-                </label>
-                <Input
-                  id="evt-end"
-                  type="time"
-                  value={formEndTime}
-                  onChange={(e) => setFormEndTime(e.target.value)}
-                  className="bg-background border-border w-full"
-                />
-              </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="evt-category" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                Categoría
+              </label>
+              <Controller
+                control={control}
+                name='type'
+                render={({ field }) => (
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger id="evt-category" className="bg-background border-border w-full text-foreground">
+                      <SelectValue placeholder="Seleccionar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(CATEGORIES).map(([key, val]) => (
+                        <SelectItem key={key} value={key}>
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-full ${val.color}`} />
+                            {val.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
 
             {/* Description */}
@@ -187,13 +150,19 @@ export const CalendarEventModal = ({
               <label htmlFor="evt-desc" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                 Descripción / Detalles
               </label>
-              <textarea
-                id="evt-desc"
-                placeholder="Detalles sobre el aula, materiales necesarios o especificaciones..."
-                rows={3}
-                value={formDescription}
-                onChange={(e) => setFormDescription(e.target.value)}
-                className="flex w-full rounded-md border border-border bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring transition-all outline-hidden min-h-[80px] text-foreground"
+              <Controller
+                control={control}
+                name='description'
+                render={({ field }) => (
+                  <textarea
+                    id="evt-desc"
+                    placeholder="Detalles sobre el aula, materiales necesarios o especificaciones..."
+                    rows={3}
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    className="flex w-full rounded-md border border-border bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring transition-all outline-hidden min-h-[80px] text-foreground"
+                  />
+                )}
               />
             </div>
           </div>
@@ -216,6 +185,6 @@ export const CalendarEventModal = ({
           </DialogFooter>
         </form>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   )
 }

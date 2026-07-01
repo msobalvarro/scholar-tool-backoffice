@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { CalendarGrid } from '@/components/calendar/calendar-grid'
 import { CalendarSidebar } from '@/components/calendar/calendar-sidebar'
 import { CalendarEventModal } from '@/components/calendar/calendar-event-modal'
-import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 export const CalendarView = () => {
   // Navigation states

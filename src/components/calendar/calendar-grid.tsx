@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
 
 interface CalendarGridProps {

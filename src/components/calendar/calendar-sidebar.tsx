@@ -4,7 +4,7 @@ import { Calendar as CalendarIcon, Plus, Trash2, Clock, Info } from 'lucide-reac
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { CalendarEventResponse } from '@/dtos/outputs/calenda-events-output'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 import { MONTH_NAMES, CATEGORIES } from '@/constants/calendar-events.constant'
 
 interface CalendarSidebarProps {
