@@ -1,10 +1,11 @@
 import { z } from 'zod'
 
 export const createCalendarEventSchema = z.object({
-  date: z.date(),
+  date: z.string(),
+  time: z.string().optional(),
   type: z.enum(['exam', 'task', 'meeting', 'holiday', 'class', 'other']),
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(3, 'El título es requerido'),
+  description: z.string().min(10, 'La descripción es requerida'),
   courseId: z.string().optional().nullable()
 })
 

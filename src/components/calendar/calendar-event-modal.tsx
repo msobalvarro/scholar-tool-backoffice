@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import clsx from 'clsx'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import {
   Dialog,
@@ -22,6 +23,8 @@ import { CATEGORIES } from '@/constants/calendar-events.constant'
 import { Controller, useForm } from 'react-hook-form'
 import { createCalendarEventSchema } from '@/schemas/calendar-event-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCalendar } from '@/hooks/API/use-calendar-events'
+import { toast } from 'sonner'
 
 interface CalendarEventModalProps {
   isOpen: boolean
@@ -34,19 +37,28 @@ export const CalendarEventModal = ({
   isOpen,
   onClose,
 }: CalendarEventModalProps) => {
-  const { handleSubmit, control, register, formState: { errors } } = useForm<CreateCalendarEventDto>({
+  const { createEvent } = useCalendar()
+  const { handleSubmit, control, register, formState: { errors, isLoading }, reset } = useForm<CreateCalendarEventDto>({
     resolver: zodResolver(createCalendarEventSchema),
     defaultValues: {
       title: '',
       description: '',
       courseId: null,
-      date: new Date(),
+      date: dayjs().format('YYYY-MM-DD'),
+      time: '',
       type: 'exam'
     }
   })
 
-  const onSubmit = (payload: CreateCalendarEventDto) => {
+  const onSubmit = async (payload: CreateCalendarEventDto) => {
+    await createEvent.mutateAsync(payload)
 
+    toast.success('Evento creado exitosamente', {
+      description: `El evento ${payload.title} ha sido programado y notificado correctamente.`
+    })
+
+    reset()
+    onClose()
   }
 
   return (
@@ -71,7 +83,7 @@ export const CalendarEventModal = ({
               </label>
               <Input
                 {...register('title')}
-                className="bg-background border-border"
+                className={clsx(['bg-background border-border', errors.title && 'border-destructive focus-visible:ring-destructive'])}
               />
               {errors.title && (
                 <p className='text-xs font-medium text-destructive mt-1'>
@@ -89,7 +101,7 @@ export const CalendarEventModal = ({
                 <Input
                   type="date"
                   {...register('date')}
-                  className="bg-background border-border w-full text-foreground"
+                  className={clsx(['bg-background border-border w-full text-foreground', errors.date && 'border-destructive focus-visible:ring-destructive'])}
                 />
                 {errors.date && (
                   <p className='text-xs font-medium text-destructive mt-1'>
@@ -103,13 +115,13 @@ export const CalendarEventModal = ({
                   Hora
                 </label>
                 <Input
+                  {...register('time')}
                   type='time'
-                  {...register('date')}
-                  className="bg-background border-border w-full text-foreground"
+                  className={clsx(['bg-background border-border w-full text-foreground', errors.date && 'border-destructive focus-visible:ring-destructive'])}
                 />
-                {errors.date && (
+                {errors.time && (
                   <p className='text-xs font-medium text-destructive mt-1'>
-                    {errors.date.message}
+                    {errors.time.message}
                   </p>
                 )}
               </div>
@@ -167,7 +179,7 @@ export const CalendarEventModal = ({
             </div>
           </div>
 
-          <DialogFooter className="mt-6 gap-2 sm:gap-0">
+          <DialogFooter className="mt-6 gap-2 sm:gap-0 flex justify-end">
             <Button
               type="button"
               variant="outline"
@@ -177,6 +189,7 @@ export const CalendarEventModal = ({
               Cancelar
             </Button>
             <Button
+              disabled={isLoading}
               type="submit"
               className="bg-accent text-white hover:bg-accent/90"
             >
