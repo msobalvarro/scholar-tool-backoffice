@@ -43,7 +43,6 @@ export const CalendarView = () => {
     setCurrentMonth(prev => prev.year(year))
   }
 
-
   const handleDeleteEvent = (id: string, title: string) => {
     setEvents(prev => prev.filter(item => item._id !== id))
     toast.success(`Evento "${title}" eliminado.`)
@@ -102,8 +101,6 @@ export const CalendarView = () => {
       <CalendarEventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        selectedDate={selectedDate}
-        onSaveEvent={() => { }}
       />
     </ViewContainer>
   )

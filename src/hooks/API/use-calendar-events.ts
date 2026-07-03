@@ -10,7 +10,7 @@ export const useCalendar = () => {
     queryFn: async () => {
       const { data } = await axiosInstance.get<CalendarEventResponse[]>('/calendar-events')
       return data
-    }
+    },
   })
 
   const createEvent = useMutation({
@@ -31,8 +31,43 @@ export const useCalendar = () => {
     }
   })
 
+  const updateEvent = useMutation({
+    mutationFn: async (payload: CalendarEventResponse) => {
+      const { data: response } = await axiosInstance.put<CalendarEventResponse>(`/calendar-events`, payload)
+      return response
+    },
+    onSuccess: async (_, payload) => {
+      await getCalendarEvents.refetch()
+      toast.success('Evento actualizado exitosamente', {
+        description: `El evento ${payload.title} ha sido actualizado correctamente.`
+      })
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error('Error al actualizar el evento', {
+        description: error.response?.data?.message
+      })
+    }
+  })
+
+  const deleteEvent = useMutation({
+    mutationFn: async (id: string) => {
+      await axiosInstance.delete(`/calendar-events/${id}`)
+    },
+    onSuccess: async () => {
+      await getCalendarEvents.refetch()
+      toast.success('Evento eliminado exitosamente')
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error('Error al eliminar el evento', {
+        description: error.response?.data?.message
+      })
+    }
+  })
+
   return {
     getCalendarEvents,
     createEvent,
+    updateEvent,
+    deleteEvent
   }
 }

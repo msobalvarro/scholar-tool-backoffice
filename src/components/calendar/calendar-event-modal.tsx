@@ -24,7 +24,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { createCalendarEventSchema } from '@/schemas/calendar-event-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCalendar } from '@/hooks/API/use-calendar-events'
-import { toast } from 'sonner'
 
 interface CalendarEventModalProps {
   isOpen: boolean
@@ -162,7 +161,7 @@ export const CalendarEventModal = ({
                     rows={3}
                     value={field.value}
                     onChange={(e) => field.onChange(e.target.value)}
-                    className="flex w-full rounded-md border border-border bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring transition-all outline-hidden min-h-[80px] text-foreground"
+                    className="flex w-full rounded-md border border-border bg-background px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-ring transition-all outline-hidden min-h-20 text-foreground"
                   />
                 )}
               />
