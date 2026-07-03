@@ -24,6 +24,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { createCalendarEventSchema } from '@/schemas/calendar-event-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCalendar } from '@/hooks/API/use-calendar-events'
+import { useCourses } from '@/hooks/API/use-course'
+import { MultiSelect } from '../ui/multi-selection'
 
 interface CalendarEventModalProps {
   isOpen: boolean
@@ -37,6 +39,7 @@ export const CalendarEventModal = ({
   onClose,
 }: CalendarEventModalProps) => {
   const { createEvent } = useCalendar()
+  const { data: courses } = useCourses()
   const { handleSubmit, control, register, formState: { errors, isLoading }, reset } = useForm<CreateCalendarEventDto>({
     resolver: zodResolver(createCalendarEventSchema),
     defaultValues: {
@@ -46,14 +49,19 @@ export const CalendarEventModal = ({
       date: dayjs().format('YYYY-MM-DD'),
       time: '',
       type: 'exam'
-    }
+    },
   })
 
+  const submit = async (data: CreateCalendarEventDto) => {
+    await createEvent.mutateAsync(data)
+    onClose()
+    reset()
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md bg-card border border-border">
-        <form onSubmit={handleSubmit(e => createEvent.mutate(e))}>
+        <form onSubmit={handleSubmit(submit)}>
           <DialogHeader className="mb-4">
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CalendarIcon className="w-5 h-5 text-accent" />
@@ -143,6 +151,19 @@ export const CalendarEventModal = ({
                     </SelectContent>
                   </Select>
                 )}
+              />
+            </div>
+
+            {/* Course Multi-Selection */}
+            <div className='flex flex-col gap-1.5'>
+              <label htmlFor="evt-course" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                Curso
+              </label>
+              <MultiSelect
+                data={courses?.map(course => ({
+                  value: course._id,
+                  label: course.name
+                })) || []}
               />
             </div>
 

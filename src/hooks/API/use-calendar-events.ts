@@ -4,13 +4,24 @@ import type { AxiosError } from 'axios'
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from 'sonner'
 
-export const useCalendar = () => {
+export const useCalendar = (filters?: { startDate: string, endDate: string }) => {
   const getCalendarEvents = useQuery({
     queryKey: ['calendar-events'],
     queryFn: async () => {
       const { data } = await axiosInstance.get<CalendarEventResponse[]>('/calendar-events')
       return data
     },
+  })
+
+  const getCalendarEventsByDate = useQuery({
+    queryKey: ['calendar-events', filters?.startDate ?? '', filters?.endDate ?? ''],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get<CalendarEventResponse[]>('/calendar-events', {
+        params: { startDate: filters?.startDate, endDate: filters?.endDate }
+      })
+      return data
+    },
+    enabled: !!filters?.startDate && !!filters?.endDate,
   })
 
   const createEvent = useMutation({
@@ -65,7 +76,7 @@ export const useCalendar = () => {
   })
 
   return {
-    getCalendarEvents,
+    getCalendarEventsByDate,
     createEvent,
     updateEvent,
     deleteEvent

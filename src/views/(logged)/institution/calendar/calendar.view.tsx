@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { CalendarGrid } from '@/components/calendar/calendar-grid'
 import { CalendarSidebar } from '@/components/calendar/calendar-sidebar'
 import { CalendarEventModal } from '@/components/calendar/calendar-event-modal'
-import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
+import { useCalendar } from '@/hooks/API/use-calendar-events'
 
 export const CalendarView = () => {
   // Navigation states
@@ -16,8 +16,10 @@ export const CalendarView = () => {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs>(dayjs())
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Events state
-  const [events, setEvents] = useState<CalendarEventResponse[]>([])
+  const { getCalendarEventsByDate: { data: events } } = useCalendar({
+    startDate: currentMonth.startOf('month').format('YYYY-MM-DD'),
+    endDate: currentMonth.endOf('month').format('YYYY-MM-DD')
+  })
 
 
   // Handlers
@@ -44,7 +46,7 @@ export const CalendarView = () => {
   }
 
   const handleDeleteEvent = (id: string, title: string) => {
-    setEvents(prev => prev.filter(item => item._id !== id))
+    // setEvents(prev => prev.filter(item => item._id !== id))
     toast.success(`Evento "${title}" eliminado.`)
   }
 
@@ -84,14 +86,14 @@ export const CalendarView = () => {
             onToday={handleToday}
             onChangeMonth={handleSelectMonth}
             onChangeYear={handleSelectYear}
-            events={events}
+            events={events || []}
           />
         </div>
 
         {/* Sidebar */}
         <CalendarSidebar
           selectedDate={selectedDate}
-          events={events}
+          events={events || []}
           onDeleteEvent={handleDeleteEvent}
           onOpenAddModal={() => setIsModalOpen(true)}
         />
