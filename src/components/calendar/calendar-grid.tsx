@@ -9,8 +9,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
+import { useCalendar } from '@/hooks/API/use-calendar-events'
 
 interface CalendarGridProps {
   currentMonth: dayjs.Dayjs
@@ -21,7 +21,6 @@ interface CalendarGridProps {
   onToday: () => void
   onChangeMonth: (month: number) => void
   onChangeYear: (year: number) => void
-  events: CalendarEventResponse[]
 }
 
 export const CalendarGrid = ({
@@ -32,9 +31,13 @@ export const CalendarGrid = ({
   onNextMonth,
   onToday,
   onChangeMonth,
-  onChangeYear,
-  events
+  onChangeYear
 }: CalendarGridProps) => {
+  const { getCalendarEventsByDate } = useCalendar({
+    startDate: currentMonth.startOf('month').format('YYYY-MM-DD'),
+    endDate: currentMonth.endOf('month').format('YYYY-MM-DD')
+  })
+  const { data: events } = getCalendarEventsByDate
 
   // Calculate 42 days (6 weeks) to display in the grid
   const generateDays = () => {
@@ -163,7 +166,7 @@ export const CalendarGrid = ({
             const isCurrentMonth = day.isSame(currentMonth, 'month')
 
             // Events on this day
-            const dayEvents = events.filter(e => dayjs(e.date).isSame(day, 'day'))
+            const dayEvents = events?.filter(e => dayjs(e.date).isSame(day, 'day'))
 
             return (
               <button
@@ -186,7 +189,7 @@ export const CalendarGrid = ({
                 </span>
 
                 {/* Category mini dots */}
-                {dayEvents.length > 0 && (
+                {(dayEvents && dayEvents.length > 0) && (
                   <div className="flex flex-wrap gap-0.5 mt-auto pt-1 w-full justify-start items-center">
                     {dayEvents.slice(0, 4).map((evt, eIdx) => (
                       <span

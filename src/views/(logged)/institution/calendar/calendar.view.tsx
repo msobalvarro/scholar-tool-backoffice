@@ -84,7 +84,6 @@ export const CalendarView = () => {
             onToday={handleToday}
             onChangeMonth={handleSelectMonth}
             onChangeYear={handleSelectYear}
-            events={events}
           />
         </div>
 
