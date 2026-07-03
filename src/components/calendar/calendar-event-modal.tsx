@@ -50,21 +50,11 @@ export const CalendarEventModal = ({
     }
   })
 
-  const onSubmit = async (payload: CreateCalendarEventDto) => {
-    await createEvent.mutateAsync(payload)
-
-    toast.success('Evento creado exitosamente', {
-      description: `El evento ${payload.title} ha sido programado y notificado correctamente.`
-    })
-
-    reset()
-    onClose()
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md bg-card border border-border">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(e => createEvent.mutate(e))}>
           <DialogHeader className="mb-4">
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CalendarIcon className="w-5 h-5 text-accent" />
