@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select'
 import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
 import { useCalendar } from '@/hooks/API/use-calendar-events'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 interface CalendarGridProps {
   currentMonth: dayjs.Dayjs
@@ -21,6 +22,7 @@ interface CalendarGridProps {
   onToday: () => void
   onChangeMonth: (month: number) => void
   onChangeYear: (year: number) => void
+  events: CalendarEventResponse[]
 }
 
 export const CalendarGrid = ({
@@ -31,13 +33,10 @@ export const CalendarGrid = ({
   onNextMonth,
   onToday,
   onChangeMonth,
-  onChangeYear
+  onChangeYear,
+  events
 }: CalendarGridProps) => {
-  const { getCalendarEventsByDate } = useCalendar({
-    startDate: currentMonth.startOf('month').format('YYYY-MM-DD'),
-    endDate: currentMonth.endOf('month').format('YYYY-MM-DD')
-  })
-  const { data: events } = getCalendarEventsByDate
+
 
   // Calculate 42 days (6 weeks) to display in the grid
   const generateDays = () => {
