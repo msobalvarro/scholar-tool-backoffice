@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import dayjs from 'dayjs'
 import { Plus, Sparkles } from 'lucide-react'
 import { ViewContainer } from '@/components/ui/view-container'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 
-import type { CalendarEvent } from '@/components/calendar/types'
 import { CalendarGrid } from '@/components/calendar/calendar-grid'
 import { CalendarSidebar } from '@/components/calendar/calendar-sidebar'
 import { CalendarEventModal } from '@/components/calendar/calendar-event-modal'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 export const CalendarView = () => {
   // Navigation states
@@ -17,81 +17,8 @@ export const CalendarView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Events state
-  const [events, setEvents] = useState<CalendarEvent[]>(() => {
-    const stored = localStorage.getItem('scholar_calendar_events')
-    if (stored) {
-      try {
-        return JSON.parse(stored)
-      } catch (err) {
-        console.error('Failed to parse calendar events:', err)
-      }
-    }
+  const [events, setEvents] = useState<CalendarEventResponse[]>([])
 
-    // Default mock events relative to current month for visual richness
-    const initialEvents: CalendarEvent[] = [
-      {
-        id: '1',
-        title: 'Examen Parcial de Álgebra',
-        description: 'Capítulo 3: Matrices y Determinantes. Traer hoja de fórmulas y calculadora.',
-        date: dayjs().date(10).format('YYYY-MM-DD'),
-        startTime: '08:00',
-        endTime: '09:30',
-        category: 'exam'
-      },
-      {
-        id: '2',
-        title: 'Entrega de Reporte de Química',
-        description: 'Informe sobre la reacción de neutralización ácido-base en formato PDF.',
-        date: dayjs().date(14).format('YYYY-MM-DD'),
-        startTime: '14:00',
-        endTime: '15:30',
-        category: 'task'
-      },
-      {
-        id: '3',
-        title: 'Capacitación del Personal Docente',
-        description: 'Jornada pedagógica sobre nuevas metodologías y herramientas digitales. No hay clases.',
-        date: dayjs().date(16).format('YYYY-MM-DD'),
-        startTime: '08:00',
-        endTime: '16:00',
-        category: 'holiday'
-      },
-      {
-        id: '4',
-        title: 'Reunión General con Padres de Familia',
-        description: 'Entrega del informe académico del primer periodo y anuncios sobre el festival escolar.',
-        date: dayjs().date(20).format('YYYY-MM-DD'),
-        startTime: '17:30',
-        endTime: '19:00',
-        category: 'meeting'
-      },
-      {
-        id: '5',
-        title: 'Proyecto Integrador de Ciencias',
-        description: 'Presentación en grupos sobre la biodiversidad en la región de Antioquia.',
-        date: dayjs().date(20).format('YYYY-MM-DD'),
-        startTime: '10:00',
-        endTime: '12:30',
-        category: 'task'
-      },
-      {
-        id: '6',
-        title: 'Evaluación Escrita de Física',
-        description: 'Movimiento Uniformemente Variado (MUV) y Caída Libre. Aula 201.',
-        date: dayjs().date(25).format('YYYY-MM-DD'),
-        startTime: '11:00',
-        endTime: '12:30',
-        category: 'exam'
-      }
-    ]
-    localStorage.setItem('scholar_calendar_events', JSON.stringify(initialEvents))
-    return initialEvents
-  })
-
-  // Save events in localstorage
-  useEffect(() => {
-    localStorage.setItem('scholar_calendar_events', JSON.stringify(events))
-  }, [events])
 
   // Handlers
   const handlePrevMonth = () => {
@@ -116,18 +43,8 @@ export const CalendarView = () => {
     setCurrentMonth(prev => prev.year(year))
   }
 
-  const handleSaveEvent = (newEventData: Omit<CalendarEvent, 'id'>) => {
-    const newEvent: CalendarEvent = {
-      id: Math.random().toString(36).substring(2, 9),
-      ...newEventData
-    }
-    setEvents(prev => [...prev, newEvent])
-    setIsModalOpen(false)
-    toast.success(`Evento "${newEventData.title}" programado correctamente.`)
-  }
-
   const handleDeleteEvent = (id: string, title: string) => {
-    setEvents(prev => prev.filter(item => item.id !== id))
+    setEvents(prev => prev.filter(item => item._id !== id))
     toast.success(`Evento "${title}" eliminado.`)
   }
 
@@ -184,8 +101,6 @@ export const CalendarView = () => {
       <CalendarEventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        selectedDate={selectedDate}
-        onSaveEvent={handleSaveEvent}
       />
     </ViewContainer>
   )

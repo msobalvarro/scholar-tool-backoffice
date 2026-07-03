@@ -1,12 +1,4 @@
-export interface CalendarEvent {
-  id: string
-  title: string
-  description?: string
-  date: string // YYYY-MM-DD
-  startTime: string // HH:MM
-  endTime: string // HH:MM
-  category: 'exam' | 'task' | 'holiday' | 'meeting' | 'other'
-}
+import type { CalendarEventResponse, CalendarEventCategoryStyle } from '@/dtos/outputs/calendar-events-output'
 
 export const MONTH_NAMES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -15,14 +7,7 @@ export const MONTH_NAMES = [
 
 export const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
-export interface CategoryStyle {
-  label: string
-  color: string
-  text: string
-  badge: string
-}
-
-export const CATEGORIES: Record<CalendarEvent['category'], CategoryStyle> = {
+export const CATEGORIES: Record<CalendarEventResponse['type'], CalendarEventCategoryStyle> = {
   exam: {
     label: 'Examen',
     color: 'bg-rose-500',
@@ -46,6 +31,12 @@ export const CATEGORIES: Record<CalendarEvent['category'], CategoryStyle> = {
     color: 'bg-amber-500',
     text: 'text-amber-600 dark:text-amber-400',
     badge: 'bg-amber-50 border-amber-100 text-amber-600 dark:bg-amber-950/20 dark:border-amber-900/30 dark:text-amber-400'
+  },
+  class: {
+    label: 'Clase',
+    color: 'bg-blue-500',
+    text: 'text-blue-600 dark:text-blue-400',
+    badge: 'bg-blue-50 border-blue-100 text-blue-600 dark:bg-blue-950/20 dark:border-blue-900/30 dark:text-blue-400'
   },
   other: {
     label: 'Otro',

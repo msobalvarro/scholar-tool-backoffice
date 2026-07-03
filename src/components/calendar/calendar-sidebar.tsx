@@ -4,12 +4,12 @@ import { Calendar as CalendarIcon, Plus, Trash2, Clock, Info } from 'lucide-reac
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { CalendarEvent } from './types'
-import { MONTH_NAMES, CATEGORIES } from './types'
+import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
+import { MONTH_NAMES, CATEGORIES } from '@/constants/calendar-events.constant'
 
 interface CalendarSidebarProps {
   selectedDate: dayjs.Dayjs
-  events: CalendarEvent[]
+  events: CalendarEventResponse[]
   onDeleteEvent: (id: string, title: string) => void
   onOpenAddModal: () => void
 }
@@ -30,7 +30,7 @@ export const CalendarSidebar = ({
   // Filtered daily events
   const filteredEvents = selectedDayEvents.filter(item => {
     if (categoryFilter === 'all') return true
-    return item.category === categoryFilter
+    return item.type === categoryFilter
   })
 
   return (
@@ -84,14 +84,14 @@ export const CalendarSidebar = ({
           </div>
 
           {/* Events List */}
-          <div className="flex flex-col gap-3 max-h-[420px] overflow-y-auto pr-1">
+          <div className="flex flex-col gap-3 max-h-105 overflow-y-auto pr-1">
             {filteredEvents.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 px-4 text-center border border-dashed border-border/80 rounded-2xl bg-muted/10">
                 <CalendarIcon className="w-10 h-10 text-muted-foreground/40 mb-3" />
                 <p className="text-sm font-semibold text-muted-foreground">
                   No hay eventos en este día
                 </p>
-                <p className="text-xs text-muted-foreground/60 max-w-[200px] mt-1">
+                <p className="text-xs text-muted-foreground/60 max-w-50 mt-1">
                   {categoryFilter !== 'all'
                     ? 'Prueba cambiando el filtro de categorías.'
                     : 'Agenda un examen, tarea o reunión escolar usando el botón superior.'}
@@ -99,16 +99,15 @@ export const CalendarSidebar = ({
               </div>
             ) : (
               filteredEvents.map((evt) => {
-                const catInfo = CATEGORIES[evt.category]
+                const catInfo = CATEGORIES[evt.type]
                 return (
                   <div
-                    key={evt.id}
+                    key={evt._id}
                     className="group relative flex flex-col gap-2 p-4 rounded-xl border border-border/60 bg-background/40 hover:bg-background/80 transition-all duration-300 hover:shadow-xs hover:border-border pl-4"
                     style={{
                       borderLeftWidth: '4px',
-                      borderLeftColor: `var(--color-${evt.category === 'exam' ? 'rose' : evt.category === 'task' ? 'indigo' : evt.category === 'holiday' ? 'emerald' : evt.category === 'meeting' ? 'amber' : 'violet'}-500, ${
-                        catInfo.color.includes('rose') ? '#f43f5e' : catInfo.color.includes('indigo') ? '#6366f1' : catInfo.color.includes('emerald') ? '#10b981' : catInfo.color.includes('amber') ? '#f59e0b' : '#8b5cf6'
-                      })`
+                      borderLeftColor: `var(--color-${evt.type === 'exam' ? 'rose' : evt.type === 'task' ? 'indigo' : evt.type === 'holiday' ? 'emerald' : evt.type === 'meeting' ? 'amber' : 'violet'}-500, ${catInfo.color.includes('rose') ? '#f43f5e' : catInfo.color.includes('indigo') ? '#6366f1' : catInfo.color.includes('emerald') ? '#10b981' : catInfo.color.includes('amber') ? '#f59e0b' : '#8b5cf6'
+                        })`
                     }}
                   >
                     <div className="flex justify-between items-start gap-2">
@@ -118,7 +117,7 @@ export const CalendarSidebar = ({
                       <Button
                         variant="ghost"
                         size="icon-sm"
-                        onClick={() => onDeleteEvent(evt.id, evt.title)}
+                        onClick={() => onDeleteEvent(evt._id, evt.title)}
                         className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive size-7 rounded-lg -mt-1 -mr-1"
                         title="Eliminar evento"
                       >
@@ -135,7 +134,7 @@ export const CalendarSidebar = ({
                     <div className="flex flex-wrap items-center gap-2 mt-1">
                       <span className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
                         <Clock className="w-3.5 h-3.5" />
-                        {evt.startTime} - {evt.endTime}
+                        {dayjs(evt.date).format('HH:mm')}
                       </span>
                       <Badge variant="outline" className={`text-[10px] py-0 px-2 font-bold rounded-md border ${catInfo.badge}`}>
                         {catInfo.label}
