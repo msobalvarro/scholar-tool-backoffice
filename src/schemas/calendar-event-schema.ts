@@ -6,7 +6,7 @@ export const createCalendarEventSchema = z.object({
   type: z.enum(['exam', 'task', 'meeting', 'holiday', 'class', 'other']),
   title: z.string().min(3, 'El título es requerido'),
   description: z.string().min(10, 'La descripción es requerida'),
-  courseId: z.string().optional().nullable()
+  coursesId: z.array(z.string())
 })
 
 export const updateCalendarEventSchema = createCalendarEventSchema.extend({
