@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import clsx from 'clsx'
+import MultiSelect from 'react-select'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import {
   Dialog,
@@ -25,7 +26,6 @@ import { createCalendarEventSchema } from '@/schemas/calendar-event-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCalendar } from '@/hooks/API/use-calendar-events'
 import { useCourses } from '@/hooks/API/use-course'
-import { MultiSelect } from '../ui/multi-selection'
 
 interface CalendarEventModalProps {
   isOpen: boolean
@@ -45,7 +45,7 @@ export const CalendarEventModal = ({
     defaultValues: {
       title: '',
       description: '',
-      courseId: null,
+      coursesId: [],
       date: dayjs().format('YYYY-MM-DD'),
       time: '',
       type: 'exam'
@@ -157,13 +157,23 @@ export const CalendarEventModal = ({
             {/* Course Multi-Selection */}
             <div className='flex flex-col gap-1.5'>
               <label htmlFor="evt-course" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                Curso
+                Cursos
               </label>
-              <MultiSelect
-                data={courses?.map(course => ({
-                  value: course._id,
-                  label: course.name
-                })) || []}
+              <Controller
+                control={control}
+                name='coursesId'
+                render={({ field }) => (
+                  <MultiSelect
+                    isMulti
+                    options={
+                      courses?.map(course => ({
+                        value: course._id,
+                        label: course.name
+                      })) || []
+                    }
+                    onChange={(e) => field.onChange(e)}
+                  />
+                )}
               />
             </div>
 

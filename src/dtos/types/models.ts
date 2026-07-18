@@ -162,3 +162,11 @@ export type Task = {
   score: number | null
   dueDate: Date
 }
+
+export interface Enrollment {
+  name: string
+  courses: Course[]
+  year: number
+  enrolementPrice: number
+  monthlyPaymentPrice: number
+}

@@ -5,7 +5,8 @@ import {
   GraduationCap,
   Home,
   Settings,
-  User
+  User,
+  List,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -20,7 +21,6 @@ import {
 } from '@/components/ui/sidebar'
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
-import { ModeToggle } from './mode-toggle'
 import { KEYSTORE_NAMES } from '@/env'
 import type { UserInstitutionResponse } from '@/dtos/types'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
@@ -53,6 +53,11 @@ const ItemsOfInstitution = [
     title: 'Cursos Académicos',
     url: '/courses',
     icon: BookUser,
+  },
+  {
+    title: 'Matrículas',
+    url: '/matricule',
+    icon: List,
   },
   {
     title: 'Calendario',
