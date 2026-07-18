@@ -10,7 +10,6 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
-import { useCalendar } from '@/hooks/API/use-calendar-events'
 import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 interface CalendarGridProps {
