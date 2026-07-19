@@ -9,14 +9,17 @@ export const useEnrollment = () => {
     queryFn: async () => {
       const { data } = await axiosInstance.get<IEnrollment[]>('/enrollments')
       return data
-    }
+    },
+    enabled: true
   })
-
 
   const createEnrollment = (payload: EnrollmentInput) => useMutation({
     mutationFn: async () => {
       const { data } = await axiosInstance.post<IEnrollment>('/enrollments', payload)
       return data
+    },
+    onSuccess: () => {
+      getEnrollments.refetch()
     }
   })
 
@@ -24,6 +27,9 @@ export const useEnrollment = () => {
     mutationFn: async () => {
       const { data } = await axiosInstance.put<IEnrollment>('/enrollments', enrollment)
       return data
+    },
+    onSuccess: () => {
+      getEnrollments.refetch()
     }
   })
 
