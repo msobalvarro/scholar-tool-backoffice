@@ -2,6 +2,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Link } from 'react-router'
 import { ViewContainer } from '@/components/ui/view-container'
 import { PersonalInformationForm } from '@/components/students/create/personal-information-form'
+import { TitlePageView } from '@/components/ui/title-page'
 
 export const CreateStudentView = () => {
   return (
@@ -22,16 +23,10 @@ export const CreateStudentView = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-1">
-            Nuevo Estudiante
-          </h1>
-          <p className="text-gray-500 text-lg font-medium">
-            Ingresa la información personal del estudiante.
-          </p>
-        </div>
-      </div>
+      <TitlePageView
+        title='Nuevo Estudiante'
+        subtitle='Ingresa la información personal del estudiante.'
+      />
 
       <PersonalInformationForm />
     </ViewContainer>

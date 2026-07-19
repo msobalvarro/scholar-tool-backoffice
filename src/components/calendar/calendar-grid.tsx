@@ -10,7 +10,6 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
-import { useCalendar } from '@/hooks/API/use-calendar-events'
 import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 interface CalendarGridProps {
@@ -115,7 +114,7 @@ export const CalendarGrid = ({
               value={currentMonth.month().toString()}
               onValueChange={(val) => onChangeMonth(parseInt(val))}
             >
-              <SelectTrigger className="h-8 text-xs min-w-[100px] border-border text-foreground">
+              <SelectTrigger className="h-8 text-xs min-w-25 border-border text-foreground">
                 <SelectValue placeholder="Mes" />
               </SelectTrigger>
               <SelectContent>
@@ -131,7 +130,7 @@ export const CalendarGrid = ({
               value={currentMonth.year().toString()}
               onValueChange={(val) => onChangeYear(parseInt(val))}
             >
-              <SelectTrigger className="h-8 text-xs min-w-[80px] border-border text-foreground">
+              <SelectTrigger className="h-8 text-xs min-w-20 border-border text-foreground">
                 <SelectValue placeholder="Año" />
               </SelectTrigger>
               <SelectContent>
