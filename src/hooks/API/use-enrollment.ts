@@ -13,8 +13,8 @@ export const useEnrollment = () => {
     enabled: true
   })
 
-  const createEnrollment = (payload: EnrollmentInput) => useMutation({
-    mutationFn: async () => {
+  const createEnrollment = useMutation({
+    mutationFn: async (payload: EnrollmentInput) => {
       const { data } = await axiosInstance.post<IEnrollment>('/enrollments', payload)
       return data
     },
@@ -23,8 +23,8 @@ export const useEnrollment = () => {
     }
   })
 
-  const updateEnrollment = (enrollment: EnrollmentUpdateInput) => useMutation({
-    mutationFn: async () => {
+  const updateEnrollment = useMutation({
+    mutationFn: async (enrollment: EnrollmentUpdateInput) => {
       const { data } = await axiosInstance.put<IEnrollment>('/enrollments', enrollment)
       return data
     },
