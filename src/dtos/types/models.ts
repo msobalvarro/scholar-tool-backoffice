@@ -167,6 +167,6 @@ export interface Enrollment {
   name: string
   courses: Course[]
   year: number
-  enrolementPrice: number
+  enrollmentPrice: number
   monthlyPaymentPrice: number
 }

@@ -37,7 +37,7 @@ export const CreateMatriculeModal = ({ onClose, isOpen = true }: Props) => {
     defaultValues: {
       name: '',
       year: new Date().getFullYear(),
-      enrolementPrice: 0,
+      enrollmentPrice: 0,
       monthlyPaymentPrice: 0,
       coursesId: []
     }
@@ -56,7 +56,7 @@ export const CreateMatriculeModal = ({ onClose, isOpen = true }: Props) => {
 
   const courseOptions = courses?.map(course => ({
     value: course._id,
-    label: `${course.name} - ${course.groupName}`
+    label: course.name
   })) || []
 
   return (
@@ -69,91 +69,91 @@ export const CreateMatriculeModal = ({ onClose, isOpen = true }: Props) => {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Nombre de la Matrícula</label>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 py-4'>
+          <div className='space-y-2'>
+            <label className='text-sm font-medium text-gray-700'>Nombre de la Matrícula</label>
             <Input
-              placeholder="Ej: Matrícula General 2026"
+              placeholder='Ej: Matrícula General 2026'
               {...register('name')}
             />
             {errors.name && (
-              <p className="text-xs text-red-500 font-medium">{errors.name.message}</p>
+              <p className='text-xs text-red-500 font-medium'>{errors.name.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Año</label>
+          <div className='space-y-2'>
+            <label className='text-sm font-medium text-gray-700'>Año</label>
             <Input
-              type="number"
-              placeholder="2026"
+              type='number'
+              placeholder='2026'
               {...register('year', { valueAsNumber: true })}
             />
             {errors.year && (
-              <p className="text-xs text-red-500 font-medium">{errors.year.message}</p>
+              <p className='text-xs text-red-500 font-medium'>{errors.year.message}</p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Precio Inscripción</label>
+          <div className='grid grid-cols-2 gap-4'>
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-gray-700'>Precio Inscripción</label>
               <Input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                {...register('enrolementPrice', { valueAsNumber: true })}
+                type='number'
+                step='0.01'
+                placeholder='0.00'
+                {...register('enrollmentPrice', { valueAsNumber: true })}
               />
-              {errors.enrolementPrice && (
-                <p className="text-xs text-red-500 font-medium">{errors.enrolementPrice.message}</p>
+              {errors.enrollmentPrice && (
+                <p className='text-xs text-red-500 font-medium'>{errors.enrollmentPrice.message}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Precio Mensualidad</label>
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-gray-700'>Precio Mensualidad</label>
               <Input
-                type="number"
-                step="0.01"
-                placeholder="0.00"
+                type='number'
+                step='0.01'
+                placeholder='0.00'
                 {...register('monthlyPaymentPrice', { valueAsNumber: true })}
               />
               {errors.monthlyPaymentPrice && (
-                <p className="text-xs text-red-500 font-medium">{errors.monthlyPaymentPrice.message}</p>
+                <p className='text-xs text-red-500 font-medium'>{errors.monthlyPaymentPrice.message}</p>
               )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Cursos</label>
+          <div className='space-y-2'>
+            <label className='text-sm font-medium text-gray-700'>Seleccione los Grados</label>
             <Controller
               control={control}
-              name="coursesId"
+              name='coursesId'
               render={({ field }) => (
                 <MultiSelect
                   isMulti
                   isLoading={isLoadingCourses}
-                  placeholder="Selecciona los cursos..."
+                  placeholder='Selecciona los cursos...'
                   options={courseOptions}
                   value={courseOptions.filter(opt => field.value?.includes(opt.value))}
                   onChange={(selected: unknown) => {
                     const optionsArray = (selected as Array<{ value: string }> | null) ?? []
                     field.onChange(optionsArray.map(opt => opt.value))
                   }}
-                  className="text-sm"
+                  className='text-sm'
                 />
               )}
             />
             {errors.coursesId && (
-              <p className="text-xs text-red-500 font-medium">{errors.coursesId.message}</p>
+              <p className='text-xs text-red-500 font-medium'>{errors.coursesId.message}</p>
             )}
           </div>
 
-          <DialogFooter className="pt-4 gap-2">
-            <Button type="button" variant="outline" onClick={onClose}>
+          <DialogFooter className='pt-4 gap-2'>
+            <Button type='button' variant='outline' onClick={onClose}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={createEnrollment.isPending}>
+            <Button type='submit' disabled={createEnrollment.isPending}>
               {createEnrollment.isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                   Guardando...
                 </>
               ) : (
