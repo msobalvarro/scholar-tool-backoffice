@@ -12,6 +12,15 @@ export const useCourses = () => useQuery({
   }
 })
 
+export const useCourseAvailableByEnrollment = (enrollmentId: string) => useQuery({
+  queryKey: ['courses-available', enrollmentId],
+  queryFn: async () => {
+    const { data } = await axiosInstance.get<CoursesResponse[]>(`/courses/not-in-enrollment/${enrollmentId}`)
+    return data
+  },
+  enabled: false
+})
+
 export const useCourseActions = () => {
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
