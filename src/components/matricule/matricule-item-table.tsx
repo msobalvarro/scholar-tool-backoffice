@@ -1,30 +1,176 @@
+import { useState, useEffect } from 'react'
 import type { IEnrollment } from '@/dtos/outputs/enrollment-output'
 import { Input } from '../ui/input'
+import { Button } from '../ui/button'
+import { Badge } from '../ui/badge'
+import { useEnrollment } from '@/hooks/API/use-enrollment'
+import { Pencil, Check, X, Loader2, GraduationCap, DollarSign } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Props {
   enrollment: IEnrollment
 }
 
 export const MatriculeItemTable = ({ enrollment }: Props) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [name, setName] = useState(enrollment.name)
+  const [enrollmentPrice, setEnrollmentPrice] = useState<number | string>(enrollment.enrollmentPrice)
+  const [monthlyPaymentPrice, setMonthlyPaymentPrice] = useState<number | string>(enrollment.monthlyPaymentPrice)
+
+  const { updateEnrollment } = useEnrollment()
+
+  useEffect(() => {
+    setName(enrollment.name)
+    setEnrollmentPrice(enrollment.enrollmentPrice)
+    setMonthlyPaymentPrice(enrollment.monthlyPaymentPrice)
+  }, [enrollment])
+
+  const handleCancel = () => {
+    setName(enrollment.name)
+    setEnrollmentPrice(enrollment.enrollmentPrice)
+    setMonthlyPaymentPrice(enrollment.monthlyPaymentPrice)
+    setIsEditing(false)
+  }
+
+  const handleSave = async () => {
+    try {
+      await updateEnrollment.mutateAsync({
+        _id: enrollment._id,
+        name,
+        year: enrollment.year || new Date().getFullYear(),
+        enrollmentPrice: Number(enrollmentPrice),
+        monthlyPaymentPrice: Number(monthlyPaymentPrice),
+        coursesId: enrollment.courses?.map(c => c._id).filter((id): id is string => Boolean(id)) || []
+      })
+      toast.success('Matrícula actualizada con éxito')
+      setIsEditing(false)
+    } catch {
+      toast.error('Error al actualizar la matrícula')
+    }
+  }
+
   return (
-    <div className='flex gap-2'>
-      <div className='flex flex-col gap-1'>
-        <span className='font-bold'>{enrollment.name}</span>
-        <div className='flex gap-1 items-center'>
-          {enrollment.courses?.map(course => (
-            <span className='text-xs text-muted' key={course._id}>{course.name}</span>
-          ))}
+    <div className='bg-card border border-border/60 rounded-xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4'>
+      {/* Info Section: Name & Courses */}
+      <div className='flex items-start gap-3 flex-1 min-w-0'>
+        <div className='p-2.5 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5'>
+          <GraduationCap className='w-5 h-5' />
+        </div>
+        <div className='flex flex-col gap-1.5 flex-1 min-w-0'>
+          {isEditing ? (
+            <div className='flex flex-col gap-1'>
+              <label className='text-xs font-semibold text-muted-foreground uppercase tracking-wider'>Nombre</label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder='Nombre de la matrícula'
+                disabled={!isEditing}
+                className='max-w-xs text-sm font-medium'
+              />
+            </div>
+          ) : (
+            <div className='flex items-center gap-2 flex-wrap'>
+              <span className='font-semibold text-base text-foreground tracking-tight'>{enrollment.name}</span>
+              {enrollment.year && (
+                <Badge variant='outline' className='text-xs font-normal'>
+                  {enrollment.year}
+                </Badge>
+              )}
+            </div>
+          )}
+
+          <div className='flex flex-wrap gap-1.5 items-center pt-0.5'>
+            {enrollment.courses && enrollment.courses.length > 0 ? (
+              enrollment.courses.map(course => (
+                <Badge variant='secondary' key={course._id} className='text-xs px-2 py-0.5 font-normal'>
+                  {course.name}
+                </Badge>
+              ))
+            ) : (
+              <span className='text-xs text-muted-foreground italic'>Sin cursos asignados</span>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className='flex flex-col'>
-        <label>Matricula</label>
-        <Input type='number' placeholder='$' />
-      </div>
+      {/* Inputs Section: Matricula & Mensualidad */}
+      <div className='flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0'>
+        <div className='flex flex-col gap-1 w-32 sm:w-36'>
+          <label className='text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1'>
+            <DollarSign className='w-3 h-3 text-emerald-600' />
+            Matrícula
+          </label>
+          <div className='relative'>
+            <Input
+              type='number'
+              step='0.01'
+              value={enrollmentPrice}
+              onChange={(e) => setEnrollmentPrice(e.target.value)}
+              disabled={!isEditing}
+              placeholder='0.00'
+              className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
+            />
+          </div>
+        </div>
 
-      <div className='flex flex-col'>
-        <label>Mensualidad</label>
-        <Input type='number' placeholder='$' />
+        <div className='flex flex-col gap-1 w-32 sm:w-36'>
+          <label className='text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1'>
+            <DollarSign className='w-3 h-3 text-blue-600' />
+            Mensualidad
+          </label>
+          <div className='relative'>
+            <Input
+              type='number'
+              step='0.01'
+              value={monthlyPaymentPrice}
+              onChange={(e) => setMonthlyPaymentPrice(e.target.value)}
+              disabled={!isEditing}
+              placeholder='0.00'
+              className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
+            />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className='flex items-center gap-2 self-end md:self-center pt-2 sm:pt-0 pl-1'>
+          {isEditing ? (
+            <>
+              <Button
+                size='sm'
+                onClick={handleSave}
+                disabled={updateEnrollment.isPending}
+                className='h-9 px-3 gap-1.5 font-medium'
+              >
+                {updateEnrollment.isPending ? (
+                  <Loader2 className='w-4 h-4 animate-spin' />
+                ) : (
+                  <Check className='w-4 h-4' />
+                )}
+                Guardar
+              </Button>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={handleCancel}
+                disabled={updateEnrollment.isPending}
+                className='h-9 px-3 gap-1.5 text-muted-foreground hover:text-foreground'
+              >
+                <X className='w-4 h-4' />
+                Cancelar
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setIsEditing(true)}
+              className='h-9 px-3.5 gap-1.5 text-muted-foreground hover:text-foreground hover:border-primary/50'
+            >
+              <Pencil className='w-3.5 h-3.5 text-primary' />
+              Editar
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )
