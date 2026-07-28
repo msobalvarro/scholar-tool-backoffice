@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MultiSelect from 'react-select'
@@ -7,7 +7,7 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { useEnrollment } from '@/hooks/API/use-enrollment'
-import { useCourses } from '@/hooks/API/use-course'
+import { useCourseAvailableByEnrollment } from '@/hooks/API/use-course'
 import { Pencil, Check, X, Loader2, GraduationCap, DollarSign } from 'lucide-react'
 import { toast } from 'sonner'
 import { matriculeItemSchema, type MatriculeItemInput } from '@/schemas/matricule-item-schema'
@@ -19,11 +19,11 @@ interface Props {
 export const MatriculeItemTable = ({ enrollment }: Props) => {
   const [isEditing, setIsEditing] = useState(false)
   const { updateEnrollment } = useEnrollment()
-  const { data: courses, isLoading: isLoadingCourses } = useCourses()
+  const { data: courses, isLoading: isLoadingCourses, refetch: refetchCourses } = useCourseAvailableByEnrollment(enrollment._id)
 
   const initialCoursesId = enrollment.courses?.map(c => c._id).filter((id): id is string => Boolean(id)) || []
 
-  const courseOptions = courses?.map(course => ({
+  const courseOptions = [...(courses || []), ...(enrollment.courses || [])].map(course => ({
     value: course._id,
     label: course.name
   })) || []
@@ -70,6 +70,12 @@ export const MatriculeItemTable = ({ enrollment }: Props) => {
       toast.error('Error al actualizar la matrícula')
     }
   }
+
+  useEffect(() => {
+    if (isEditing) {
+      refetchCourses()
+    }
+  }, [isEditing])
 
   return (
     <form
@@ -120,7 +126,7 @@ export const MatriculeItemTable = ({ enrollment }: Props) => {
                     isLoading={isLoadingCourses}
                     placeholder='Selecciona los cursos...'
                     options={courseOptions}
-                    value={courseOptions.filter(opt => field.value?.includes(opt.value))}
+                    value={courseOptions.filter(opt => field.value?.includes(opt?.value ?? ''))}
                     onChange={(selected: unknown) => {
                       const optionsArray = (selected as Array<{ value: string }> | null) ?? []
                       field.onChange(optionsArray.map(opt => opt.value))
