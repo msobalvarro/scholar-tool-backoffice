@@ -15,8 +15,6 @@ export const MatriculeView = () => {
         classNameContainer='m'
       />
 
-      <h1 className=''>Matriculas</h1>
-
       {getEnrollments.error && <p className='text-red-500'>{getEnrollments.error.message}</p>}
 
       {getEnrollments.data && <MatriculeTable enrollments={getEnrollments.data} />}

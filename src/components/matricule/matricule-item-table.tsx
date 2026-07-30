@@ -11,6 +11,7 @@ import { useCourseAvailableByEnrollment } from '@/hooks/API/use-course'
 import { Pencil, Check, X, Loader2, GraduationCap, DollarSign } from 'lucide-react'
 import { toast } from 'sonner'
 import { matriculeItemSchema, type MatriculeItemInput } from '@/schemas/matricule-item-schema'
+import { FormatCurrency } from '@/adapters/format-currency'
 
 interface Props {
   enrollment: IEnrollment
@@ -163,14 +164,21 @@ export const MatriculeItemTable = ({ enrollment }: Props) => {
             Matrícula
           </label>
           <div className='relative'>
-            <Input
-              type='number'
-              step='0.01'
-              {...register('enrollmentPrice', { valueAsNumber: true })}
-              disabled={!isEditing}
-              placeholder='0.00'
-              className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
-            />
+            {isEditing ? (
+              <Input
+                type='number'
+                step='0.01'
+                {...register('enrollmentPrice', { valueAsNumber: true })}
+                disabled={!isEditing}
+                placeholder='0.00'
+                className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
+              />
+
+            ) : (
+              <span className='text-xs px-2 py-0.5 font-normal'>
+                {FormatCurrency(enrollment.enrollmentPrice)}
+              </span>
+            )}
           </div>
           {errors.enrollmentPrice && (
             <p className='text-xs text-red-500 font-medium'>{errors.enrollmentPrice.message}</p>
@@ -183,14 +191,20 @@ export const MatriculeItemTable = ({ enrollment }: Props) => {
             Mensualidad
           </label>
           <div className='relative'>
-            <Input
-              type='number'
-              step='0.01'
-              {...register('monthlyPaymentPrice', { valueAsNumber: true })}
-              disabled={!isEditing}
-              placeholder='0.00'
-              className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
-            />
+            {isEditing ? (
+              <Input
+                type='number'
+                step='0.01'
+                {...register('monthlyPaymentPrice', { valueAsNumber: true })}
+                disabled={!isEditing}
+                placeholder='0.00'
+                className='h-9 text-sm disabled:opacity-75 disabled:bg-muted/40 disabled:cursor-not-allowed border-muted-foreground/20'
+              />
+            ) : (
+              <span className='text-xs px-2 py-0.5 font-normal'>
+                {FormatCurrency(enrollment.monthlyPaymentPrice)}
+              </span>
+            )}
           </div>
           {errors.monthlyPaymentPrice && (
             <p className='text-xs text-red-500 font-medium'>{errors.monthlyPaymentPrice.message}</p>
