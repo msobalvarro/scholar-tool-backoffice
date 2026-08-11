@@ -2,6 +2,7 @@ import {
   Book,
   BookUser,
   Calendar,
+  ClipboardCheck,
   GraduationCap,
   Home,
   Settings,
@@ -58,6 +59,11 @@ const ItemsOfInstitution = [
     title: 'Matrículas',
     url: '/matricule',
     icon: List,
+  },
+  {
+    title: 'Asistencia',
+    url: '/assistance',
+    icon: ClipboardCheck,
   },
   {
     title: 'Calendario',
