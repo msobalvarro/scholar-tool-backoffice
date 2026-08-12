@@ -11,7 +11,7 @@ import {
 
 export const CameraQr = () => {
   const devices = useDevices()
-  const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(undefined)
+  const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
 
   return (
     <div className='flex items-center gap-4 flex-col'>
@@ -35,17 +35,28 @@ export const CameraQr = () => {
 
       <Scanner
         onScan={(result) => console.log(result)}
+        classNames={{
+          container: 'size-[640px]',
+        }}
         components={{
           // audio: true, // Play beep sound on scan
           onOff: true, // Show camera on/off button
           torch: true, // Show torch/flashlight button (if supported)
-          zoom: true, // Show zoom control (if supported)
+          zoom: false, // Show zoom control (if supported)
           finder: true, // Show finder overlay
         }}
         constraints={{
           deviceId: selectedDevice?.deviceId,
-          width: 1024,
-          height: 1024,
+          width: {
+            exact: 640
+          },
+          height: {
+            exact: 640,
+          },
+          frameRate: {
+            exact: 30
+          },
+          facingMode: "environment"
         }}
         sound={soundSuccess}
       />
