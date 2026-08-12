@@ -1,5 +1,7 @@
 import soundSuccess from '@/assets/sounds/success.mp3'
-import { useDevices, Scanner } from '@yudiel/react-qr-scanner'
+import soundError from '@/assets/sounds/error.mp3'
+import { useSound } from 'use-sound'
+import { useDevices, Scanner, type IDetectedBarcode } from '@yudiel/react-qr-scanner'
 import { useState } from 'react'
 import {
   Select,
@@ -8,10 +10,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useStudentAssistence } from '@/hooks/API/use-student-assistence'
 
 export const CameraQr = () => {
   const devices = useDevices()
-  const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(undefined)
+  const { createAssistence } = useStudentAssistence()
+  const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
+
+  const [playSuccess] = useSound(soundSuccess)
+  const [playError] = useSound(soundError)
+
+  const onScanQR = async (payload: IDetectedBarcode[]) => {
+    const [result] = payload
+    if (result) {
+      try {
+        await createAssistence({
+          studentId: result.rawValue,
+          date: new Date(),
+          assistence: true
+        })
+
+        playSuccess()
+      } catch (error) {
+        console.warn(error)
+        playError()
+      }
+    }
+  }
 
   return (
     <div className='flex items-center gap-4 flex-col'>
@@ -34,20 +59,13 @@ export const CameraQr = () => {
       </Select>
 
       <Scanner
-        onScan={(result) => console.log(result)}
-        components={{
-          // audio: true, // Play beep sound on scan
-          onOff: true, // Show camera on/off button
-          torch: true, // Show torch/flashlight button (if supported)
-          zoom: true, // Show zoom control (if supported)
-          finder: true, // Show finder overlay
-        }}
+        onScan={onScanQR}
         constraints={{
           deviceId: selectedDevice?.deviceId,
-          width: 1024,
-          height: 1024,
+          sampleSize: {
+            ideal: 1920
+          },
         }}
-        sound={soundSuccess}
       />
     </div>
   )
