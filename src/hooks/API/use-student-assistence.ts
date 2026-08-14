@@ -51,6 +51,15 @@ export const useStudentAssistencesByStudent = (studentId?: string) => useQuery({
   enabled: !!studentId
 })
 
+export const useLastAssitences = () => useQuery({
+  queryKey: ['student-assistences', 'last'],
+  queryFn: async () => {
+    const { data } = await axiosInstance.get<StudentAssistenceResponse[]>('/student-assistences/last')
+    return data
+  },
+  refetchInterval: 10_000,
+})
+
 export const useStudentAssistence = () => {
   const createAssistenceMutation = useCreateStudentAssistence()
 

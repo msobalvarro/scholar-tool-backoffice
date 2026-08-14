@@ -9,8 +9,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useStudentAssistence } from '@/hooks/API/use-student-assistence'
+import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistence-output'
 
-export const CameraQr = () => {
+interface Props {
+  onSuccessQR?: (studentAssistence: StudentAssistenceResponse) => void
+}
+
+export const CameraQr = ({ onSuccessQR }: Props) => {
   const devices = useDevices()
   const { createAssistence } = useStudentAssistence()
   const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
@@ -20,11 +25,13 @@ export const CameraQr = () => {
     const [result] = payload
     if (result) {
       try {
-        await createAssistence({
+        const response = await createAssistence.mutateAsync({
           studentId: result.rawValue,
           date: new Date(),
           assistence: true
         })
+
+        onSuccessQR?.(response)
       } catch (error) {
         console.warn(error)
       }

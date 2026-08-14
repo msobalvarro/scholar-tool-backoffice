@@ -1,34 +1,15 @@
-import { CameraQr } from '@/components/assistance/camera-qr'
-import { Button } from '@/components/ui/button'
+import { AssistancePanel } from '@/components/assistance/assistance-panel'
 import { TitlePageView } from '@/components/ui/title-page'
 import { ViewContainer } from '@/components/ui/view-container'
-import { useStudentAssistence } from '@/hooks/API/use-student-assistence'
 
 export const StudentAssistanceView = () => {
-  const { createAssistence, error } = useStudentAssistence()
-
   return (
     <ViewContainer>
-      <TitlePageView title='Asistencia' subtitle='Registrar la asistencia de los estudiantes' />
-
-      <Button
-        variant='default'
-        onClick={async () =>
-          await createAssistence.mutateAsync({
-            studentId: '6946b6224d5223a2d65f9d81',
-            date: new Date(),
-            assistence: true
-          })
-        }
-      >
-        Crear Asistencia
-      </Button>
-
-      {error && (
-        <p className='text-red-500'>{error}</p>
-      )}
-
-      {/* <CameraQr /> */}
+      <TitlePageView
+        title='Asistencia'
+        subtitle='Registrar la asistencia de los estudiantes'
+      />
+      <AssistancePanel />
     </ViewContainer>
   )
 }
