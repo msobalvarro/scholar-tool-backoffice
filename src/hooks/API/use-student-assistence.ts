@@ -4,8 +4,14 @@ import { AxiosError } from 'axios'
 import { axiosInstance } from '@/adapters/axios-intance'
 import type { CreateStudentAssistencePayload } from '@/dtos/inputs/student-assistence-input'
 import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistence-output'
+import soundSuccess from '@/assets/sounds/success.mp3'
+import soundError from '@/assets/sounds/error.mp3'
+import { useSound } from 'use-sound'
 
 export const useCreateStudentAssistence = () => {
+  const [playSuccess] = useSound(soundSuccess)
+  const [playError] = useSound(soundError)
+
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
 
@@ -16,19 +22,22 @@ export const useCreateStudentAssistence = () => {
       return data
     },
     onSuccess: () => {
+      console.log('Success')
       queryClient.invalidateQueries({ queryKey: ['student-assistences'] })
+      playSuccess()
     },
     onError: (error) => {
       const err = error instanceof AxiosError
         ? error.response?.data?.message || String(error)
         : String(error)
       setError(err)
+      playError()
     }
   })
 
   return {
     ...mutation,
-    createAssistence: mutation.mutateAsync,
+    createAssistence: mutation,
     error
   }
 }

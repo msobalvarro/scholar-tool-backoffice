@@ -5,7 +5,7 @@ import { ViewContainer } from '@/components/ui/view-container'
 import { useStudentAssistence } from '@/hooks/API/use-student-assistence'
 
 export const StudentAssistanceView = () => {
-  const { createAssistence } = useStudentAssistence()
+  const { createAssistence, error } = useStudentAssistence()
 
   return (
     <ViewContainer>
@@ -13,8 +13,8 @@ export const StudentAssistanceView = () => {
 
       <Button
         variant='default'
-        onClick={() =>
-          createAssistence({
+        onClick={async () =>
+          await createAssistence.mutateAsync({
             studentId: '6946b6224d5223a2d65f9d81',
             date: new Date(),
             assistence: true
@@ -24,7 +24,11 @@ export const StudentAssistanceView = () => {
         Crear Asistencia
       </Button>
 
-      <CameraQr />
+      {error && (
+        <p className='text-red-500'>{error}</p>
+      )}
+
+      {/* <CameraQr /> */}
     </ViewContainer>
   )
 }

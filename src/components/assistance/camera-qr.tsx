@@ -1,6 +1,4 @@
-import soundSuccess from '@/assets/sounds/success.mp3'
-import soundError from '@/assets/sounds/error.mp3'
-import { useSound } from 'use-sound'
+
 import { useDevices, Scanner, type IDetectedBarcode } from '@yudiel/react-qr-scanner'
 import { useState } from 'react'
 import {
@@ -17,8 +15,6 @@ export const CameraQr = () => {
   const { createAssistence } = useStudentAssistence()
   const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
 
-  const [playSuccess] = useSound(soundSuccess)
-  const [playError] = useSound(soundError)
 
   const onScanQR = async (payload: IDetectedBarcode[]) => {
     const [result] = payload
@@ -29,11 +25,8 @@ export const CameraQr = () => {
           date: new Date(),
           assistence: true
         })
-
-        playSuccess()
       } catch (error) {
         console.warn(error)
-        playError()
       }
     }
   }
