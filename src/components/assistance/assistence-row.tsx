@@ -1,9 +1,10 @@
+import { memo } from 'react'
 import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistence-output'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { Badge } from '../ui/badge'
 import { formatDate } from '@/lib/utils'
 
-export const AssistenceRow = ({ record }: { record: StudentAssistenceResponse }) => {
+export const AssistenceRow = memo(({ record }: { record: StudentAssistenceResponse }) => {
   const student = record.student
   const name = student
     ? `${student.firstName} ${student.lastName}`
@@ -36,4 +37,6 @@ export const AssistenceRow = ({ record }: { record: StudentAssistenceResponse })
       )}
     </div>
   )
-}
+})
+
+AssistenceRow.displayName = 'AssistenceRow'

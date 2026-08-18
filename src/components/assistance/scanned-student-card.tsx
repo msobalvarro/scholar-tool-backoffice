@@ -35,7 +35,7 @@ export const ScannedStudentCard = ({ record: payload }: { record: StudentAssiste
           Asistencia registrada
         </Badge>
       ) : (
-        <Badge variant='destructive' className='gap-1.5 shrink-0'>
+        <Badge className='gap-1.5 shrink-0  bg-green-500'>
           <XCircle className='size-3.5' />
           Ausente registrado
         </Badge>

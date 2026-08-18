@@ -7,9 +7,10 @@ import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistenc
 import soundSuccess from '@/assets/sounds/success.mp3'
 import soundError from '@/assets/sounds/error.mp3'
 import { useSound } from 'use-sound'
+import { toast } from 'sonner'
 
 export const useCreateStudentAssistence = () => {
-  const [playSuccess] = useSound(soundSuccess)
+  const [playSuccess, { stop: stopSuccess }] = useSound(soundSuccess)
   const [playError] = useSound(soundError)
 
   const queryClient = useQueryClient()
@@ -27,9 +28,19 @@ export const useCreateStudentAssistence = () => {
       playSuccess()
     },
     onError: (error) => {
+      stopSuccess()
+      console.log(error)
+
       const err = error instanceof AxiosError
         ? error.response?.data?.message || String(error)
         : String(error)
+
+      toast.error(err, {
+        richColors: true,
+        position: 'bottom-center',
+        duration: 5000,
+      })
+
       setError(err)
       playError()
     }
@@ -57,6 +68,19 @@ export const useLastAssitences = () => useQuery({
     const { data } = await axiosInstance.get<StudentAssistenceResponse[]>('/student-assistences/last')
     return data
   }
+})
+
+export const useStudentAssistencesByDate = (date?: string) => useQuery({
+  queryKey: ['student-assistences', 'date', date],
+  queryFn: async () => {
+    const { data } = await axiosInstance.get<StudentAssistenceResponse[]>(`/student-assistences/date`, {
+      params: {
+        date
+      }
+    })
+    return data
+  },
+  enabled: !!date
 })
 
 export const useStudentAssistence = () => {

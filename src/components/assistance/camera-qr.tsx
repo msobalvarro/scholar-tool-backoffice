@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useStudentAssistence } from '@/hooks/API/use-student-assistence'
+import { useCreateStudentAssistence } from '@/hooks/API/use-student-assistence'
 import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistence-output'
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 export const CameraQr = ({ onSuccessQR }: Props) => {
   const devices = useDevices()
-  const { createAssistence } = useStudentAssistence()
+  const { createAssistence } = useCreateStudentAssistence()
   const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
 
   const onScanQR = async ([payload]: IDetectedBarcode[]) => {
@@ -59,6 +59,11 @@ export const CameraQr = ({ onSuccessQR }: Props) => {
       <Scanner
         onScan={onScanQR}
         allowMultiple={true}
+        classNames={{
+          container: 'rounded-xl shadow p-4 border border-gray-200',
+          video: 'rounded-lg'
+        }}
+        scanDelay={3000}
         constraints={{
           deviceId: selectedDevice?.deviceId,
           sampleSize: {
