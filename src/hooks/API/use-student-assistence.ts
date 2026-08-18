@@ -56,8 +56,7 @@ export const useLastAssitences = () => useQuery({
   queryFn: async () => {
     const { data } = await axiosInstance.get<StudentAssistenceResponse[]>('/student-assistences/last')
     return data
-  },
-  refetchInterval: 10_000,
+  }
 })
 
 export const useStudentAssistence = () => {

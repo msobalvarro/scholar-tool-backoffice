@@ -20,9 +20,10 @@ export const CameraQr = ({ onSuccessQR }: Props) => {
   const { createAssistence } = useStudentAssistence()
   const [selectedDevice, setSelectedDevice] = useState<MediaDeviceInfo | undefined>(devices[0])
 
-
   const onScanQR = async (payload: IDetectedBarcode[]) => {
     const [result] = payload
+    console.log(result)
+
     if (result) {
       try {
         const response = await createAssistence.mutateAsync({
@@ -60,6 +61,7 @@ export const CameraQr = ({ onSuccessQR }: Props) => {
 
       <Scanner
         onScan={onScanQR}
+        allowMultiple={true}
         constraints={{
           deviceId: selectedDevice?.deviceId,
           sampleSize: {
