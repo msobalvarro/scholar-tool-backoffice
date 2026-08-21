@@ -6,7 +6,7 @@ export const FooterLogout = () => {
           <span className='size-2 rounded-full bg-emerald-500 animate-pulse' />
           <span>Plataforma operativa y segura</span>
         </div>
-        <p>© {new Date().getFullYear()} ScholarTool. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} Lúmina. Todos los derechos reservados.</p>
         <div className='flex items-center gap-4 text-xs'>
           <a className='hover:text-foreground transition-colors' href='#'>Privacidad</a>
           <span className='text-border'>•</span>

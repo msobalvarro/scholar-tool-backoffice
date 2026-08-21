@@ -17,7 +17,7 @@ export const HeaderLogout = () => {
           <div>
             <div className='flex items-center gap-1.5'>
               <span className='font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text'>
-                ScholarTool
+                Lúmina
               </span>
               <span className='inline-flex items-center gap-0.5 text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20'>
                 <Sparkles className='size-2.5' /> BackOffice

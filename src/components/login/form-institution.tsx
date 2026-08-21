@@ -201,7 +201,7 @@ export const FormInstitution = () => {
             onClick={(e) => {
               e.preventDefault()
               toast.info('Soporte Técnico', {
-                description: 'Escríbenos a soporte@scholartool.edu o contacta a tu centro educativo.',
+                description: 'Escríbenos a soporte@lumina.edu o contacta a tu centro educativo.',
               })
             }}
           >
