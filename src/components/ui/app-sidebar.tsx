@@ -96,7 +96,7 @@ export function AppSidebar() {
           </div>
           <div className='flex flex-col leading-tight overflow-hidden'>
             <span className='truncate font-bold text-base tracking-tight text-foreground'>
-              ScholarTool
+              Lúmina
             </span>
             <span className='truncate text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80'>
               Institutional Panel

@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import {
-  ArrowLeft,
   Calendar as CalendarIcon,
   ChevronLeft,
   ChevronRight,
@@ -25,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { AssistenceRowSkeleton } from '@/components/assistance/assistence-row-skeleton'
 import { formatDate } from '@/lib/utils'
 import type { StudentAssistenceResponse } from '@/dtos/outputs/student-assistence-output'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 
 type FilterStatus = 'all' | 'present' | 'absent'
 
@@ -115,15 +115,33 @@ export const AssistanceByDateView = () => {
 
   return (
     <ViewContainer className='flex flex-col gap-6 space-y-2 pb-12'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/assistance">Asistencias</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/assistance/date">Historial de Asistencias</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+
       {/* ── Top navigation bar ── */}
       <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
         <div className='flex items-center gap-3'>
-          <Link to='/assistance'>
+          {/* <Link to='/assistance'>
             <Button variant='outline' size='sm' className='gap-2 shadow-xs'>
               <ArrowLeft className='size-4' />
               <span>Volver</span>
             </Button>
-          </Link>
+          </Link> */}
+
           <div>
             <h1 className='text-2xl font-bold tracking-tight'>Historial de Asistencias</h1>
             <p className='text-sm text-muted-foreground capitalize'>
