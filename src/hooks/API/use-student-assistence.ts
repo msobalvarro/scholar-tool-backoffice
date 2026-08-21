@@ -82,14 +82,3 @@ export const useStudentAssistencesByDate = (date?: string) => useQuery({
   },
   enabled: !!date
 })
-
-export const useStudentAssistence = () => {
-  const createAssistenceMutation = useCreateStudentAssistence()
-
-  return {
-    createAssistence: createAssistenceMutation.createAssistence,
-    isLoading: createAssistenceMutation.isPending,
-    error: createAssistenceMutation.error,
-    createAssistenceMutation
-  }
-}

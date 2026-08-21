@@ -31,8 +31,8 @@ export const authLoginTeacherService = async (email: string, password: string) =
       password,
     })
 
-    localStorage.setItem(KEYSTORE_NAMES.TOKEN_USER_INSTITUTION, data.token)
-    localStorage.setItem(KEYSTORE_NAMES.USER_INSTITUTION, JSON.stringify(data.user))
+    localStorage.setItem(KEYSTORE_NAMES.TOKEN_TEACHER, data.token)
+    localStorage.setItem(KEYSTORE_NAMES.TEACHER, JSON.stringify(data.user))
     localStorage.setItem(KEYSTORE_NAMES.INSTITUTION, JSON.stringify(data.institution))
 
     return data
