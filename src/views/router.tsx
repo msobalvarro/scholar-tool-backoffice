@@ -13,6 +13,7 @@ import { CalendarView } from './(logged)/institution/calendar/calendar.view'
 import { MatriculeView } from './(logged)/institution/matricule'
 import { StudentAssistanceView } from './(logged)/institution/assistance'
 import { AssistanceByDateView } from './(logged)/institution/assistance/assistence-by-date'
+import { NotFoundView } from './not-found.view'
 
 import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
 
@@ -20,9 +21,7 @@ export const ProtectedRoutesTeacher = () => (
   <Layout>
     <Routes>
       <Route path='/' element={<TeacherWelcomeView />} />
-      <Route path='/assistance' element={<StudentAssistanceView />} />
-      <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
-      <Route path='/calendar' element={<CalendarView />} />
+      <Route path='*' element={<NotFoundView />} />
     </Routes>
   </Layout>
 )
@@ -42,6 +41,7 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/matricule' element={<MatriculeView />} />
       <Route path='/assistance' element={<StudentAssistanceView />} />
       <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
+      <Route path='*' element={<NotFoundView />} />
     </Routes>
   </Layout>
 )
@@ -50,5 +50,6 @@ export const PublicRoutes = () => (
   <Routes>
     <Route path='/teacher' element={<LoginTeacher />} />
     <Route path='/' element={<LoginInstitution />} />
+    <Route path='*' element={<NotFoundView isPublic />} />
   </Routes>
 )
