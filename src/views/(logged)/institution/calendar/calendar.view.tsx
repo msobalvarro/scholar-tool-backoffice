@@ -45,8 +45,8 @@ export const CalendarView = () => {
     setCurrentMonth(prev => prev.year(year))
   }
 
-  const handleDeleteEvent = (id: string, title: string) => {
-    // setEvents(prev => prev.filter(item => item._id !== id))
+  const handleDeleteEvent = (_id: string, title: string) => {
+    // setEvents(prev => prev.filter(item => item._id !== _id))
     toast.success(`Evento "${title}" eliminado.`)
   }
 

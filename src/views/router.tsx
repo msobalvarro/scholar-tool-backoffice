@@ -14,10 +14,15 @@ import { MatriculeView } from './(logged)/institution/matricule'
 import { StudentAssistanceView } from './(logged)/institution/assistance'
 import { AssistanceByDateView } from './(logged)/institution/assistance/assistence-by-date'
 
+import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
+
 export const ProtectedRoutesTeacher = () => (
   <Layout>
     <Routes>
-      {/* <Route path='/' element={<Home />} /> */}
+      <Route path='/' element={<TeacherWelcomeView />} />
+      <Route path='/assistance' element={<StudentAssistanceView />} />
+      <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
+      <Route path='/calendar' element={<CalendarView />} />
     </Routes>
   </Layout>
 )

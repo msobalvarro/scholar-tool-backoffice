@@ -56,7 +56,8 @@ export type LoginUserInstitutionResponse = {
 }
 
 export type LoginUserTeacherResponse = {
-  user: Teacher
+  teacher?: Teacher
+  user?: Teacher
   token: string
   institution: Institution
 }

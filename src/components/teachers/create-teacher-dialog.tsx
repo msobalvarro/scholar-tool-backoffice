@@ -21,7 +21,7 @@ interface CreateTeacherDialogProps {
 }
 
 export const CreateTeacherDialog = ({ open, onOpenChange }: CreateTeacherDialogProps) => {
-  const { postTeacher } = useTeacherActions()
+  const { postTeacher, error } = useTeacherActions()
   const queryClient = useQueryClient()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -115,6 +115,8 @@ export const CreateTeacherDialog = ({ open, onOpenChange }: CreateTeacherDialogP
               />
             </div>
           </div>
+
+          {error && <p className="text-destructive">{error}</p>}
 
           <DialogFooter className="pt-4">
             <Button

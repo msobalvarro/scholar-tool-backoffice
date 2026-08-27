@@ -8,9 +8,13 @@ import {
   Loader2,
   Building2,
   UserCheck,
-  GraduationCap
+  GraduationCap,
+  AlertCircle
 } from 'lucide-react'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { loginTeacherSchema, type LoginTeacherInput } from '@/schemas/auth-schema'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,24 +22,24 @@ import { useNavigate, Link } from 'react-router'
 
 export const FormTeacher = () => {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
 
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!email || !password) {
-      toast.error('Campos obligatorios', {
-        description: 'Por favor, ingresa tu correo y contraseña docente.',
-      })
-      return
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginTeacherInput>({
+    resolver: zodResolver(loginTeacherSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
+  })
 
-    setLoading(true)
+  const onSubmit = async (data: LoginTeacherInput) => {
     try {
-      await authLoginTeacherService(email, password)
+      await authLoginTeacherService(data.email, data.password)
       toast.success('Acceso autorizado', {
         description: 'Bienvenido profesor al portal docente.',
       })
@@ -45,8 +49,6 @@ export const FormTeacher = () => {
       toast.error('Error al iniciar sesión', {
         description: error instanceof Error ? error.message : 'Credenciales inválidas. Verifica tu correo o contraseña.',
       })
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -85,7 +87,7 @@ export const FormTeacher = () => {
       </div>
 
       {/* Form */}
-      <form onSubmit={submitHandler} className='space-y-4'>
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-4' noValidate>
         {/* Email Field */}
         <div className='space-y-1.5'>
           <label className='text-xs sm:text-sm font-semibold text-foreground/90' htmlFor='teacher-email'>
@@ -96,17 +98,23 @@ export const FormTeacher = () => {
               <Mail className='size-4.5' />
             </div>
             <Input
-              className='h-11 pl-11 pr-4 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all'
+              className={`h-11 pl-11 pr-4 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${
+                errors.email ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
+              }`}
               id='teacher-email'
               placeholder='profesor@institucion.edu'
-              required
               type='email'
               autoComplete='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
+              disabled={isSubmitting}
+              {...register('email')}
             />
           </div>
+          {errors.email && (
+            <p className='text-xs text-destructive flex items-center gap-1 mt-1'>
+              <AlertCircle className='size-3.5 shrink-0' />
+              <span>{errors.email.message}</span>
+            </p>
+          )}
         </div>
 
         {/* Password Field */}
@@ -121,15 +129,15 @@ export const FormTeacher = () => {
               <Lock className='size-4.5' />
             </div>
             <Input
-              className='h-11 pl-11 pr-11 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all'
+              className={`h-11 pl-11 pr-11 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${
+                errors.password ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
+              }`}
               id='teacher-password'
               placeholder='••••••••••••'
-              required
               type={showPassword ? 'text' : 'password'}
               autoComplete='current-password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
+              disabled={isSubmitting}
+              {...register('password')}
             />
             <button
               className='absolute inset-y-0 right-0 pr-3.5 flex items-center text-muted-foreground hover:text-foreground cursor-pointer transition-colors focus:outline-none'
@@ -144,6 +152,12 @@ export const FormTeacher = () => {
               )}
             </button>
           </div>
+          {errors.password && (
+            <p className='text-xs text-destructive flex items-center gap-1 mt-1'>
+              <AlertCircle className='size-3.5 shrink-0' />
+              <span>{errors.password.message}</span>
+            </p>
+          )}
         </div>
 
         {/* Remember & Forgot options */}
@@ -152,8 +166,8 @@ export const FormTeacher = () => {
             <input
               className='size-4 rounded-md border-input text-secondary accent-secondary focus:ring-secondary/30 cursor-pointer'
               type='checkbox'
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
+              disabled={isSubmitting}
+              {...register('rememberMe')}
             />
             <span>Recordarme</span>
           </label>
@@ -174,10 +188,10 @@ export const FormTeacher = () => {
         {/* Submit Button */}
         <Button
           type='submit'
-          disabled={loading}
+          disabled={isSubmitting}
           className='w-full h-11 text-sm sm:text-base font-bold rounded-xl bg-gradient-to-r from-secondary via-primary to-accent hover:opacity-95 text-white shadow-lg shadow-secondary/20 hover:shadow-secondary/30 active:scale-[0.99] transition-all cursor-pointer mt-2'
         >
-          {loading ? (
+          {isSubmitting ? (
             <>
               <Loader2 className='size-4.5 animate-spin' />
               <span>Verificando credenciales...</span>
