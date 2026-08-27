@@ -23,12 +23,12 @@ import {
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
 import { KEYSTORE_NAMES } from '@/env'
-import type { UserInstitutionResponse } from '@/dtos/types'
+import type { UserInstitutionResponse, Teacher } from '@/dtos/types'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import clsx from 'clsx'
 
-// Menu items.
+// Menu items for Institution.
 const ItemsOfInstitution = [
   {
     title: 'Dashboard',
@@ -77,15 +77,28 @@ const ItemsOfInstitution = [
   },
 ]
 
+// Menu items for Teacher.
+const ItemsOfTeacher = [
+  {
+    title: 'Inicio',
+    url: '/',
+    icon: Home,
+  },
+]
+
 export function AppSidebar() {
   const isOnline = useOnlineStatus()
   const [authInstitution] = useSimpleLocalStorage<UserInstitutionResponse>(KEYSTORE_NAMES.USER_INSTITUTION)
+  const [authTeacher] = useSimpleLocalStorage<Teacher>(KEYSTORE_NAMES.TEACHER)
   const { pathname } = useLocation()
 
   const isActivePath = (path: string) => {
     if (path === '/') return pathname === '/'
     return pathname.startsWith(path)
   }
+
+  const items = authInstitution ? ItemsOfInstitution : (authTeacher ? ItemsOfTeacher : [])
+  const panelLabel = authInstitution ? 'Institutional Panel' : (authTeacher ? 'Teacher Panel' : 'Panel')
 
   return (
     <Sidebar variant='sidebar' className='border-r border-sidebar-border/50'>
@@ -99,7 +112,7 @@ export function AppSidebar() {
               Lúmina
             </span>
             <span className='truncate text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80'>
-              Institutional Panel
+              {panelLabel}
             </span>
           </div>
         </div>
@@ -109,7 +122,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className='gap-1'>
-              {authInstitution && ItemsOfInstitution.map((item) => (
+              {items.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
                     asChild

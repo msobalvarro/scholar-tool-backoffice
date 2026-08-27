@@ -1,7 +1,7 @@
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { AsignatureResponse } from '@/dtos/types'
+import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
 
 interface AsignatureTableProps {
   data: AsignatureResponse[]

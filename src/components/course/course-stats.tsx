@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, Bookmark, UserPlus, BarChart3 } from "lucide-react"
+import { Users, Bookmark } from "lucide-react"
 
 export const GroupsStats = () => {
   const stats = [

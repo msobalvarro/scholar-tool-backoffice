@@ -26,11 +26,14 @@ import {
 } from './dialog'
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { KEYSTORE_NAMES } from '@/env'
-import type { UserInstitutionResponse } from '@/dtos/types'
+import type { UserInstitutionResponse, Teacher } from '@/dtos/types'
 
 export function NavbarUserMenu() {
-  const [user] = useSimpleLocalStorage<UserInstitutionResponse>(KEYSTORE_NAMES.USER_INSTITUTION)
+  const [userInstitution] = useSimpleLocalStorage<UserInstitutionResponse>(KEYSTORE_NAMES.USER_INSTITUTION)
+  const [teacher] = useSimpleLocalStorage<Teacher>(KEYSTORE_NAMES.TEACHER)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+
+  const user = userInstitution || teacher
 
   const handleLogout = () => {
     localStorage.clear()

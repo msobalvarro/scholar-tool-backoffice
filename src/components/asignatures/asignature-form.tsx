@@ -1,7 +1,7 @@
 import { Edit3, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import type { AsignatureResponse } from '@/dtos/types'
+import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
 
 interface AsignatureFormProps {
   formData: {
