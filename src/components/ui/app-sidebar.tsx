@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import {
   Book,
   BookUser,
@@ -8,6 +9,9 @@ import {
   Settings,
   User,
   List,
+  ChevronDown,
+  CalendarDays,
+  DollarSign,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -19,6 +23,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
 } from '@/components/ui/sidebar'
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
@@ -28,8 +35,21 @@ import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { useOnlineStatus } from '@/hooks/use-online-status'
 import clsx from 'clsx'
 
+interface SubMenuItem {
+  title: string
+  url: string
+  icon?: typeof Home
+}
+
+interface MenuItem {
+  title: string
+  url: string
+  icon: typeof Home
+  items?: SubMenuItem[]
+}
+
 // Menu items for Institution.
-const ItemsOfInstitution = [
+const ItemsOfInstitution: MenuItem[] = [
   {
     title: 'Dashboard',
     url: '/',
@@ -59,6 +79,23 @@ const ItemsOfInstitution = [
     title: 'Matrículas',
     url: '/matricule',
     icon: List,
+    items: [
+      {
+        title: 'Gestión Matrículas',
+        url: '/matricule',
+        icon: GraduationCap,
+      },
+      {
+        title: 'Reportes Diarios',
+        url: '/matricule/daily-reports',
+        icon: CalendarDays,
+      },
+      {
+        title: 'Reportes Financieros',
+        url: '/matricule/financial-reports',
+        icon: DollarSign,
+      },
+    ],
   },
   {
     title: 'Asistencia',
@@ -78,7 +115,7 @@ const ItemsOfInstitution = [
 ]
 
 // Menu items for Teacher.
-const ItemsOfTeacher = [
+const ItemsOfTeacher: MenuItem[] = [
   {
     title: 'Inicio',
     url: '/',
@@ -92,9 +129,31 @@ export function AppSidebar() {
   const [authTeacher] = useSimpleLocalStorage<Teacher>(KEYSTORE_NAMES.TEACHER)
   const { pathname } = useLocation()
 
+  const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {}
+    ItemsOfInstitution.forEach((item) => {
+      if (item.items && (item.items.some((sub) => pathname === sub.url) || pathname.startsWith(item.url))) {
+        initial[item.title] = true
+      }
+    })
+    return initial
+  })
+
+  useEffect(() => {
+    ItemsOfInstitution.forEach((item) => {
+      if (item.items && (item.items.some((sub) => pathname === sub.url) || pathname.startsWith(item.url))) {
+        setOpenSubMenus((prev) => ({ ...prev, [item.title]: true }))
+      }
+    })
+  }, [pathname])
+
+  const toggleSubMenu = (title: string) => {
+    setOpenSubMenus((prev) => ({ ...prev, [title]: !prev[title] }))
+  }
+
   const isActivePath = (path: string) => {
     if (path === '/') return pathname === '/'
-    return pathname.startsWith(path)
+    return pathname === path || pathname.startsWith(path + '/')
   }
 
   const items = authInstitution ? ItemsOfInstitution : (authTeacher ? ItemsOfTeacher : [])
@@ -122,31 +181,105 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className='gap-1'>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={isActivePath(item.url)}
-                    className={cn(
-                      'transition-all duration-200 h-10 px-3',
-                      isActivePath(item.url)
-                        ? 'bg-accent/10 text-accent hover:bg-accent/70 hover:text-white font-medium'
-                        : 'text-muted-foreground hover:bg-black/10'
-                    )}
-                  >
-                    <Link to={item.url} className='flex items-center gap-3'>
-                      <item.icon className={cn(
-                        'size-5 transition-transform duration-200',
-                        isActivePath(item.url) ? 'text-accent' : 'text-muted-foreground/70'
-                      )} />
-                      <span className='text-sm'>{item.title}</span>
-                      {isActivePath(item.url) && (
-                        <div className='ml-auto size-1.5 rounded-full bg-accent shadow-sm' />
+              {items.map((item) => {
+                const hasChildren = Boolean(item.items && item.items.length > 0)
+                const isItemActive = hasChildren
+                  ? (item.items?.some((sub) => pathname === sub.url) || pathname.startsWith(item.url))
+                  : isActivePath(item.url)
+                const isOpen = openSubMenus[item.title]
+
+                if (hasChildren) {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        onClick={() => toggleSubMenu(item.title)}
+                        isActive={isItemActive}
+                        className={cn(
+                          'transition-all duration-200 h-10 px-3 cursor-pointer select-none justify-between w-full',
+                          isItemActive
+                            ? 'bg-accent/10 text-accent hover:bg-accent/20 font-medium'
+                            : 'text-muted-foreground hover:bg-black/10'
+                        )}
+                      >
+                        <div className='flex items-center gap-3 min-w-0'>
+                          <item.icon className={cn(
+                            'size-5 transition-transform duration-200 shrink-0',
+                            isItemActive ? 'text-accent' : 'text-muted-foreground/70'
+                          )} />
+                          <span className='text-sm truncate'>{item.title}</span>
+                        </div>
+                        <ChevronDown
+                          className={cn(
+                            'size-4 transition-transform duration-200 shrink-0 text-muted-foreground/70',
+                            isOpen ? 'rotate-180 text-accent' : ''
+                          )}
+                        />
+                      </SidebarMenuButton>
+
+                      {isOpen && (
+                        <SidebarMenuSub className='my-1 gap-1 border-sidebar-border/60 pl-3'>
+                          {item.items?.map((subItem) => {
+                            const isSubActive = pathname === subItem.url
+                            return (
+                              <SidebarMenuSubItem key={subItem.url}>
+                                <SidebarMenuSubButton
+                                  asChild
+                                  isActive={isSubActive}
+                                  className={cn(
+                                    'transition-all duration-200 h-8 px-3 rounded-md',
+                                    isSubActive
+                                      ? 'bg-accent/10 text-accent font-medium hover:bg-accent/20'
+                                      : 'text-muted-foreground hover:bg-black/5 hover:text-foreground'
+                                  )}
+                                >
+                                  <Link to={subItem.url} className='flex items-center gap-2'>
+                                    {subItem.icon && (
+                                      <subItem.icon className={cn(
+                                        'size-3.5 shrink-0 transition-colors duration-200',
+                                        isSubActive ? 'text-accent' : 'text-muted-foreground/70'
+                                      )} />
+                                    )}
+                                    <span className='text-xs'>{subItem.title}</span>
+                                    {isSubActive && (
+                                      <div className='ml-auto size-1.5 rounded-full bg-accent shadow-sm' />
+                                    )}
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            )
+                          })}
+                        </SidebarMenuSub>
                       )}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                    </SidebarMenuItem>
+                  )
+                }
+
+                return (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActivePath(item.url)}
+                      className={cn(
+                        'transition-all duration-200 h-10 px-3',
+                        isActivePath(item.url)
+                          ? 'bg-accent/10 text-accent hover:bg-accent/70 hover:text-white font-medium'
+                          : 'text-muted-foreground hover:bg-black/10'
+                      )}
+                    >
+                      <Link to={item.url} className='flex items-center gap-3'>
+                        <item.icon className={cn(
+                          'size-5 transition-transform duration-200',
+                          isActivePath(item.url) ? 'text-accent' : 'text-muted-foreground/70'
+                        )} />
+                        <span className='text-sm'>{item.title}</span>
+                        {isActivePath(item.url) && (
+                          <div className='ml-auto size-1.5 rounded-full bg-accent shadow-sm' />
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
