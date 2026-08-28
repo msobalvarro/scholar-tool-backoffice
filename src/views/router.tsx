@@ -10,12 +10,14 @@ import { CoursesView } from './(logged)/institution/course/course.view'
 import { TeachersView } from './(logged)/institution/teacher/teachers.view'
 import { AsignaturesView } from './(logged)/institution/asignatures/asignatures.view'
 import { CalendarView } from './(logged)/institution/calendar/calendar.view'
-import { MatriculeView } from './(logged)/institution/matricule'
+import { MatriculeView } from './(logged)/institution/finances/matricules/matricules.view'
 import { StudentAssistanceView } from './(logged)/institution/assistance'
 import { AssistanceByDateView } from './(logged)/institution/assistance/assistence-by-date'
 import { NotFoundView } from './not-found.view'
 
 import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
+import { DailyReportsView } from './(logged)/institution/finances/daily-reports/daily-reports.view'
+import { FinancialReportsView } from './(logged)/institution/finances/financial-reports/financial-reports.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -39,6 +41,8 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/asignatures' element={<AsignaturesView />} />
       <Route path='/calendar' element={<CalendarView />} />
       <Route path='/matricule' element={<MatriculeView />} />
+      <Route path='/matricule/daily-reports' element={<DailyReportsView />} />
+      <Route path='/matricule/financial-reports' element={<FinancialReportsView />} />
       <Route path='/assistance' element={<StudentAssistanceView />} />
       <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
       <Route path='*' element={<NotFoundView />} />
