@@ -8,10 +8,10 @@ import {
   Home,
   Settings,
   User,
-  List,
   ChevronDown,
   CalendarDays,
   DollarSign,
+  CircleDollarSign,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -76,23 +76,23 @@ const ItemsOfInstitution: MenuItem[] = [
     icon: BookUser,
   },
   {
-    title: 'Matrículas',
-    url: '/matricule',
-    icon: List,
+    title: 'Finanzas',
+    url: '/finances',
+    icon: CircleDollarSign,
     items: [
       {
         title: 'Gestión Matrículas',
-        url: '/matricule',
+        url: '/finances/matricule',
         icon: GraduationCap,
       },
       {
         title: 'Reportes Diarios',
-        url: '/matricule/daily-reports',
+        url: '/finances/daily-reports',
         icon: CalendarDays,
       },
       {
         title: 'Reportes Financieros',
-        url: '/matricule/financial-reports',
+        url: '/finances/financial-reports',
         icon: DollarSign,
       },
     ],

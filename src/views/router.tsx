@@ -40,9 +40,9 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/teachers' element={<TeachersView />} />
       <Route path='/asignatures' element={<AsignaturesView />} />
       <Route path='/calendar' element={<CalendarView />} />
-      <Route path='/matricule' element={<MatriculeView />} />
-      <Route path='/matricule/daily-reports' element={<DailyReportsView />} />
-      <Route path='/matricule/financial-reports' element={<FinancialReportsView />} />
+      <Route path='/finances/matricule' element={<MatriculeView />} />
+      <Route path='/finances/daily-reports' element={<DailyReportsView />} />
+      <Route path='/finances/financial-reports' element={<FinancialReportsView />} />
       <Route path='/assistance' element={<StudentAssistanceView />} />
       <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
       <Route path='*' element={<NotFoundView />} />

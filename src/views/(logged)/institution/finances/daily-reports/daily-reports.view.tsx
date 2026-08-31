@@ -1,15 +1,31 @@
+import { useState } from 'react'
 import { TitlePageView } from '@/components/ui/title-page'
 import { ViewContainer } from '@/components/ui/view-container'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { CalendarDays, FileText } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { CalendarDays, FileText, Plus } from 'lucide-react'
+import { CreateDailyReportModal } from '@/components/daily-reports/create-daily-report-modal'
+import { useDailyReportsByDate } from '@/hooks/API/use-daily-reports'
 
 export const DailyReportsView = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { data: dailyReports } = useDailyReportsByDate()
+
   return (
     <ViewContainer className='flex flex-col gap-6'>
-      <TitlePageView
-        title='Reportes Diarios'
-        subtitle='Consulta y genera los reportes de matrículas y operaciones del día'
-      />
+      <div className='flex items-center justify-between'>
+        <TitlePageView
+          title='Reportes Diarios'
+          subtitle='Consulta y genera los reportes de matrículas y operaciones del día'
+        />
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className='rounded-xl font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 gap-2'
+        >
+          <Plus className='size-4' />
+          Nuevo Reporte
+        </Button>
+      </div>
 
       <Card className='border-dashed'>
         <CardHeader className='text-center items-center pb-2'>
@@ -28,6 +44,11 @@ export const DailyReportsView = () => {
           </div>
         </CardContent>
       </Card>
+
+      <CreateDailyReportModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </ViewContainer>
   )
 }
