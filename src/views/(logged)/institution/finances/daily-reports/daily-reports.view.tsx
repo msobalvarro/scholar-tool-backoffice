@@ -1,50 +1,69 @@
 import { useState } from 'react'
+import dayjs from 'dayjs'
 import { TitlePageView } from '@/components/ui/title-page'
 import { ViewContainer } from '@/components/ui/view-container'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CalendarDays, FileText, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { CreateDailyReportModal } from '@/components/daily-reports/create-daily-report-modal'
+import { DailyReportDateRangePicker } from '@/components/daily-reports/daily-report-date-range-picker'
+import { DailyReportsStats } from '@/components/daily-reports/daily-reports-stats'
+import { DailyReportsTable } from '@/components/daily-reports/daily-reports-table'
 import { useDailyReportsByDate } from '@/hooks/API/use-daily-reports'
 
 export const DailyReportsView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { data: dailyReports } = useDailyReportsByDate()
+  const [fromDate, setFromDate] = useState<string>(() =>
+    dayjs().startOf('month').format('YYYY-MM-DD')
+  )
+  const [toDate, setToDate] = useState<string>(() =>
+    dayjs().format('YYYY-MM-DD')
+  )
+
+  const {
+    data: dailyReports,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useDailyReportsByDate(fromDate, toDate)
+
+  const handleDateRangeChange = (from: string, to: string) => {
+    setFromDate(from)
+    setToDate(to)
+  }
 
   return (
-    <ViewContainer className='flex flex-col gap-6'>
-      <div className='flex items-center justify-between'>
+    <ViewContainer className='flex flex-col gap-6 pb-12'>
+      {/* ── Header ── */}
+      <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
         <TitlePageView
           title='Reportes Diarios'
-          subtitle='Consulta y genera los reportes de matrículas y operaciones del día'
+          subtitle='Consulta, filtra por rango de fechas y registra los movimientos y operaciones'
         />
         <Button
           onClick={() => setIsModalOpen(true)}
-          className='rounded-xl font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 gap-2'
+          className='rounded-xl font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none gap-2 h-10 px-4 self-start sm:self-auto cursor-pointer'
         >
           <Plus className='size-4' />
           Nuevo Reporte
         </Button>
       </div>
 
-      <Card className='border-dashed'>
-        <CardHeader className='text-center items-center pb-2'>
-          <div className='p-3 rounded-full bg-accent/10 text-accent mb-2'>
-            <CalendarDays className='size-8' />
-          </div>
-          <CardTitle className='text-xl'>Módulo de Reportes Diarios</CardTitle>
-          <CardDescription className='max-w-md'>
-            Esta vista está lista para integrar métricas, registros diarios y exportaciones en PDF o Excel.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='flex flex-col items-center justify-center p-8 text-center text-muted-foreground'>
-          <div className='flex items-center gap-2 text-sm'>
-            <FileText className='size-4' />
-            <span>Sin datos para mostrar actualmente.</span>
-          </div>
-        </CardContent>
-      </Card>
+      {/* ── Date Range Selector ── */}
+      <DailyReportDateRangePicker
+        fromDate={fromDate}
+        toDate={toDate}
+        onDateRangeChange={handleDateRangeChange}
+        onRefresh={() => refetch()}
+        isFetching={isFetching}
+      />
 
+      {/* ── Summary Cards ── */}
+      <DailyReportsStats reports={dailyReports} />
+
+      {/* ── Reports Table / List ── */}
+      <DailyReportsTable data={dailyReports} isLoading={isLoading} />
+
+      {/* ── Modal for creating new daily report ── */}
       <CreateDailyReportModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

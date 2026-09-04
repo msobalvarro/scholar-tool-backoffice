@@ -31,7 +31,6 @@ import {
 import { createDailyReportSchema, type CreateDailyReportSchema } from '@/schemas/daily-reports-schema'
 import { ConceptType, TypeMovementType } from '@/dtos/inputs/daily-reports'
 import { useCreateDailyReport } from '@/hooks/API/use-daily-reports'
-import { toast } from 'sonner'
 
 interface CreateDailyReportModalProps {
   isOpen: boolean
