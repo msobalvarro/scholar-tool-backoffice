@@ -1,4 +1,5 @@
 import type { Institution } from '../types';
+import type { Student } from '../types/models';
 
 export const TypeMovementType = {
   INCOME: 'Ingreso',
@@ -36,4 +37,5 @@ export interface IDailyReportStudentDto {
   income_recorded_amount_usd?: number
   expense_amount?: number
   expense_amount_usd?: number
+  student?: Student
 }
