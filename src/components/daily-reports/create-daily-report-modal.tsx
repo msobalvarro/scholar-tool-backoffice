@@ -31,6 +31,7 @@ import {
 import { createDailyReportSchema, type CreateDailyReportSchema } from '@/schemas/daily-reports-schema'
 import { ConceptType, TypeMovementType } from '@/dtos/inputs/daily-reports'
 import { useCreateDailyReport } from '@/hooks/API/use-daily-reports'
+import { StudentSearchSelect } from './student-search-select'
 
 interface CreateDailyReportModalProps {
   isOpen: boolean
@@ -62,12 +63,15 @@ export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportMod
       income_recorded_amount_usd: 0,
       expense_amount: 0,
       expense_amount_usd: 0,
+      student: '',
     },
   })
 
   const typeMovement = watch('type_movement')
+  const concept = watch('concept')
   const isIncome = typeMovement === TypeMovementType.INCOME
   const isExpense = typeMovement === TypeMovementType.EXPENSE
+  const isEnrollment = concept === ConceptType.ENROLLMENT_FEE
 
   const onSubmit = async (data: CreateDailyReportSchema) => {
     try {
@@ -188,6 +192,23 @@ export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportMod
                 <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>{errors.concept.message}</p>
               )}
             </div>
+
+            {/* Seleccionar estudiante cuando el concepto sea Matrícula */}
+            {isEnrollment && (
+              <div className='col-span-2'>
+                <Controller
+                  name='student'
+                  control={control}
+                  render={({ field }) => (
+                    <StudentSearchSelect
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={errors.student?.message}
+                    />
+                  )}
+                />
+              </div>
+            )}
 
             {/* Descripción */}
             <div className='space-y-2 col-span-2'>
