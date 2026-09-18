@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { createDailyReportSchema, type CreateDailyReportSchema } from '@/schemas/daily-reports-schema'
-import { ConceptType, TypeMovementType } from '@/dtos/inputs/daily-reports'
+import { ExpenseConceptType, IncomeConceptType, TypeMovementType } from '@/dtos/inputs/daily-reports'
 import { useCreateDailyReport } from '@/hooks/API/use-daily-reports'
 import { StudentSearchSelect } from './student-search-select'
 
@@ -39,7 +39,6 @@ interface CreateDailyReportModalProps {
 }
 
 const typeMovementOptions = Object.values(TypeMovementType)
-const conceptOptions = Object.values(ConceptType)
 
 export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportModalProps) => {
   const { mutateAsync: createReport, isPending } = useCreateDailyReport()
@@ -71,7 +70,7 @@ export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportMod
   const concept = watch('concept')
   const isIncome = typeMovement === TypeMovementType.INCOME
   const isExpense = typeMovement === TypeMovementType.EXPENSE
-  const isEnrollment = concept === ConceptType.ENROLLMENT_FEE
+  const isEnrollment = Object.values(IncomeConceptType).includes(concept as IncomeConceptType)
 
   const onSubmit = async (data: CreateDailyReportSchema) => {
     try {
@@ -181,9 +180,13 @@ export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportMod
                       <SelectValue placeholder='Selecciona concepto' />
                     </SelectTrigger>
                     <SelectContent className='rounded-xl border-none shadow-xl'>
-                      {conceptOptions.map((concept) => (
+                      {isIncome && Object.values(IncomeConceptType).map((concept) => (
                         <SelectItem key={concept} value={concept} className='rounded-lg'>{concept}</SelectItem>
                       ))}
+                      {isExpense && Object.values(ExpenseConceptType).map((concept) => (
+                        <SelectItem key={concept} value={concept} className='rounded-lg'>{concept}</SelectItem>
+                      ))}
+                      {/* {OtherConceptType} */}
                     </SelectContent>
                   </Select>
                 )}

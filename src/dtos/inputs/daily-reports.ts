@@ -8,23 +8,43 @@ export const TypeMovementType = {
 } as const;
 export type TypeMovementType = typeof TypeMovementType[keyof typeof TypeMovementType];
 
-export const ConceptType = {
-  KIOSK_RENTAL: 'Alquiler de quiosco',
-  CANCELLED: 'Cancelado',
-  TUTION_FEES: 'Colegiatura',
-  ADMINISTRATIVE_EXPENSES: 'Gastos administrativos',
-  OFFICE_EXPENSES: 'Gastos de oficina',
+// Conceptos de Ingreso
+export const IncomeConceptType = {
   ENROLLMENT_FEE: 'Matrícula',
-  BUILDING_MAINTENANCE: 'Mantenimiento de edificio',
-  OTHER_EXPENSES: 'Otros gastos',
-  OTHER_INCOME: 'Otros ingresos',
-  EXAM_RESCHEDULING: 'Recuperación de exámenes',
+  TUTION_FEES: 'Colegiatura',
+  KIOSK_RENTAL: 'Alquiler de quiosco',
   DOCUMENT_REQUESTS: 'Solicitud de documentos',
+  EXAM_RESCHEDULING: 'Recuperación de exámenes',
   TEXTBOOK_SALES: 'Venta de libros',
   UNIFORM_SALES: 'Venta de uniformes',
+  OTHER_INCOME: 'Otros ingresos',
+} as const;
+export type IncomeConceptType = typeof IncomeConceptType[keyof typeof IncomeConceptType];
+
+// Conceptos de Egreso
+export const ExpenseConceptType = {
+  ADMINISTRATIVE_EXPENSES: 'Gastos administrativos',
+  OFFICE_EXPENSES: 'Gastos de oficina',
+  BUILDING_MAINTENANCE: 'Mantenimiento de edificio',
+  OTHER_EXPENSES: 'Otros gastos',
+} as const;
+export type ExpenseConceptType = typeof ExpenseConceptType[keyof typeof ExpenseConceptType];
+
+// Conceptos Generales / Otros
+export const OtherConceptType = {
+  CANCELLED: 'Cancelado',
   OTHER: 'Otro',
 } as const;
+export type OtherConceptType = typeof OtherConceptType[keyof typeof OtherConceptType];
+
+// Todos los conceptos agrupados
+export const ConceptType = {
+  ...IncomeConceptType,
+  ...ExpenseConceptType,
+  ...OtherConceptType,
+} as const;
 export type ConceptType = typeof ConceptType[keyof typeof ConceptType];
+
 
 export interface IDailyReportStudentDto {
   institution: Institution
