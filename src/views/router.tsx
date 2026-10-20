@@ -18,12 +18,14 @@ import { NotFoundView } from './not-found.view'
 import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
 import { DailyReportsView } from './(logged)/institution/finances/daily-reports/daily-reports.view'
 import { FinancialReportsView } from './(logged)/institution/finances/financial-reports/financial-reports.view'
+import { TaskScheduleView } from './(logged)/teacher/task-schedule/task-schedule.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
     <Routes>
       <Route path='/' element={<TeacherWelcomeView />} />
       <Route path='*' element={<NotFoundView />} />
+      <Route path='/task-schedule' element={<TaskScheduleView />} />
     </Routes>
   </Layout>
 )

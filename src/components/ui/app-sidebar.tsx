@@ -121,6 +121,11 @@ const ItemsOfTeacher: MenuItem[] = [
     url: '/',
     icon: Home,
   },
+  {
+    title: 'Cronogramas de tareas',
+    url: '/task-schedule',
+    icon: Calendar,
+  },
 ]
 
 export function AppSidebar() {

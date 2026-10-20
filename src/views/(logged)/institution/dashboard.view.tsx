@@ -366,15 +366,15 @@ export const DashboardView = () => {
               <div className='space-y-2.5 pt-1'>
                 <div className='p-3 bg-muted/40 rounded-2xl border border-border/40 flex justify-between items-center text-xs'>
                   <span className='text-muted-foreground'>Institución:</span>
-                  <span className='font-bold text-foreground truncate max-w-[170px]'>{institution?.name || 'Lúmina Education'}</span>
+                  <span className='font-bold text-foreground truncate max-w-42.5'>{institution?.name || 'Lúmina Education'}</span>
                 </div>
                 <div className='p-3 bg-muted/40 rounded-2xl border border-border/40 flex justify-between items-center text-xs'>
                   <span className='text-muted-foreground'>Administrador:</span>
-                  <span className='font-bold text-foreground truncate max-w-[170px]'>{authUser?.name || 'Administrador'}</span>
+                  <span className='font-bold text-foreground truncate max-w-42.5'>{authUser?.name || 'Administrador'}</span>
                 </div>
                 <div className='p-3 bg-muted/40 rounded-2xl border border-border/40 flex justify-between items-center text-xs'>
                   <span className='text-muted-foreground'>Correo de acceso:</span>
-                  <span className='font-bold text-foreground truncate max-w-[170px]'>{authUser?.email || 'admin@lumina.edu'}</span>
+                  <span className='font-bold text-foreground truncate max-w-42.5'>{authUser?.email || 'admin@lumina.edu'}</span>
                 </div>
                 <div className='p-3 bg-muted/40 rounded-2xl border border-border/40 flex justify-between items-center text-xs'>
                   <span className='text-muted-foreground'>Estado:</span>
@@ -392,7 +392,7 @@ export const DashboardView = () => {
           </div>
 
           {/* Academic Highlights / Upcoming Events & Recommendations */}
-          <div className='lg:col-span-2 bg-gradient-to-br from-indigo-500/5 via-card to-accent/5 border border-border/70 rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-6'>
+          <div className='lg:col-span-2 bg-linear-to-br from-indigo-500/5 via-card to-accent/5 border border-border/70 rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-6'>
             <div className='space-y-4'>
               <div className='flex items-center justify-between'>
                 <div className='inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-primary/10 text-primary font-semibold text-xs'>
