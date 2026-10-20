@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowUpDown,
   MoreHorizontal,
   Edit,
   Trash2
@@ -27,15 +26,9 @@ interface TeacherTableProps {
   onDelete: (teacher: Teacher) => void
 }
 
-type SortConfig = {
-  key: keyof Teacher | null
-  direction: 'asc' | 'desc'
-}
-
 export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTableProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'asc' })
 
   const filteredData = useMemo(() => {
     if (!searchQuery) return data
@@ -48,36 +41,12 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
     )
   }, [data, searchQuery])
 
-  const sortedData = useMemo(() => {
-    if (!sortConfig.key) return filteredData
-
-    return [...filteredData].sort((a, b) => {
-      const aValue = a[sortConfig.key!]
-      const bValue = b[sortConfig.key!]
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortConfig.direction === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue)
-      }
-
-      return 0
-    })
-  }, [filteredData, sortConfig])
-
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
-    return sortedData.slice(startIndex, startIndex + itemsPerPage)
-  }, [sortedData, currentPage, itemsPerPage])
+    return filteredData.slice(startIndex, startIndex + itemsPerPage)
+  }, [filteredData, currentPage, itemsPerPage])
 
-  const totalPages = Math.ceil(sortedData.length / itemsPerPage)
-
-  const handleSort = (key: keyof Teacher) => {
-    setSortConfig(current => ({
-      key,
-      direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc'
-    }))
-  }
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage)
 
   return (
     <div className='bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden'>
@@ -85,29 +54,20 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
         <table className='w-full text-sm text-left'>
           <thead className='bg-gray-50/50 border-b border-gray-100'>
             <tr>
-              <th onClick={() => handleSort('name')} className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors'>
-                <div className='flex items-center gap-2'>
-                  Profesor
-                  <ArrowUpDown className='h-3 w-3' />
-                </div>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Profesor
               </th>
-              <th onClick={() => handleSort('email')} className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors'>
-                <div className='flex items-center gap-2'>
-                  Correo Electrónico
-                  <ArrowUpDown className='h-3 w-3' />
-                </div>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Correo Electrónico
               </th>
-              <th onClick={() => handleSort('phoneNumber')} className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors'>
-                <div className='flex items-center gap-2'>
-                  Teléfono
-                  <ArrowUpDown className='h-3 w-3' />
-                </div>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Teléfono
               </th>
-              <th onClick={() => handleSort('status')} className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors'>
-                <div className='flex items-center gap-2'>
-                  Estado
-                  <ArrowUpDown className='h-3 w-3' />
-                </div>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Estado
+              </th>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Asignaturas
               </th>
               <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider text-right'>
                 Acciones
@@ -160,6 +120,11 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
                       <div className={`h-1.5 w-1.5 rounded-full mr-1.5 ${teacher.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
                       {teacher.status === 'active' ? 'Activo' : 'Inactivo'}
                     </Badge>
+                  </td>
+                  <td className='px-6 py-4'>
+                    <div className='flex items-center gap-2'>
+                      {teacher.asignatures?.map((asignature) => asignature.name).join(', ')}
+                    </div>
                   </td>
                   <td className='px-6 py-4 text-right'>
                     <DropdownMenu>

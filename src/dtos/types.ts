@@ -1,3 +1,7 @@
+import type { Asignature } from './types/models'
+
+export type { Asignature }
+
 export type StatusType = 'idle' | 'loading' | 'success' | { error: string }
 
 export type Theme = "dark" | "light" | "system"
@@ -37,6 +41,7 @@ export type Teacher = {
   status: 'active' | 'inactive'
   institution: Institution
   photo?: string
+  asignatures?: Asignature[]
 }
 
 
