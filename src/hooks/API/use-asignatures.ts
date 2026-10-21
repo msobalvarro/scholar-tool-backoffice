@@ -23,6 +23,16 @@ export function useAsignatures(idOrParams?: string | Record<string, unknown>, pa
   })
 }
 
+export const useAsignatureByTeacher = () => {
+  return useQuery({
+    queryKey: ['asignatures-teacher'],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get<AsignatureResponse[]>('/asignatures/teacher/all')
+      return data
+    }
+  })
+}
+
 export const useAsignatureActions = () => {
   const [error, setError] = useState<string | null>(null)
   const queryClient = useQueryClient()
