@@ -1,10 +1,11 @@
 import { z } from 'zod'
+import { zodToJsonSchema } from 'zod-to-json-schema'
 
 export const taskDetailSchema = z.object({
   content: z.string().min(1, 'El contenido es requerido'),
   evaluationMethod: z.string().min(1, 'El método de evaluación es requerido'),
   page: z.string().optional(),
-  inNotebook: z.boolean().default(false),
+  inNotebook: z.boolean().default(false).optional(),
   date: z.string().min(1, 'La fecha es requerida'),
   points: z.coerce.number().min(0, 'El puntaje debe ser mayor o igual a 0'),
 })
@@ -20,13 +21,11 @@ export const scheduleUnitSchema = z.object({
 export type ScheduleUnitSchema = z.infer<typeof scheduleUnitSchema>
 
 export const taskScheduleSchema = z.object({
-  teacherId: z.string().optional(),
   asignatureId: z.string().min(1, 'Selecciona una asignatura'),
   month: z.coerce.number().min(1).max(12),
   year: z.coerce.number().min(2000),
-  aproved: z.boolean().optional(),
-  aprovedBy: z.string().optional(),
   scheduleUnit: z.array(scheduleUnitSchema).min(1, 'Agrega al menos una unidad al cronograma'),
 })
+  .describe('')
 
 export type TaskScheduleSchema = z.infer<typeof taskScheduleSchema>

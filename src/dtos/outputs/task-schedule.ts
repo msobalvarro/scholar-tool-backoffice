@@ -25,6 +25,6 @@ export interface TaskDetail {
   evaluationMethod: string
   page: string | null
   inNotebook: boolean
-  date: Date
+  date: string
   points: number
 }

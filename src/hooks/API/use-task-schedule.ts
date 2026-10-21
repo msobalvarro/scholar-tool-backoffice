@@ -4,32 +4,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { axiosInstance } from '@/adapters/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
-import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
-import { KEYSTORE_NAMES } from '@/env'
-import type { Teacher, Asignature } from '@/dtos/types'
-import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
 
-export const useTeacherAsignatures = () => {
-  const [teacher] = useSimpleLocalStorage<Teacher>(KEYSTORE_NAMES.TEACHER)
-
+export const useTasksSchedule = ({ year, month }: { year: number, month: number }) => {
   const query = useQuery({
-    queryKey: ['teacher-asignatures', teacher?._id],
+    queryKey: ['task-schedules', 'date', year, month],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<AsignatureResponse[]>('/asignatures/teacher/all')
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedule/date/${year}/${month}`)
       return data
     },
-    enabled: Boolean(!teacher?.asignatures || teacher.asignatures.length === 0),
   })
 
-  const asignatures: (Asignature | AsignatureResponse)[] =
-    teacher?.asignatures && teacher.asignatures.length > 0
-      ? teacher.asignatures
-      : (query.data || [])
-
   return {
-    asignatures,
-    teacher,
-    isLoading: query.isLoading && (!teacher?.asignatures || teacher.asignatures.length === 0),
+    taskSchedules: query.data,
+    isLoading: query.isLoading,
   }
 }
 
