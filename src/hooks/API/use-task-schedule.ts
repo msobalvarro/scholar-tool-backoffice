@@ -9,7 +9,22 @@ export const useTasksSchedule = ({ year, month }: { year: number, month: number 
   const query = useQuery({
     queryKey: ['task-schedules', 'date', year, month],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedule/date/${year}/${month}`)
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date/${year}/${month}`)
+      return data
+    },
+  })
+
+  return {
+    taskSchedules: query.data,
+    isLoading: query.isLoading,
+  }
+}
+
+export const useTasksScheduleByTeacher = ({ year, month }: { year: number, month: number }) => {
+  const query = useQuery({
+    queryKey: ['task-schedules', 'teacher', year, month],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/teacher?year=${year}&month=${month}`)
       return data
     },
   })

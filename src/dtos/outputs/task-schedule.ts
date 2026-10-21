@@ -12,6 +12,7 @@ export interface TaskSchedule {
   aprovedBy?: UserInstitution | null
   scheduleUnit: ScheduleUnit[]
   institution: Institution
+  createdAt: Date
 }
 
 export interface ScheduleUnit {

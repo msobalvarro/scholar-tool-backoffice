@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   CheckCircle2,
   Clock,
@@ -13,56 +13,50 @@ import {
   Check,
   X,
   Layers
-} from 'lucide-react';
-import type { TaskSchedule } from '@/dtos/outputs/task-schedule';
-
-
-const MONTH_NAMES = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-];
+} from 'lucide-react'
+import type { TaskSchedule } from '@/dtos/outputs/task-schedule'
+import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 
 interface TaskSchedulesListProps {
-  schedules: TaskSchedule[];
+  schedules: TaskSchedule[]
 }
 
 export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => {
-  const [selectedScheduleIndex, setSelectedScheduleIndex] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [notebookFilter, setNotebookFilter] = useState<boolean | null>(null);
-  const [collapsedUnits, setCollapsedUnits] = useState<{ [key: number]: boolean }>({});
+  const [selectedScheduleIndex, setSelectedScheduleIndex] = useState(0)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [notebookFilter, setNotebookFilter] = useState<boolean | null>(null)
+  const [collapsedUnits, setCollapsedUnits] = useState<{ [key: number]: boolean }>({})
 
   if (!schedules || schedules.length === 0) {
     return (
       <div className="p-4">
         No hay cronogramas disponibles para mostrar.
       </div>
-    );
+    )
   }
 
-  const currentSchedule = schedules[selectedScheduleIndex];
+  const currentSchedule = schedules[selectedScheduleIndex]
 
   // Calcular total de puntos del cronograma actual
   const totalPoints = currentSchedule.scheduleUnit.reduce((acc, unit) => {
-    return acc + unit.tasks.reduce((tAcc, task) => tAcc + (task.points || 0), 0);
-  }, 0);
+    return acc + unit.tasks.reduce((tAcc, task) => tAcc + (task.points || 0), 0)
+  }, 0)
 
   const toggleUnit = (index: number) => {
-    setCollapsedUnits((prev) => ({ ...prev, [index]: !prev[index] }));
-  };
+    setCollapsedUnits((prev) => ({ ...prev, [index]: !prev[index] }))
+  }
 
   const formatDate = (dateStr: string) => {
     try {
-      const date = new Date(dateStr);
-      return new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).format(date);
+      const date = new Date(dateStr)
+      return new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)
     } catch {
-      return dateStr;
+      return dateStr
     }
-  };
+  }
 
   return (
-    <div className="p-4">
-
+    <div>
       {/* Selector de Cronograma (si hay más de uno en la lista) */}
       {schedules.length > 1 && (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -73,14 +67,14 @@ export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => 
           <select
             value={selectedScheduleIndex}
             onChange={(e) => {
-              setSelectedScheduleIndex(Number(e.target.value));
-              setCollapsedUnits({}); // Reiniciar estados de colapso al cambiar
+              setSelectedScheduleIndex(Number(e.target.value))
+              setCollapsedUnits({}) // Reiniciar estados de colapso al cambiar
             }}
             className="w-full sm:w-auto bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
           >
             {schedules.map((sch, idx) => (
               <option key={idx} value={idx}>
-                Asignatura: {sch.asignature._id} — {MONTH_NAMES[sch.month - 1]} {sch.year}
+                Asignatura: {sch.asignature.name} — {MONTH_NAMES[sch.month - 1]} {sch.year}
               </option>
             ))}
           </select>
@@ -93,8 +87,9 @@ export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => 
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-md">
-                Asignatura: {currentSchedule.asignature._id}
+                Asignatura: {currentSchedule.asignature.name}
               </span>
+
               <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
                 {MONTH_NAMES[currentSchedule.month - 1] || `Mes ${currentSchedule.month}`} {currentSchedule.year}
               </span>
@@ -120,7 +115,7 @@ export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-slate-600">
           <div className="flex items-center gap-2">
             <User className="w-4 h-4 text-slate-400" />
-            <span>Profesor ID: <strong className="text-slate-700">{currentSchedule.teacher._id || 'No asignado'}</strong></span>
+            <span>Profesor: <strong className="text-slate-700">{currentSchedule.teacher.name || 'No asignado'}</strong></span>
           </div>
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-slate-400" />
@@ -161,20 +156,20 @@ export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => 
       {/* Lista de Unidades */}
       <div className="space-y-6">
         {currentSchedule.scheduleUnit.map((unit, unitIdx) => {
-          const isCollapsed = collapsedUnits[unitIdx];
+          const isCollapsed = collapsedUnits[unitIdx]
 
           const filteredTasks = unit.tasks.filter((task) => {
             const matchesSearch =
               task.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              task.evaluationMethod.toLowerCase().includes(searchTerm.toLowerCase());
+              task.evaluationMethod.toLowerCase().includes(searchTerm.toLowerCase())
             const matchesNotebook =
-              notebookFilter === null || task.inNotebook === notebookFilter;
+              notebookFilter === null || task.inNotebook === notebookFilter
 
-            return matchesSearch && matchesNotebook;
-          });
+            return matchesSearch && matchesNotebook
+          })
 
           if (filteredTasks.length === 0 && (searchTerm || notebookFilter !== null)) {
-            return null;
+            return null
           }
 
           return (
@@ -258,9 +253,9 @@ export const TaskSchedulesListView = ({ schedules }: TaskSchedulesListProps) => 
                 </div>
               )}
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}

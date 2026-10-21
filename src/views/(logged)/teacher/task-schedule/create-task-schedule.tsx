@@ -1,6 +1,6 @@
-import React from 'react';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -17,25 +17,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Plus, BookOpen, Layers } from 'lucide-react';
-import { taskScheduleSchema, type TaskScheduleSchema } from '@/schemas/task-schedule-schema';
-import { useAsignatureByTeacher } from '@/hooks/API/use-asignatures';
-import Select from 'react-select';
-import { UnitItemField } from '@/components/task-schedule/unit-item-field';
-import { MONTH_NAMES } from '@/constants/calendar-events.constant';
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Plus, BookOpen, Layers } from 'lucide-react'
+import { taskScheduleSchema, type TaskScheduleSchema } from '@/schemas/task-schedule-schema'
+import { useAsignatureByTeacher } from '@/hooks/API/use-asignatures'
+import Select from 'react-select'
+import { UnitItemField } from '@/components/task-schedule/unit-item-field'
+import { MONTH_NAMES } from '@/constants/calendar-events.constant'
+import { useTaskScheduleActions } from '@/hooks/API/use-task-schedule'
 
 
 interface TaskScheduleDialogFormProps {
-  onSubmit: (data: TaskScheduleSchema) => void;
-  triggerButtonText?: string;
+  triggerButtonText?: string
 }
 
-export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nuevo Cronograma' }: TaskScheduleDialogFormProps) => {
+export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronograma' }: TaskScheduleDialogFormProps) => {
   const { data: asignatures } = useAsignatureByTeacher()
-  const [open, setOpen] = React.useState(false);
+  const { createTaskSchedule, isLoading, error } = useTaskScheduleActions()
+  const [open, setOpen] = useState(false)
 
   const form = useForm<TaskScheduleSchema>({
     resolver: zodResolver(taskScheduleSchema),
@@ -59,7 +60,7 @@ export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nu
         }
       ]
     },
-  });
+  })
 
   const {
     fields: unitFields,
@@ -68,13 +69,13 @@ export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nu
   } = useFieldArray({
     control: form.control,
     name: 'scheduleUnit',
-  });
+  })
 
-  const handleSubmitForm = (data: TaskScheduleSchema) => {
-    onSubmit(data);
-    setOpen(false);
-    form.reset();
-  };
+  const handleSubmitForm = async (data: TaskScheduleSchema) => {
+    await createTaskSchedule(data)
+    setOpen(false)
+    form.reset()
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -112,7 +113,9 @@ export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nu
                         options={
                           asignatures?.map(asignature => ({ value: asignature._id, label: asignature.name })) || []
                         }
-                        onChange={field.onChange}
+                        placeholder='Seleccionar asignatura'
+                        defaultInputValue={asignatures?.find(asignature => asignature._id === field.value)?.name}
+                        onChange={(val) => field.onChange(val?.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -130,6 +133,7 @@ export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nu
                       <Select
                         options={MONTH_NAMES.map((m, i) => ({ value: i + 1, label: m }))}
                         onChange={(val) => field.onChange(val?.value)}
+                        defaultValue={{ value: field.value, label: MONTH_NAMES[field.value - 1] }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,16 +187,19 @@ export const TaskScheduleDialogForm = ({ onSubmit, triggerButtonText = 'Crear Nu
               ))}
             </div>
 
-            <DialogFooter className='pt-4 border-t border-slate-200'>
-              <Button type='button' variant='outline' onClick={() => setOpen(false)}>
+            <DialogFooter className='pt-4 border-t border-slate-200 items-center w-full'>
+              {error && <span className='text-destructive'>{error}</span>}
+              <Button disabled={isLoading} type='button' variant='outline' onClick={() => setOpen(false)}>
                 Cancelar
               </Button>
-              <Button type='submit'>Guardar Cronograma</Button>
+              <Button type='submit' disabled={isLoading}>
+                {isLoading ? 'Guardando...' : 'Guardar Cronograma'}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 

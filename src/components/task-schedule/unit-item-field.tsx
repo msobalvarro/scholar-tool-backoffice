@@ -64,12 +64,11 @@ export const UnitItemField: React.FC<UnitItemFieldProps> = ({ form, unitIndex, r
       </div>
 
       {/* Lista de Tareas */}
-      <div className='space-y-3 pl-2 sm:pl-4'>
+      <div className='space-y-3'>
         <div className='flex items-center justify-between'>
           <span className='text-xs font-semibold text-slate-500 uppercase tracking-wider'>Tareas de la Unidad</span>
           <Button
             type='button'
-            variant='secondary'
             size='sm'
             className='text-xs h-7'
             onClick={() => appendTask({ content: '', evaluationMethod: '', inNotebook: false, date: '', points: 10 })}
@@ -81,7 +80,7 @@ export const UnitItemField: React.FC<UnitItemFieldProps> = ({ form, unitIndex, r
         <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
           {taskFields.map((taskField, taskIndex) => (
             <div key={taskField.id} className='flex flex-col items-stretch gap-4 border p-4 rounded-xl'>
-              <div className='flex justify-between items-center w-full px-2'>
+              <div className='flex justify-between items-center w-full border-b pb-2'>
                 <span>Tarea # {taskIndex + 1}</span>
 
                 {taskFields.length > 1 && (
@@ -140,7 +139,7 @@ export const UnitItemField: React.FC<UnitItemFieldProps> = ({ form, unitIndex, r
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-[11px]'>Pts</FormLabel>
-                    <FormControl><Input type='number' {...field} /></FormControl>
+                    <FormControl><Input type='number' {...field} onChange={(e) => field.onChange(Number(e.target.value))} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
