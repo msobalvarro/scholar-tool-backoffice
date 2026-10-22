@@ -2,12 +2,13 @@ import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 import type { TaskSchedule } from '@/dtos/outputs/task-schedule'
 import dayjs from 'dayjs'
 import { TaskScheduleDialogForm } from './create-task-schedule'
+import { Check, CheckCheck } from 'lucide-react'
 
 interface Props {
   dataList: TaskSchedule[]
 }
 
-const ScheduleTable = ({ dataList = [] }: Props) => {
+export const ScheduleTable = ({ dataList = [] }: Props) => {
   const getMonthName = (monthNumber: number) => MONTH_NAMES[monthNumber - 1]
 
   return (
@@ -79,17 +80,22 @@ const ScheduleTable = ({ dataList = [] }: Props) => {
 
                 {/* Acciones */}
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <TaskScheduleDialogForm
-                    isUpdate={true}
-                    triggerButtonText='Editar Cronograma'
-                    defaultValues={{
-                      asignatureId: item.asignature._id!,
-                      month: item.month,
-                      year: item.year,
-                      scheduleUnit: item.scheduleUnit!,
-                    }}
-                    taskId={item._id}
-                  />
+                  {!item.aproved && (
+                    <TaskScheduleDialogForm
+                      isUpdate={true}
+                      triggerButtonText='Editar Cronograma'
+                      defaultValues={{
+                        asignatureId: item.asignature._id!,
+                        month: item.month,
+                        year: item.year,
+                        scheduleUnit: item.scheduleUnit!,
+                      }}
+                      taskId={item._id}
+                    />
+                  )}
+                  {item.aproved && (
+                    <Check className='text-green-500' size={24} />
+                  )}
                 </td>
               </tr>
             ))
@@ -105,5 +111,3 @@ const ScheduleTable = ({ dataList = [] }: Props) => {
     </div>
   )
 }
-
-export default ScheduleTable

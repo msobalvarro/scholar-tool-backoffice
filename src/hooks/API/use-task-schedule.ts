@@ -20,7 +20,7 @@ export const useTasksSchedule = ({ year, month }: { year: number, month: number 
   }
 }
 
-export const useTasksScheduleByTeacher = ({ year, month }: { year: number, month: number }) => {
+export const useTasksScheduleByTeacher = ({ year, month }: { year: string, month: string }) => {
   const query = useQuery({
     queryKey: ['task-schedules', 'teacher', year, month],
     queryFn: async () => {

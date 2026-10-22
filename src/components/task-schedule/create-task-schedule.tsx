@@ -91,7 +91,6 @@ export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronog
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className='gap-2'>
-          <Plus className='w-4 h-4' />
           {triggerButtonText}
         </Button>
       </DialogTrigger>
