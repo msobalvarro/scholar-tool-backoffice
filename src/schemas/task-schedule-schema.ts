@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const taskDetailSchema = z.object({
   content: z.string().min(1, 'El contenido es requerido'),
   evaluationMethod: z.string().min(1, 'El método de evaluación es requerido'),
-  page: z.string().optional(),
+  page: z.string().optional().nullable(),
   inNotebook: z.boolean().default(false).optional(),
   date: z.string().min(1, 'La fecha es requerida'),
   points: z.number().min(0, 'El puntaje debe ser mayor o igual a 0'),

@@ -20,7 +20,7 @@ export const useTasksSchedule = ({ year, month }: { year: number, month: number 
   }
 }
 
-export const useTasksScheduleByTeacher = ({ year, month }: { year: number, month: number }) => {
+export const useTasksScheduleByTeacher = ({ year, month }: { year: string, month: string }) => {
   const query = useQuery({
     queryKey: ['task-schedules', 'teacher', year, month],
     queryFn: async () => {
@@ -54,9 +54,29 @@ export const useTaskScheduleActions = () => {
       setError(err)
     }
   })
+
+  const updateTaskScheduleMutation = useMutation({
+    mutationFn: async (props: { taskSchedule: TaskScheduleSchema, taskId: string }) => {
+      setError(null)
+      const { data } = await axiosInstance.put<TaskSchedule>(`/task-schedules/update/${props.taskId}`, props.taskSchedule)
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-schedules'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data?.message || error.message
+        : String(error)
+      setError(err)
+    }
+  })
+
+
   return {
     createTaskSchedule: createTaskScheduleMutation.mutateAsync,
-    isLoading: createTaskScheduleMutation.isPending,
+    updateTaskSchedule: updateTaskScheduleMutation.mutateAsync,
+    isLoading: createTaskScheduleMutation.isPending || updateTaskScheduleMutation.isPending,
     error,
   }
 }

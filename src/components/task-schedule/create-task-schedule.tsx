@@ -31,16 +31,19 @@ import { useTaskScheduleActions } from '@/hooks/API/use-task-schedule'
 
 interface TaskScheduleDialogFormProps {
   triggerButtonText?: string
+  defaultValues?: TaskScheduleSchema
+  isUpdate?: boolean
+  taskId?: string
 }
 
-export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronograma' }: TaskScheduleDialogFormProps) => {
+export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronograma', defaultValues, taskId, isUpdate = false }: TaskScheduleDialogFormProps) => {
   const { data: asignatures } = useAsignatureByTeacher()
-  const { createTaskSchedule, isLoading, error } = useTaskScheduleActions()
+  const { createTaskSchedule, updateTaskSchedule, isLoading, error } = useTaskScheduleActions()
   const [open, setOpen] = useState(false)
 
   const form = useForm<TaskScheduleSchema>({
     resolver: zodResolver(taskScheduleSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       asignatureId: '',
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
@@ -72,7 +75,14 @@ export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronog
   })
 
   const handleSubmitForm = async (data: TaskScheduleSchema) => {
-    await createTaskSchedule(data)
+    if (isUpdate && isUpdate) {
+      await updateTaskSchedule({
+        taskSchedule: data,
+        taskId: taskId!,
+      })
+    } else {
+      await createTaskSchedule(data)
+    }
     setOpen(false)
     form.reset()
   }
@@ -81,7 +91,6 @@ export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronog
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className='gap-2'>
-          <Plus className='w-4 h-4' />
           {triggerButtonText}
         </Button>
       </DialogTrigger>
