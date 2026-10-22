@@ -1,6 +1,7 @@
 import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 import type { TaskSchedule } from '@/dtos/outputs/task-schedule'
 import dayjs from 'dayjs'
+import { TaskScheduleDialogForm } from './create-task-schedule'
 
 interface Props {
   dataList: TaskSchedule[]
@@ -19,6 +20,7 @@ const ScheduleTable = ({ dataList = [] }: Props) => {
             <th className="px-6 py-4">Período</th>
             <th className="px-6 py-4">Estado</th>
             <th className="px-6 py-4">Unidades / Tareas</th>
+            <th className="px-6 py-4">Acciones</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
@@ -73,6 +75,21 @@ const ScheduleTable = ({ dataList = [] }: Props) => {
                       </div>
                     ))}
                   </div>
+                </td>
+
+                {/* Acciones */}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <TaskScheduleDialogForm
+                    isUpdate={true}
+                    triggerButtonText='Editar Cronograma'
+                    defaultValues={{
+                      asignatureId: item.asignature._id!,
+                      month: item.month,
+                      year: item.year,
+                      scheduleUnit: item.scheduleUnit!,
+                    }}
+                    taskId={item._id}
+                  />
                 </td>
               </tr>
             ))

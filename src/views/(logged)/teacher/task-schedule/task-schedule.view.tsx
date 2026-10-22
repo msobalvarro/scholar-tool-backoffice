@@ -4,7 +4,7 @@ import { TitlePageView } from '@/components/ui/title-page'
 import { ViewContainer } from '@/components/ui/view-container'
 // import { TaskSchedulesListView } from '@/components/task-schedule/schedule-data'
 import { useState } from 'react'
-import { TaskScheduleDialogForm } from './create-task-schedule'
+import { TaskScheduleDialogForm } from '../../../../components/task-schedule/create-task-schedule'
 import ScheduleTable from '@/components/task-schedule/task-schedule-table'
 
 export const TaskScheduleView = () => {

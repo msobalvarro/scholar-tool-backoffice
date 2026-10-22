@@ -24,7 +24,7 @@ export interface ScheduleUnit {
 export interface TaskDetail {
   content: string
   evaluationMethod: string
-  page: string | null
+  page?: string | null
   inNotebook: boolean
   date: string
   points: number
