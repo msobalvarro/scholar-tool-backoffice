@@ -21,7 +21,7 @@ interface UnitItemFieldProps {
   canRemove: boolean;
 }
 
-export const UnitItemField: React.FC<UnitItemFieldProps> = ({ form, unitIndex, removeUnit, canRemove }) => {
+export const UnitItemField = ({ form, unitIndex, removeUnit, canRemove }: UnitItemFieldProps) => {
   const {
     fields: taskFields,
     append: appendTask,

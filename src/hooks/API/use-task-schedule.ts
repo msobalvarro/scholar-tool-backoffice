@@ -5,11 +5,11 @@ import { axiosInstance } from '@/adapters/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
 
-export const useTasksSchedule = ({ year, month }: { year: number, month: number }) => {
+export const useTasksSchedule = ({ year, month }: { year: string, month: string }) => {
   const query = useQuery({
     queryKey: ['task-schedules', 'date', year, month],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date/${year}/${month}`)
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date?year=${year}&month=${month}`)
       return data
     },
   })
@@ -72,11 +72,31 @@ export const useTaskScheduleActions = () => {
     }
   })
 
+  const aproveTaskScheduleMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      setError(null)
+      const { data } = await axiosInstance.put<TaskSchedule>(`/task-schedules/aprove/${taskId}`)
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-schedules'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data?.message || error.message
+        : String(error)
+      setError(err)
+    }
+  })
 
   return {
     createTaskSchedule: createTaskScheduleMutation.mutateAsync,
     updateTaskSchedule: updateTaskScheduleMutation.mutateAsync,
-    isLoading: createTaskScheduleMutation.isPending || updateTaskScheduleMutation.isPending,
+    aproveTaskSchedule: aproveTaskScheduleMutation.mutateAsync,
+    isLoading:
+      createTaskScheduleMutation.isPending
+      || updateTaskScheduleMutation.isPending
+      || aproveTaskScheduleMutation.isPending,
     error,
   }
 }

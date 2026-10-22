@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
+import { useState } from 'react'
 import { useTasksScheduleByTeacher } from '@/hooks/API/use-task-schedule'
 import { TitlePageView } from '@/components/ui/title-page'
 import { ViewContainer } from '@/components/ui/view-container'
-// import { TaskSchedulesListView } from '@/components/task-schedule/schedule-data'
-import { useState } from 'react'
-import { TaskScheduleDialogForm } from '../../../../components/task-schedule/create-task-schedule'
+import { TaskScheduleDialogForm } from '@/components/task-schedule/create-task-schedule'
 import { ScheduleTable } from '@/components/task-schedule/task-schedule-table'
 import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 import {
@@ -16,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { Loader, Loader2, SplineIcon } from 'lucide-react'
+import { Loader } from 'lucide-react'
 
 export const TaskScheduleView = () => {
   const [month, setMonth] = useState((dayjs().month() + 1).toString())

@@ -13,11 +13,11 @@ export interface TaskSchedule {
   scheduleUnit: ScheduleUnit[]
   institution: Institution
   createdAt: Date
+  updatedAt?: Date
 }
 
 export interface ScheduleUnit {
   unitName: string
-  diciplineName: string
   tasks: TaskDetail[]
 }
 
