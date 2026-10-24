@@ -15,12 +15,29 @@ import {
 import { Input } from '@/components/ui/input'
 import { Loader, } from 'lucide-react'
 import { TaskSchedulesList } from '@/components/task-schedule/schedule-data'
+import { useAsignatures } from '@/hooks/API/use-asignatures'
+import { useTeachers } from '@/hooks/API/use-teachers'
+import { Button } from '@/components/ui/button'
 
 export const TaskScheduleForUserInsitutionView = () => {
   const [month, setMonth] = useState((dayjs().month() + 1).toString())
   const [year, setYear] = useState(dayjs().year().toString())
+  const [aprove, setAprove] = useState<boolean>(false)
+  const [teacherId, setTeacherId] = useState<string | undefined>(undefined)
+  const [asignatureId, setAsignatureId] = useState<string | undefined>(undefined)
 
-  const { taskSchedules, isLoading } = useTasksSchedule({ month, year })
+  const { data: asignatures } = useAsignatures()
+  const { data: teachers } = useTeachers()
+
+  const { taskSchedules, isLoading } = useTasksSchedule({ month, year, aproved: String(aprove), teacherId, asignatureId })
+
+  const resetFilters = () => {
+    setMonth((dayjs().month() + 1).toString())
+    setYear(dayjs().year().toString())
+    setAprove(false)
+    setTeacherId(undefined)
+    setAsignatureId(undefined)
+  }
 
   return (
     <ViewContainer className='flex flex-col gap-4'>
@@ -54,6 +71,53 @@ export const TaskScheduleForUserInsitutionView = () => {
           value={year}
           onChange={(e) => setYear(e.target.value)}
         />
+
+        <Select value={teacherId} onValueChange={setTeacherId}>
+          <SelectTrigger className="w-45 bg-white">
+            <SelectValue placeholder="Docente" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {teachers?.map((teacher) => (
+                <SelectItem key={teacher._id} value={teacher._id}>
+                  {teacher.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select value={asignatureId} onValueChange={setAsignatureId}>
+          <SelectTrigger className="w-45 bg-white">
+            <SelectValue placeholder="Asignatura" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {asignatures?.map((asignature) => (
+                <SelectItem key={asignature._id} value={asignature._id}>
+                  {asignature.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        {/* Approbed filter */}
+        <Select value={String(aprove)} onValueChange={(value) => setAprove(value === 'true')}>
+          <SelectTrigger className="w-45 bg-white">
+            <SelectValue placeholder="Estado" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="true">Aprobado</SelectItem>
+              <SelectItem value="false">Pendiente</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+
+        <Button onClick={resetFilters}>Reiniciar filtros</Button>
+
 
         {isLoading && <Loader className='animate-spin' />}
       </div>

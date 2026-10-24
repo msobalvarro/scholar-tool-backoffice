@@ -5,11 +5,21 @@ import { axiosInstance } from '@/adapters/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
 
-export const useTasksSchedule = ({ year, month }: { year: string, month: string }) => {
+interface UseTaskScheduleProps {
+  year: string
+  month: string
+  aproved?: string
+  teacherId?: string
+  asignatureId?: string
+}
+
+export const useTasksSchedule = ({ year, month, aproved, teacherId, asignatureId }: UseTaskScheduleProps) => {
   const query = useQuery({
-    queryKey: ['task-schedules', 'date', year, month],
+    queryKey: ['task-schedules', 'date', year, month, aproved, teacherId, asignatureId],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date?year=${year}&month=${month}`)
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date`, {
+        params: { year, month, aproved, teacherId, asignatureId }
+      })
       return data
     },
   })

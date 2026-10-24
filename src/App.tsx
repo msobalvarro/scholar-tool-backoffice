@@ -12,6 +12,12 @@ import {
   ProtectedRoutesUserInstitution,
   PublicRoutes
 } from './views/router'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat' // ES 2015
+
+dayjs.extend(localizedFormat);
+
+dayjs().format("L LT");
 
 function App() {
   const [isAuthTeacher] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_TEACHER)
