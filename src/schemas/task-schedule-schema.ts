@@ -20,6 +20,7 @@ export type ScheduleUnitSchema = z.infer<typeof scheduleUnitSchema>
 
 export const taskScheduleSchema = z.object({
   asignatureId: z.string('Debes seleccionar una asignatura'),
+  courseId: z.string('Debes seleccionar un curso'),
   month: z.number().min(1).max(12),
   year: z.number().min(2000),
   scheduleUnit: z.array(scheduleUnitSchema).min(1, 'Agrega al menos una unidad al cronograma'),

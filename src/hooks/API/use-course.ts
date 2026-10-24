@@ -12,6 +12,15 @@ export const useCourses = () => useQuery({
   }
 })
 
+
+export const useCoursesByTeacher = () => useQuery({
+  queryKey: ['courses-by-teacher'],
+  queryFn: async () => {
+    const { data } = await axiosInstance.get<CoursesResponse[]>('/courses/all')
+    return data
+  }
+})
+
 export const useCourseAvailableByEnrollment = (enrollmentId: string) => useQuery({
   queryKey: ['courses-available', enrollmentId],
   queryFn: async () => {

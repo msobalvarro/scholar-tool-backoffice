@@ -1,5 +1,5 @@
 import type { Asignature, Teacher } from '../types'
-import type { Institution, UserInstitution } from '../types/models'
+import type { Course, Institution, UserInstitution } from '../types/models'
 
 
 export interface TaskSchedule {
@@ -8,16 +8,17 @@ export interface TaskSchedule {
   asignature: Asignature
   month: number
   year: number
+  course: Course
   aproved?: boolean
   aprovedBy?: UserInstitution | null
   scheduleUnit: ScheduleUnit[]
   institution: Institution
   createdAt: Date
+  updatedAt?: Date
 }
 
 export interface ScheduleUnit {
   unitName: string
-  diciplineName: string
   tasks: TaskDetail[]
 }
 

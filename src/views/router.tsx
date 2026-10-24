@@ -19,13 +19,14 @@ import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
 import { DailyReportsView } from './(logged)/institution/finances/daily-reports/daily-reports.view'
 import { FinancialReportsView } from './(logged)/institution/finances/financial-reports/financial-reports.view'
 import { TaskScheduleView } from './(logged)/teacher/task-schedule/task-schedule.view'
+import { TaskScheduleForUserInsitutionView } from './(logged)/institution/task-schedule/task-schedule.view'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
     <Routes>
       <Route path='/' element={<TeacherWelcomeView />} />
-      <Route path='*' element={<NotFoundView />} />
       <Route path='/task-schedule' element={<TaskScheduleView />} />
+      <Route path='*' element={<NotFoundView />} />
     </Routes>
   </Layout>
 )
@@ -47,6 +48,7 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/finances/financial-reports' element={<FinancialReportsView />} />
       <Route path='/assistance' element={<StudentAssistanceView />} />
       <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
+      <Route path='/task-schedule' element={<TaskScheduleForUserInsitutionView />} />
       <Route path='*' element={<NotFoundView />} />
     </Routes>
   </Layout>

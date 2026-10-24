@@ -5,11 +5,22 @@ import { axiosInstance } from '@/adapters/axios-intance'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
 
-export const useTasksSchedule = ({ year, month }: { year: number, month: number }) => {
+interface UseTaskScheduleProps {
+  year: string
+  month: string
+  aproved?: string
+  teacherId?: string
+  asignatureId?: string
+  courseId?: string
+}
+
+export const useTasksSchedule = ({ year, month, aproved, teacherId, asignatureId, courseId }: UseTaskScheduleProps) => {
   const query = useQuery({
-    queryKey: ['task-schedules', 'date', year, month],
+    queryKey: ['task-schedules', 'date', year, month, aproved, teacherId, asignatureId, courseId],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date/${year}/${month}`)
+      const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date`, {
+        params: { year, month, aproved, teacherId, asignatureId, courseId }
+      })
       return data
     },
   })
@@ -72,11 +83,31 @@ export const useTaskScheduleActions = () => {
     }
   })
 
+  const aproveTaskScheduleMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      setError(null)
+      const { data } = await axiosInstance.post<TaskSchedule>(`/task-schedules/approve/${taskId}`)
+      return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-schedules'] })
+    },
+    onError: (error) => {
+      const err = error instanceof AxiosError
+        ? error.response?.data?.message || error.message
+        : String(error)
+      setError(err)
+    }
+  })
 
   return {
     createTaskSchedule: createTaskScheduleMutation.mutateAsync,
     updateTaskSchedule: updateTaskScheduleMutation.mutateAsync,
-    isLoading: createTaskScheduleMutation.isPending || updateTaskScheduleMutation.isPending,
+    aproveTaskSchedule: aproveTaskScheduleMutation.mutateAsync,
+    isLoading:
+      createTaskScheduleMutation.isPending
+      || updateTaskScheduleMutation.isPending
+      || aproveTaskScheduleMutation.isPending,
     error,
   }
 }

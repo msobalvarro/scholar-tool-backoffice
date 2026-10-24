@@ -27,6 +27,7 @@ import Select from 'react-select'
 import { UnitItemField } from '@/components/task-schedule/unit-item-field'
 import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 import { useTaskScheduleActions } from '@/hooks/API/use-task-schedule'
+import { useCoursesByTeacher } from '@/hooks/API/use-course'
 
 
 interface TaskScheduleDialogFormProps {
@@ -39,12 +40,14 @@ interface TaskScheduleDialogFormProps {
 export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronograma', defaultValues, taskId, isUpdate = false }: TaskScheduleDialogFormProps) => {
   const { data: asignatures } = useAsignatureByTeacher()
   const { createTaskSchedule, updateTaskSchedule, isLoading, error } = useTaskScheduleActions()
+  const { data: courses } = useCoursesByTeacher()
   const [open, setOpen] = useState(false)
 
   const form = useForm<TaskScheduleSchema>({
     resolver: zodResolver(taskScheduleSchema),
     defaultValues: defaultValues || {
       asignatureId: '',
+      courseId: '',
       month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
       scheduleUnit: [
@@ -110,7 +113,7 @@ export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronog
           <form onSubmit={form.handleSubmit(handleSubmitForm)} className='space-y-6 mt-4'>
 
             {/* Datos Generales */}
-            <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200'>
+            <div className='grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200'>
               <Controller
                 control={form.control}
                 name="asignatureId"
@@ -124,6 +127,27 @@ export const TaskScheduleDialogForm = ({ triggerButtonText = 'Crear Nuevo Cronog
                         }
                         placeholder='Seleccionar asignatura'
                         defaultInputValue={asignatures?.find(asignature => asignature._id === field.value)?.name}
+                        onChange={(val) => field.onChange(val?.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Controller
+                control={form.control}
+                name="courseId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Curso</FormLabel>
+                    <FormControl>
+                      <Select
+                        options={
+                          courses?.map(course => ({ value: course._id, label: course.name })) || []
+                        }
+                        placeholder='Seleccionar curso'
+                        defaultInputValue={courses?.find(course => course._id === field.value)?.name}
                         onChange={(val) => field.onChange(val?.value)}
                       />
                     </FormControl>

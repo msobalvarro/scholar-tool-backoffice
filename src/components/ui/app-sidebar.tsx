@@ -71,6 +71,11 @@ const ItemsOfInstitution: MenuItem[] = [
     icon: Book,
   },
   {
+    title: 'Cronogramas de tareas',
+    url: '/task-schedule',
+    icon: Calendar,
+  },
+  {
     title: 'Cursos Académicos',
     url: '/courses',
     icon: BookUser,
