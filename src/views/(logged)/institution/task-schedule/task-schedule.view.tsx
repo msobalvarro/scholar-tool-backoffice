@@ -18,6 +18,7 @@ import { TaskSchedulesList } from '@/components/task-schedule/schedule-data'
 import { useAsignatures } from '@/hooks/API/use-asignatures'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { Button } from '@/components/ui/button'
+import { useCourses } from '@/hooks/API/use-course'
 
 export const TaskScheduleForUserInsitutionView = () => {
   const [month, setMonth] = useState((dayjs().month() + 1).toString())
@@ -25,11 +26,20 @@ export const TaskScheduleForUserInsitutionView = () => {
   const [aprove, setAprove] = useState<boolean>(false)
   const [teacherId, setTeacherId] = useState<string | undefined>(undefined)
   const [asignatureId, setAsignatureId] = useState<string | undefined>(undefined)
+  const [courseId, setCourseId] = useState<string | undefined>(undefined)
 
   const { data: asignatures } = useAsignatures()
   const { data: teachers } = useTeachers()
+  const { data: courses } = useCourses()
 
-  const { taskSchedules, isLoading } = useTasksSchedule({ month, year, aproved: String(aprove), teacherId, asignatureId })
+  const { taskSchedules, isLoading } = useTasksSchedule({
+    month,
+    year,
+    aproved: String(aprove),
+    teacherId,
+    asignatureId,
+    courseId
+  })
 
   const resetFilters = () => {
     setMonth((dayjs().month() + 1).toString())
@@ -37,6 +47,7 @@ export const TaskScheduleForUserInsitutionView = () => {
     setAprove(false)
     setTeacherId(undefined)
     setAsignatureId(undefined)
+    setCourseId(undefined)
   }
 
   return (
@@ -87,7 +98,7 @@ export const TaskScheduleForUserInsitutionView = () => {
           </SelectContent>
         </Select>
 
-        <Select value={asignatureId} onValueChange={setAsignatureId}>
+        <Select value={asignatureId} onValueChange={setAsignatureId} defaultValue=''>
           <SelectTrigger className="w-45 bg-white">
             <SelectValue placeholder="Asignatura" />
           </SelectTrigger>
@@ -105,7 +116,7 @@ export const TaskScheduleForUserInsitutionView = () => {
         {/* Approbed filter */}
         <Select value={String(aprove)} onValueChange={(value) => setAprove(value === 'true')}>
           <SelectTrigger className="w-45 bg-white">
-            <SelectValue placeholder="Estado" />
+            <SelectValue placeholder="Estado" defaultValue={undefined} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -115,6 +126,22 @@ export const TaskScheduleForUserInsitutionView = () => {
           </SelectContent>
         </Select>
 
+        {/*courses */}
+        <Select value={String(courseId)} onValueChange={(value) => setCourseId(value)}>
+          <SelectTrigger className="w-45 bg-white">
+            <span>Curso</span>
+            <SelectValue placeholder="Curso" defaultValue={undefined} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {courses?.map((course) => (
+                <SelectItem key={course._id} value={course._id}>
+                  {course.name} {course.groupName}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
         <Button onClick={resetFilters}>Reiniciar filtros</Button>
 

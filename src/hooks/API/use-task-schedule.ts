@@ -11,14 +11,15 @@ interface UseTaskScheduleProps {
   aproved?: string
   teacherId?: string
   asignatureId?: string
+  courseId?: string
 }
 
-export const useTasksSchedule = ({ year, month, aproved, teacherId, asignatureId }: UseTaskScheduleProps) => {
+export const useTasksSchedule = ({ year, month, aproved, teacherId, asignatureId, courseId }: UseTaskScheduleProps) => {
   const query = useQuery({
-    queryKey: ['task-schedules', 'date', year, month, aproved, teacherId, asignatureId],
+    queryKey: ['task-schedules', 'date', year, month, aproved, teacherId, asignatureId, courseId],
     queryFn: async () => {
       const { data } = await axiosInstance.get<TaskSchedule[]>(`/task-schedules/date`, {
-        params: { year, month, aproved, teacherId, asignatureId }
+        params: { year, month, aproved, teacherId, asignatureId, courseId }
       })
       return data
     },
@@ -85,7 +86,7 @@ export const useTaskScheduleActions = () => {
   const aproveTaskScheduleMutation = useMutation({
     mutationFn: async (taskId: string) => {
       setError(null)
-      const { data } = await axiosInstance.put<TaskSchedule>(`/task-schedules/aprove/${taskId}`)
+      const { data } = await axiosInstance.post<TaskSchedule>(`/task-schedules/approve/${taskId}`)
       return data
     },
     onSuccess: () => {

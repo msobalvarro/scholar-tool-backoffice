@@ -1,8 +1,8 @@
+import dayjs from 'dayjs'
 import { MONTH_NAMES } from '@/constants/calendar-events.constant'
 import type { TaskSchedule } from '@/dtos/outputs/task-schedule'
-import dayjs from 'dayjs'
 import { TaskScheduleDialogForm } from './create-task-schedule'
-import { Check, CheckCheck } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 interface Props {
   dataList: TaskSchedule[]
@@ -19,6 +19,7 @@ export const ScheduleTable = ({ dataList = [] }: Props) => {
             <th className="px-6 py-4">Fecha Creación</th>
             <th className="px-6 py-4">Asignatura</th>
             <th className="px-6 py-4">Período</th>
+            <th className="px-6 py-4">Curso</th>
             <th className="px-6 py-4">Estado</th>
             <th className="px-6 py-4">Unidades / Tareas</th>
             <th className="px-6 py-4">Acciones</th>
@@ -45,6 +46,11 @@ export const ScheduleTable = ({ dataList = [] }: Props) => {
                   <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                     {getMonthName(item.month)} {item.year}
                   </span>
+                </td>
+
+                <td className="px-6 py-4">
+                  <div className="font-semibold text-gray-900">{item.course?.name}</div>
+                  <div className="text-xs text-gray-500">{item.course?.groupName}</div>
                 </td>
 
                 {/* Estado (Aprobado) */}
@@ -85,6 +91,7 @@ export const ScheduleTable = ({ dataList = [] }: Props) => {
                       isUpdate={true}
                       triggerButtonText='Editar Cronograma'
                       defaultValues={{
+                        courseId: item.course._id!,
                         asignatureId: item.asignature._id!,
                         month: item.month,
                         year: item.year,

@@ -23,7 +23,7 @@ export const TaskSchedulesList = ({ schedules }: TaskSchedulesListProps) => {
   }
 
   return (
-    <div className='px-4 py-6 space-y-8'>
+    <div className='py-6 space-y-8'>
       {schedules.map((schedule) => (
         <div
           key={schedule._id}
@@ -44,8 +44,14 @@ export const TaskSchedulesList = ({ schedules }: TaskSchedulesListProps) => {
                   </h3>
                 </div>
 
+                {schedule.asignature.description && (
+                  <span className='px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold'>
+                    {schedule.asignature.description}
+                  </span>
+                )}
+
                 <span className='px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold'>
-                  {schedule.asignature.description}
+                  {schedule.course.name} {schedule.course.groupName}
                 </span>
 
                 {/* Badge de Estado (Pendiente / Aprobado) */}
@@ -68,7 +74,7 @@ export const TaskSchedulesList = ({ schedules }: TaskSchedulesListProps) => {
                   <User className='w-4 h-4 text-slate-400' />
                   Prof. {schedule.teacher.name}
                 </span>
-                <span className='flex items-center gap-1.5 text-slate-400 text-xs bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100'>
+                <span className='flex items-center gap-1.5 text-slate-400 text-xs bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-100'>
                   <Mail className='w-3.5 h-3.5' />
                   {schedule.teacher.email}
                 </span>
