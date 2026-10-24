@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { TeacherStats } from '@/components/teachers/teacher-stats'
 import { TeacherTable } from '@/components/teachers/teacher-table'
-import { CreateTeacherDialog } from '@/components/teachers/create-teacher-dialog'
-import { EditTeacherDialog } from '@/components/teachers/edit-teacher-dialog'
 import { DeleteTeacherDialog } from '@/components/teachers/delete-teacher-dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -21,12 +19,12 @@ import {
 } from '@/components/ui/select'
 import { ViewContainer } from '@/components/ui/view-container'
 import type { Teacher } from '@/dtos/types'
+import { TeacherDialog } from '@/components/teachers/create-edit-teacher-dialog'
 
 export const TeachersView = () => {
   const { data: teachers = [], isLoading } = useTeachers()
   const [searchQuery, setSearchQuery] = useState('')
-  const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null)
 
@@ -36,9 +34,15 @@ export const TeachersView = () => {
     onLeave: teachers.filter(t => t.status === 'inactive').length // Mimicking 'onLeave' with 'inactive'
   }
 
+  useEffect(() => {
+    if (!openDialog) {
+      setSelectedTeacher(null)
+    }
+  }, [openDialog])
+
   const handleEdit = (teacher: Teacher) => {
     setSelectedTeacher(teacher)
-    setIsEditOpen(true)
+    setOpenDialog(true)
   }
 
   const handleDelete = (teacher: Teacher) => {
@@ -56,7 +60,7 @@ export const TeachersView = () => {
           </p>
         </div>
         <Button
-          onClick={() => setIsCreateOpen(true)}
+          onClick={() => setOpenDialog(true)}
           className='bg-accent text-white font-bold px-6 py-6 rounded-xl shadow-lg transition-all active:scale-95'
         >
           <Plus className='mr-2 h-5 w-5 stroke-3' />
@@ -116,15 +120,10 @@ export const TeachersView = () => {
         />
       )}
 
-      <CreateTeacherDialog
-        open={isCreateOpen}
-        onOpenChange={setIsCreateOpen}
-      />
-
-      <EditTeacherDialog
+      <TeacherDialog
+        open={openDialog}
         teacher={selectedTeacher}
-        open={isEditOpen}
-        onOpenChange={setIsEditOpen}
+        onOpenChange={setOpenDialog}
       />
 
       <DeleteTeacherDialog

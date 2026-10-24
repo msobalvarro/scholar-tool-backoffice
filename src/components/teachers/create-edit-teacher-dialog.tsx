@@ -21,29 +21,24 @@ import { Input } from '@/components/ui/input'
 import { useTeacherActions } from '@/hooks/API/use-teachers'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Loader2, Save } from 'lucide-react'
-import type { Teacher } from '@/dtos/types'
+import { Loader2, Plus, Save } from 'lucide-react'
 import { useAsignatures } from '@/hooks/API/use-asignatures'
+import { useCourses } from '@/hooks/API/use-course'
+import type { Teacher } from '@/dtos/types'
+import type { CreateOrUpdateTeacherInput } from '@/dtos/inputs/teacher-input'
 
-interface EditTeacherFormValues {
-  name: string
-  email: string
-  phoneNumber: string
-  birthday: string
-  status: 'active' | 'inactive'
-  asignatureIds: string[]
-}
-
-interface EditTeacherDialogProps {
-  teacher: Teacher | null
+interface TeacherDialogProps {
+  teacher?: Teacher | null
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDialogProps) => {
-  const { patchTeacher, isLoading: isPatching } = useTeacherActions()
+export const TeacherDialog = ({ teacher, open, onOpenChange }: TeacherDialogProps) => {
+  const isEditing = Boolean(teacher)
+  const { postTeacher, patchTeacher, error: actionError, isLoading: isActionLoading } = useTeacherActions()
   const queryClient = useQueryClient()
   const { data: asignatures, isLoading: isLoadingAsignatures } = useAsignatures()
+  const { data: courses, isLoading: isLoadingCourses } = useCourses()
 
   const {
     register,
@@ -51,7 +46,7 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<EditTeacherFormValues>({
+  } = useForm<CreateOrUpdateTeacherInput>({
     defaultValues: {
       name: '',
       email: '',
@@ -59,25 +54,42 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
       birthday: '',
       status: 'active',
       asignatureIds: [],
+      courseIds: [],
     },
   })
 
   useEffect(() => {
-    if (teacher && open) {
-      const initialAsignatureIds = (teacher.asignatures || [])
-        .map((a) => (typeof a === 'string' ? a : a._id))
-        .filter((id): id is string => Boolean(id))
+    if (open) {
+      if (isEditing && teacher) {
+        const initialAsignatureIds = (teacher.asignatures || [])
+          .map((a) => (typeof a === 'string' ? a : a._id))
+          .filter((id): id is string => Boolean(id))
 
-      reset({
-        name: teacher.name || '',
-        email: teacher.email || '',
-        phoneNumber: teacher.phoneNumber || '',
-        birthday: teacher.birthday || '',
-        status: teacher.status || 'active',
-        asignatureIds: initialAsignatureIds,
-      })
+        // Si tu API también devuelve cursos en el objeto teacher, puedes mapearlos de forma similar:
+        // const initialCourseIds = (teacher.courses || []).map(...)
+
+        reset({
+          name: teacher.name || '',
+          email: teacher.email || '',
+          phoneNumber: teacher.phoneNumber || '',
+          birthday: teacher.birthday || '',
+          status: teacher.status || 'active',
+          asignatureIds: initialAsignatureIds,
+          courseIds: [], // Reemplaza por initialCourseIds si tu DTO los incluye
+        })
+      } else {
+        reset({
+          name: '',
+          email: '',
+          phoneNumber: '',
+          birthday: '',
+          status: 'active',
+          asignatureIds: [],
+          courseIds: [],
+        })
+      }
     }
-  }, [teacher, open, reset])
+  }, [open, teacher, isEditing, reset])
 
   const asignatureOptions = useMemo(() => {
     const list: Array<{ value: string; label: string }> = []
@@ -104,39 +116,63 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
     return list
   }, [asignatures, teacher])
 
-  const onSubmit = async (data: EditTeacherFormValues) => {
-    if (!teacher) return
+  const courseOptions = useMemo(() => {
+    if (!courses || !Array.isArray(courses)) return []
+    return courses.map((course) => ({
+      value: course._id,
+      label: course.name,
+    }))
+  }, [courses])
 
+  const onSubmit = async (data: CreateOrUpdateTeacherInput) => {
     try {
-      await patchTeacher({
-        id: teacher._id,
-        teacher: {
+      if (isEditing && teacher) {
+        await patchTeacher({
+          id: teacher._id,
+          teacher: {
+            name: data.name,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            birthday: data.birthday,
+            status: data.status,
+            asignatureIds: data.asignatureIds,
+            courseIds: data.courseIds,
+          },
+        })
+        toast.success('Profesor actualizado correctamente')
+      } else {
+        await postTeacher({
           name: data.name,
           email: data.email,
           phoneNumber: data.phoneNumber,
           birthday: data.birthday,
           status: data.status,
           asignatureIds: data.asignatureIds,
-        },
-      })
-      toast.success('Profesor actualizado correctamente')
+          courseIds: data.courseIds,
+        })
+        toast.success('Profesor creado exitosamente')
+      }
+
       queryClient.invalidateQueries({ queryKey: ['teachers'] })
+      reset()
       onOpenChange(false)
     } catch (error) {
-      toast.error('Error al actualizar el profesor')
+      toast.error(isEditing ? 'Error al actualizar el profesor' : 'Error al crear el profesor')
       console.error(error)
     }
   }
 
-  const isLoading = isSubmitting || isPatching
+  const isLoading = isSubmitting || isActionLoading
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-125">
         <DialogHeader>
-          <DialogTitle>Editar Profesor</DialogTitle>
+          <DialogTitle>{isEditing ? 'Editar Profesor' : 'Añadir Nuevo Profesor'}</DialogTitle>
           <DialogDescription>
-            Actualiza la información del profesor aquí.
+            {isEditing
+              ? 'Actualiza la información del profesor aquí.'
+              : 'Ingresa los datos del nuevo profesor para registrarlo en el sistema.'}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
@@ -162,7 +198,7 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
                   message: 'Correo electrónico inválido',
                 },
               })}
-              placeholder="correo@ejemplo.com"
+              placeholder="correo@escuela.edu"
             />
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email.message}</p>
@@ -185,7 +221,7 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
               <label className="text-sm font-semibold">Fecha de Nacimiento</label>
               <Input
                 type="date"
-                {...register('birthday')}
+                {...register('birthday', { required: 'La fecha de nacimiento es obligatoria' })}
               />
               {errors.birthday && (
                 <p className="text-xs text-destructive">{errors.birthday.message}</p>
@@ -193,30 +229,29 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-semibold">Estado</label>
-            <Controller
-              control={control}
-              name="status"
-              render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Seleccionar estado" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="active">Activo</SelectItem>
-                    <SelectItem value="inactive">Inactivo</SelectItem>
-                  </SelectContent>
-                </Select>
+          {isEditing && (
+            <div className="space-y-2">
+              <label className="text-sm font-semibold">Estado</label>
+              <Controller
+                control={control}
+                name="status"
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Seleccionar estado" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="active">Activo</SelectItem>
+                      <SelectItem value="inactive">Inactivo</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.status && (
+                <p className="text-xs text-destructive">{errors.status.message}</p>
               )}
-            />
-            {errors.status && (
-              <p className="text-xs text-destructive">{errors.status.message}</p>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="space-y-2">
             <label className="text-sm font-semibold">Asignaturas</label>
@@ -251,6 +286,41 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
             )}
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-semibold">Cursos</label>
+            <Controller
+              control={control}
+              name="courseIds"
+              render={({ field }) => (
+                <MultiSelect
+                  isMulti
+                  closeMenuOnSelect={false}
+                  isLoading={isLoadingCourses}
+                  placeholder="Selecciona los cursos..."
+                  options={courseOptions}
+                  value={courseOptions.filter((opt) => (field.value || []).includes(opt.value))}
+                  onChange={(selected: unknown) => {
+                    const optionsArray = (selected as Array<{ value: string }> | null) ?? []
+                    field.onChange(optionsArray.map((opt) => opt.value))
+                  }}
+                  className="text-sm"
+                  menuPlacement="auto"
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                  }}
+                  noOptionsMessage={() => 'No hay cursos disponibles'}
+                />
+              )}
+            />
+            {errors.courseIds && (
+              <p className="text-xs text-destructive">{errors.courseIds.message}</p>
+            )}
+          </div>
+
+          {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+
           <DialogFooter className="pt-4">
             <Button
               variant="outline"
@@ -263,10 +333,12 @@ export const EditTeacherDialog = ({ teacher, open, onOpenChange }: EditTeacherDi
             <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700">
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
+              ) : isEditing ? (
                 <Save className="mr-2 h-4 w-4" />
+              ) : (
+                <Plus className="mr-2 h-4 w-4" />
               )}
-              Guardar Cambios
+              {isEditing ? 'Guardar Cambios' : 'Registrar Profesor'}
             </Button>
           </DialogFooter>
         </form>
