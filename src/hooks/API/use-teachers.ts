@@ -3,7 +3,7 @@ import type { Teacher } from '@/dtos/types'
 import { useState } from 'react'
 import { AxiosError } from 'axios'
 import { axiosInstance } from '@/adapters/axios-intance'
-import type { CreateTeacherInput, UpdateTeacherInput } from '@/dtos/inputs/teacher-input'
+import type { CreateOrUpdateTeacherInput, UpdateTeacherInput } from '@/dtos/inputs/teacher-input'
 
 export const useTeachers = () => useQuery({
   queryKey: ['teachers'],
@@ -13,13 +13,12 @@ export const useTeachers = () => useQuery({
   }
 })
 
-
 export const useTeacherActions = () => {
   const [error, setError] = useState<string | null>(null)
   const queryClient = useQueryClient()
 
   const createTeacherMutation = useMutation({
-    mutationFn: async (teacher: CreateTeacherInput) => {
+    mutationFn: async (teacher: CreateOrUpdateTeacherInput) => {
       setError(null)
       return await axiosInstance.post('/teachers', teacher)
     },

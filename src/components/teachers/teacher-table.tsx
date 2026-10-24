@@ -69,6 +69,9 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
               <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
                 Asignaturas
               </th>
+              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+                Cursos
+              </th>
               <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider text-right'>
                 Acciones
               </th>
@@ -125,6 +128,15 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
                     <div className='flex items-center gap-2'>
                       {teacher.asignatures?.map((asignature) => asignature.name).join(', ')}
                     </div>
+                  </td>
+                  <td className='px-6 py-4'>
+                    <ul className='list-disc pl-2'>
+                      {teacher.courses?.map((course) => (
+                        <li key={course._id}>
+                          {`${course.name} ${course.groupName}`}
+                        </li>
+                      ))}
+                    </ul>
                   </td>
                   <td className='px-6 py-4 text-right'>
                     <DropdownMenu>

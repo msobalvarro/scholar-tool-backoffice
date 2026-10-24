@@ -41,7 +41,8 @@ export type Teacher = {
   status: 'active' | 'inactive'
   institution: Institution
   photo?: string
-  asignatures?: Asignature[]
+  asignatures: Asignature[]
+  courses: CoursesResponse[]
 }
 
 
