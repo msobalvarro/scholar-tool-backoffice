@@ -28,7 +28,7 @@ import {
 import { useCourseActions } from '@/hooks/API/use-course'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { toast } from 'sonner'
-import type { CreateCourseState } from '@/dtos/types'
+import type { CreateCourseRequest } from '@/dtos/types'
 
 interface CreateCourseModalProps {
   isOpen: boolean
@@ -45,26 +45,23 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateCourseState>({
+  } = useForm<CreateCourseRequest>({
     defaultValues: {
       name: '',
       groupName: '',
       teacherLeadId: '',
       order: 1,
-      startBreakTime: '10:00',
-      endBreakTime: '11:00',
       maxCapacity: 35,
     }
   })
 
-  const onSubmit = async (data: CreateCourseState) => {
+  const onSubmit = async (data: CreateCourseRequest) => {
     try {
       await addCourse({
         name: data.name,
         groupName: data.groupName,
         teacherLeadId: data.teacherLeadId,
         order: data.order,
-        breakTime: `${data.startBreakTime}-${data.endBreakTime}`,
         maxCapacity: data.maxCapacity,
       })
 
@@ -176,39 +173,6 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
               {errors.teacherLeadId && (
                 <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
                   {errors.teacherLeadId.message}
-                </p>
-              )}
-            </div>
-
-            <div className='space-y-2'>
-              <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
-                <Clock className='w-4 h-4 text-blue-500' />
-                Inicio Receso
-              </label>
-              <Input
-                type='time'
-                className={`rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${errors.startBreakTime ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`}
-                {...register('startBreakTime')}
-              />
-              {errors.startBreakTime && (
-                <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
-                  {errors.startBreakTime.message}
-                </p>
-              )}
-            </div>
-            <div className='space-y-2'>
-              <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
-                <Clock className='w-4 h-4 text-blue-500' />
-                Fin Receso
-              </label>
-              <Input
-                type='time'
-                className={`rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${errors.endBreakTime ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`}
-                {...register('endBreakTime')}
-              />
-              {errors.endBreakTime && (
-                <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
-                  {errors.endBreakTime.message}
                 </p>
               )}
             </div>

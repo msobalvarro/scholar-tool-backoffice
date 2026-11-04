@@ -6,7 +6,6 @@ import {
   Users,
   Calendar,
   Briefcase,
-  Clock
 } from 'lucide-react'
 import {
   Dialog,
@@ -29,7 +28,7 @@ import { useCourseStore } from '@/store/course.store'
 import { useCourseActions } from '@/hooks/API/use-course'
 import { useTeachers } from '@/hooks/API/use-teachers'
 import { toast } from 'sonner'
-import type { CreateCourseState } from '@/dtos/types'
+import type { CreateCourseRequest } from '@/dtos/types'
 
 interface EditCourseDialogProps {
   isOpen: boolean
@@ -47,14 +46,12 @@ export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateCourseState>({
+  } = useForm<CreateCourseRequest>({
     defaultValues: {
       name: '',
       groupName: '',
       teacherLeadId: '',
       order: 0,
-      startBreakTime: '',
-      endBreakTime: '',
       maxCapacity: 35,
     }
   })
@@ -66,14 +63,12 @@ export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps
         groupName: course.groupName,
         teacherLeadId: course.teacherLead._id,
         order: course.order,
-        startBreakTime: course.breakTime.split('-')[0] || '',
-        endBreakTime: course.breakTime.split('-')[1] || '',
         maxCapacity: course.maxCapacity || 35,
       })
     }
   }, [course, isOpen, reset])
 
-  const onSubmit = async (data: CreateCourseState) => {
+  const onSubmit = async (data: CreateCourseRequest) => {
     if (!course) return
     try {
       const updatedCourse = await updateCourse({
@@ -83,7 +78,6 @@ export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps
           groupName: data.groupName,
           teacherLeadId: data.teacherLeadId,
           order: data.order,
-          breakTime: `${data.startBreakTime}-${data.endBreakTime}`,
           maxCapacity: data.maxCapacity
         }
       })
@@ -194,39 +188,6 @@ export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps
               {errors.teacherLeadId && (
                 <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
                   {errors.teacherLeadId.message}
-                </p>
-              )}
-            </div>
-
-            <div className='space-y-2'>
-              <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
-                <Clock className='w-4 h-4 text-blue-500' />
-                Inicio Receso
-              </label>
-              <Input
-                type='time'
-                className={`rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${errors.startBreakTime ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`}
-                {...register('startBreakTime')}
-              />
-              {errors.startBreakTime && (
-                <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
-                  {errors.startBreakTime.message}
-                </p>
-              )}
-            </div>
-            <div className='space-y-2'>
-              <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
-                <Clock className='w-4 h-4 text-blue-500' />
-                Fin Receso
-              </label>
-              <Input
-                type='time'
-                className={`rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${errors.endBreakTime ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`}
-                {...register('endBreakTime')}
-              />
-              {errors.endBreakTime && (
-                <p className='text-xs font-semibold text-red-500 mt-1 ml-1'>
-                  {errors.endBreakTime.message}
                 </p>
               )}
             </div>
