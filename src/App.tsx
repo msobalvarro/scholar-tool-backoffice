@@ -3,9 +3,8 @@ import { queryClient } from './adapters/query-client'
 import { ThemeProvider } from './components/ui/theme-provider'
 import { BrowserRouter } from 'react-router'
 import { Toaster } from './components/ui/sonner'
-import { KEYSTORE_NAMES } from './env'
-import { useSimpleLocalStorage } from './hooks/use-localstorage'
 import { useOnlineStatus } from './hooks/use-online-status'
+import { useAuth } from './hooks/use-auth'
 import { toast } from 'sonner'
 import {
   ProtectedRoutesTeacher,
@@ -19,9 +18,8 @@ dayjs.extend(localizedFormat);
 
 dayjs().format("L LT");
 
-function App() {
-  const [isAuthTeacher] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_TEACHER)
-  const [isAuthUserInstitution] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_USER_INSTITUTION)
+function AppContent() {
+  const { isLoading, isTeacher, isInstitution } = useAuth()
 
   useOnlineStatus({
     onOnline: () => {
@@ -38,17 +36,23 @@ function App() {
     }
   })
 
+  if (isLoading) return null
+
+  return (
+    <BrowserRouter>
+      {!isTeacher && !isInstitution && <PublicRoutes />}
+      {isTeacher && <ProtectedRoutesTeacher />}
+      {isInstitution && <ProtectedRoutesUserInstitution />}
+    </BrowserRouter>
+  )
+}
+
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
         <>
-          <BrowserRouter>
-            {!isAuthTeacher && !isAuthUserInstitution && <PublicRoutes />}
-
-            {Boolean(isAuthTeacher) && <ProtectedRoutesTeacher />}
-            {Boolean(isAuthUserInstitution) && <ProtectedRoutesUserInstitution />}
-          </BrowserRouter>
-
+          <AppContent />
           <Toaster />
         </>
       </ThemeProvider>

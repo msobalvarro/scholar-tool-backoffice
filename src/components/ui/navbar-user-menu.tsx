@@ -27,6 +27,7 @@ import {
 import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
 import { KEYSTORE_NAMES } from '@/env'
 import type { UserInstitutionResponse, Teacher } from '@/dtos/types'
+import { axiosInstance } from '@/adapters/axios-intance'
 
 export function NavbarUserMenu() {
   const [userInstitution] = useSimpleLocalStorage<UserInstitutionResponse>(KEYSTORE_NAMES.USER_INSTITUTION)
@@ -35,7 +36,12 @@ export function NavbarUserMenu() {
 
   const user = userInstitution || teacher
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post('/auth/logout')
+    } catch {
+      // Si falla, igual limpiamos el localStorage y redirigimos
+    }
     localStorage.clear()
     window.location.href = '/'
   }

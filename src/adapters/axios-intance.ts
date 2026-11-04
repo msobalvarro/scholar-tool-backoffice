@@ -1,4 +1,4 @@
-import { BASE_URL, KEYSTORE_NAMES } from '@/env'
+import { BASE_URL } from '@/env'
 import axios from 'axios'
 
 export const axiosInstance = axios.create({
@@ -6,31 +6,18 @@ export const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-})
-
-axiosInstance.interceptors.request.use((config) => {
-  const token =
-    localStorage.getItem(KEYSTORE_NAMES.TOKEN_USER_INSTITUTION)
-    ||
-    localStorage.getItem(KEYSTORE_NAMES.TOKEN_USER)
-    ||
-    localStorage.getItem(KEYSTORE_NAMES.TOKEN_TEACHER)
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.replaceAll('"', '')}`
-  }
-
-  return config
+  withCredentials: true, // Envía las cookies HttpOnly automáticamente en cada request
 })
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
-      localStorage.clear()
+    const url: string = error.config?.url ?? ''
+    const isAuthCheck = url.includes('/auth/me')
 
-      window.location.pathname = '/'
-      window.location.reload()
+    // Solo redirigir si es un 401 en rutas protegidas, no en la comprobación de sesión
+    if (error.response?.status === 401 && !isAuthCheck) {
+      window.location.href = '/'
     }
     return Promise.reject(error)
   }

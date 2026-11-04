@@ -18,10 +18,11 @@ import { loginTeacherSchema, type LoginTeacherInput } from '@/schemas/auth-schem
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useNavigate, Link } from 'react-router'
+import { Link } from 'react-router'
+import { useAuth } from '@/hooks/use-auth'
 
 export const FormTeacher = () => {
-  const navigate = useNavigate()
+  const { refresh } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
 
   const {
@@ -43,8 +44,7 @@ export const FormTeacher = () => {
       toast.success('Acceso autorizado', {
         description: 'Bienvenido profesor al portal docente.',
       })
-      navigate('/')
-      window.location.reload()
+      await refresh() // Invalida la query de /auth/me → App.tsx redirige automáticamente
     } catch (error) {
       toast.error('Error al iniciar sesión', {
         description: error instanceof Error ? error.message : 'Credenciales inválidas. Verifica tu correo o contraseña.',
