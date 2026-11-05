@@ -1,3 +1,4 @@
+import { ClassScheduleFilters } from '@/components/class-schedule/class-schedule-filters';
 import { TitlePageView } from '@/components/ui/title-page';
 import { ViewContainer } from '@/components/ui/view-container';
 
@@ -10,6 +11,8 @@ export const ClassScheduleView = () => {
           subtitle='Administra los horarios de clases por grupo y sección'
         />
       </div>
+
+      <ClassScheduleFilters />
     </ViewContainer>
   );
 }
