@@ -1,11 +1,14 @@
 import type { CalendarEventResponse, CalendarEventCategoryStyle } from '@/dtos/outputs/calendar-events-output'
+import type { DayOfWeek } from '@/dtos/outputs/class-schedule-output'
 
 export const MONTH_NAMES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ]
 
-export const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+export const DAY_NAMES_SHORTS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+
+export const WEEK_DAYS: DayOfWeek[] = ['LUNES', 'MARTES', 'JUEVES', 'VIERNES']
 
 export const CATEGORIES: Record<CalendarEventResponse['type'], CalendarEventCategoryStyle> = {
   exam: {

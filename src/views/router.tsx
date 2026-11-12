@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router'
 import { Layout } from '@/components/ui/layout'
 import { LoginTeacher } from './(logout)/login-teacher'
 import { LoginInstitution } from './(logout)/login-insitution'
+import { LoginPadre } from './(logout)/login-padre'
+import { LoginRoot } from './(logout)/login-root'
 import { DashboardView } from './(logged)/institution/dashboard.view'
 import { StudentsView } from './(logged)/institution/student/students.view'
 import { StudentProfileView } from './(logged)/institution/student/student-profile.view'
@@ -20,6 +22,8 @@ import { DailyReportsView } from './(logged)/institution/finances/daily-reports/
 import { FinancialReportsView } from './(logged)/institution/finances/financial-reports/financial-reports.view'
 import { TaskScheduleView } from './(logged)/teacher/task-schedule/task-schedule.view'
 import { TaskScheduleForUserInsitutionView } from './(logged)/institution/task-schedule/task-schedule.view'
+import { ClassScheduleView } from './(logged)/institution/class-schedule/class-schedule.view'
+import { getSubdomain } from '@/hooks/sub-domain'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -30,7 +34,6 @@ export const ProtectedRoutesTeacher = () => (
     </Routes>
   </Layout>
 )
-
 
 export const ProtectedRoutesUserInstitution = () => (
   <Layout>
@@ -49,15 +52,31 @@ export const ProtectedRoutesUserInstitution = () => (
       <Route path='/assistance' element={<StudentAssistanceView />} />
       <Route path='/assistance/by-date' element={<AssistanceByDateView />} />
       <Route path='/task-schedule' element={<TaskScheduleForUserInsitutionView />} />
+      <Route path='/class-schedule' element={<ClassScheduleView />} />
       <Route path='*' element={<NotFoundView />} />
     </Routes>
   </Layout>
 )
 
-export const PublicRoutes = () => (
-  <Routes>
-    <Route path='/teacher' element={<LoginTeacher />} />
-    <Route path='/' element={<LoginInstitution />} />
-    <Route path='*' element={<NotFoundView isPublic />} />
-  </Routes>
-)
+const SUBDOMAIN_LOGIN_MAP: Record<string, () => JSX.Element> = {
+  root: LoginRoot,
+  institucion: LoginInstitution,
+  profesor: LoginTeacher,
+  padre: LoginPadre,
+}
+
+export const PublicRoutes = () => {
+  const subdomain = getSubdomain()
+  const LoginComponent = subdomain
+    ? (SUBDOMAIN_LOGIN_MAP[subdomain] ?? null)
+    : LoginInstitution
+
+  if (!LoginComponent) return <NotFoundView isPublic />
+
+  return (
+    <Routes>
+      <Route path='/' element={<LoginComponent />} />
+      <Route path='*' element={<NotFoundView isPublic />} />
+    </Routes>
+  )
+}

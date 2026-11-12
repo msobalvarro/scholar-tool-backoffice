@@ -14,10 +14,10 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useNavigate, Link } from 'react-router'
+import { useAuth } from '@/hooks/use-auth'
 
 export const FormInstitution = () => {
-  const navigate = useNavigate()
+  const { refresh } = useAuth()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,8 +39,7 @@ export const FormInstitution = () => {
       toast.success('Acceso autorizado', {
         description: 'Bienvenido de vuelta al panel administrativo.',
       })
-      navigate('/')
-      window.location.reload()
+      await refresh() // Invalida la query de /auth/me → App.tsx redirige automáticamente
     } catch (error) {
       toast.error('Error al iniciar sesión', {
         description: error instanceof Error ? error.message : 'Credenciales inválidas. Verifica tus datos.',
@@ -61,13 +60,13 @@ export const FormInstitution = () => {
           <Building2 className='size-4 text-primary' />
           <span>Administración</span>
         </div>
-        <Link
-          to='/teacher'
+        <a
+          href={import.meta.env.VITE_FRONTEND_URL_PROFESOR}
           className='flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card/50 transition-all'
         >
           <UserCheck className='size-4 text-muted-foreground' />
           <span>Docente</span>
-        </Link>
+        </a>
       </div>
 
       {/* Header */}

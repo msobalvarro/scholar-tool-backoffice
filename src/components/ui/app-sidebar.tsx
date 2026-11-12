@@ -81,6 +81,21 @@ const ItemsOfInstitution: MenuItem[] = [
     icon: BookUser,
   },
   {
+    title: 'Horarios de clases',
+    url: '/class-schedule',
+    icon: Calendar,
+  },
+  {
+    title: 'Asistencia',
+    url: '/assistance',
+    icon: ClipboardCheck,
+  },
+  {
+    title: 'Calendario',
+    url: '/calendar',
+    icon: Calendar,
+  },
+  {
     title: 'Finanzas',
     url: '/finances',
     icon: CircleDollarSign,
@@ -101,16 +116,6 @@ const ItemsOfInstitution: MenuItem[] = [
         icon: DollarSign,
       },
     ],
-  },
-  {
-    title: 'Asistencia',
-    url: '/assistance',
-    icon: ClipboardCheck,
-  },
-  {
-    title: 'Calendario',
-    url: '/calendar',
-    icon: Calendar,
   },
   {
     title: 'Configuración',

@@ -18,10 +18,10 @@ import { loginTeacherSchema, type LoginTeacherInput } from '@/schemas/auth-schem
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useNavigate, Link } from 'react-router'
+import { useAuth } from '@/hooks/use-auth'
 
 export const FormTeacher = () => {
-  const navigate = useNavigate()
+  const { refresh } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
 
   const {
@@ -43,8 +43,7 @@ export const FormTeacher = () => {
       toast.success('Acceso autorizado', {
         description: 'Bienvenido profesor al portal docente.',
       })
-      navigate('/')
-      window.location.reload()
+      await refresh() // Invalida la query de /auth/me → App.tsx redirige automáticamente
     } catch (error) {
       toast.error('Error al iniciar sesión', {
         description: error instanceof Error ? error.message : 'Credenciales inválidas. Verifica tu correo o contraseña.',
@@ -59,13 +58,13 @@ export const FormTeacher = () => {
 
       {/* Role Toggle Selector */}
       <div className='mb-7 p-1 bg-muted/70 rounded-xl border border-border/60 flex items-center gap-1 text-xs font-semibold'>
-        <Link
-          to='/'
+        <a
+          href={import.meta.env.VITE_FRONTEND_URL_INSTITUTION}
           className='flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card/50 transition-all'
         >
           <Building2 className='size-4 text-muted-foreground' />
           <span>Administración</span>
-        </Link>
+        </a>
         <div className='flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-card text-foreground shadow-xs border border-border/40 font-bold'>
           <UserCheck className='size-4 text-secondary' />
           <span>Docente</span>
@@ -98,9 +97,8 @@ export const FormTeacher = () => {
               <Mail className='size-4.5' />
             </div>
             <Input
-              className={`h-11 pl-11 pr-4 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${
-                errors.email ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
-              }`}
+              className={`h-11 pl-11 pr-4 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${errors.email ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
+                }`}
               id='teacher-email'
               placeholder='profesor@institucion.edu'
               type='email'
@@ -129,9 +127,8 @@ export const FormTeacher = () => {
               <Lock className='size-4.5' />
             </div>
             <Input
-              className={`h-11 pl-11 pr-11 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${
-                errors.password ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
-              }`}
+              className={`h-11 pl-11 pr-11 rounded-xl bg-background/60 border-input hover:border-secondary/40 focus-visible:border-secondary focus-visible:ring-secondary/20 text-sm transition-all ${errors.password ? 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20' : ''
+                }`}
               id='teacher-password'
               placeholder='••••••••••••'
               type={showPassword ? 'text' : 'password'}

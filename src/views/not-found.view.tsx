@@ -15,8 +15,7 @@ import { Button } from '@/components/ui/button'
 import { ViewContainer } from '@/components/ui/view-container'
 import { HeaderLogout } from '@/components/ui/header-logout'
 import { FooterLogout } from '@/components/ui/footer-logout'
-import { useSimpleLocalStorage } from '@/hooks/use-localstorage'
-import { KEYSTORE_NAMES } from '@/env'
+import { useAuth } from '@/hooks/use-auth'
 
 interface NotFoundViewProps {
   isPublic?: boolean
@@ -26,8 +25,7 @@ export const NotFoundView = ({ isPublic: explicitPublic }: NotFoundViewProps) =>
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [isAuthTeacher] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_TEACHER)
-  const [isAuthUserInstitution] = useSimpleLocalStorage<string | null>(KEYSTORE_NAMES.TOKEN_USER_INSTITUTION)
+  const { isTeacher: isAuthTeacher, isInstitution: isAuthUserInstitution } = useAuth()
 
   const isPublic = explicitPublic ?? (!isAuthTeacher && !isAuthUserInstitution)
 

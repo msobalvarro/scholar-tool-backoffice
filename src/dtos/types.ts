@@ -127,12 +127,5 @@ export type CreateCourseRequest = {
   groupName: string
   teacherLeadId: string
   order: number
-  breakTime: string
   maxCapacity: number
 }
-
-export type CreateCourseState = CreateCourseRequest & {
-  startBreakTime: string
-  endBreakTime: string
-}
-
