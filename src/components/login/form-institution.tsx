@@ -14,7 +14,6 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Link } from 'react-router'
 import { useAuth } from '@/hooks/use-auth'
 
 export const FormInstitution = () => {
@@ -61,13 +60,13 @@ export const FormInstitution = () => {
           <Building2 className='size-4 text-primary' />
           <span>Administración</span>
         </div>
-        <Link
-          to='/teacher'
+        <a
+          href={import.meta.env.VITE_FRONTEND_URL_PROFESOR}
           className='flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card/50 transition-all'
         >
           <UserCheck className='size-4 text-muted-foreground' />
           <span>Docente</span>
-        </Link>
+        </a>
       </div>
 
       {/* Header */}

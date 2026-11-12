@@ -11,4 +11,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    allowedHosts: [
+      'root.localhost',
+      'institucion.localhost',
+      'profesor.localhost',
+      'padre.localhost'
+    ]
+  }
 })

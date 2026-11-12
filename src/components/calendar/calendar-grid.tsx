@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { CATEGORIES, DAY_NAMES, MONTH_NAMES } from '@/constants/calendar-events.constant'
+import { CATEGORIES, DAY_NAMES_SHORTS, MONTH_NAMES } from '@/constants/calendar-events.constant'
 import type { CalendarEventResponse } from '@/dtos/outputs/calendar-events-output'
 
 interface CalendarGridProps {
@@ -149,7 +149,7 @@ export const CalendarGrid = ({
       <CardContent className="p-5">
         {/* Weekday Labels */}
         <div className="grid grid-cols-7 gap-1 text-center font-bold text-muted-foreground text-xs sm:text-sm mb-3">
-          {DAY_NAMES.map((day) => (
+          {DAY_NAMES_SHORTS.map((day) => (
             <div key={day} className="py-2">
               {day}
             </div>

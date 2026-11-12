@@ -10,14 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import type { ClassScheduleInputFilters } from '@/dtos/inputs/class-schedule-input'
 
 interface Props {
-  onChange?(value: { courseId: string, year: string }): void
+  onChange?(value: ClassScheduleInputFilters): void
 }
 
 export const ClassScheduleFilters = ({ onChange }: Props) => {
-  const [courseId, setCourseId] = useState('2026')
-  const [year, setYear] = useState('')
+  const [courseId, setCourseId] = useState('')
+  const [year, setYear] = useState(new Date().getFullYear().toString())
   const { data: courses } = useCourses()
 
   useEffect(() => { onChange?.({ courseId, year }) }, [courseId, year])
@@ -40,7 +41,11 @@ export const ClassScheduleFilters = ({ onChange }: Props) => {
         </SelectContent>
       </Select>
 
-      <Input onChange={(e) => setYear(e.target.value)} value={year} placeholder='Año escolar' />
+      <Input
+        onChange={(e) => setYear(e.target.value)}
+        value={year}
+        type='number'
+        placeholder='Año escolar' />
     </div>
   )
 }
