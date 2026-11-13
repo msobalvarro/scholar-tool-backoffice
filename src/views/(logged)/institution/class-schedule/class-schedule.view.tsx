@@ -17,7 +17,7 @@ export const ClassScheduleView = () => {
   console.log(classSchedule)
 
   return (
-    <ViewContainer>
+    <ViewContainer className='flex flex-col gap-4'>
       <div className='flex justify-between items-center'>
         <TitlePageView
           title='Horarios'

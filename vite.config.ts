@@ -17,6 +17,13 @@ export default defineConfig({
       'institucion.localhost',
       'profesor.localhost',
       'padre.localhost'
-    ]
+    ],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    }
   }
 })

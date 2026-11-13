@@ -29,7 +29,7 @@ export const useAuth = () => {
   const role = data?.user?.role ?? null
 
   /** Llama esto tras un login exitoso para que App.tsx reaccione sin recargar la página */
-  const refresh = () => queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY })
+  const refresh = () => queryClient.refetchQueries({ queryKey: AUTH_QUERY_KEY })
 
   return {
     isLoading,

@@ -8,7 +8,7 @@ export const MONTH_NAMES = [
 
 export const DAY_NAMES_SHORTS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
-export const WEEK_DAYS: DayOfWeek[] = ['LUNES', 'MARTES', 'JUEVES', 'VIERNES']
+export const WEEK_DAYS: DayOfWeek[] = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES']
 
 export const CATEGORIES: Record<CalendarEventResponse['type'], CalendarEventCategoryStyle> = {
   exam: {

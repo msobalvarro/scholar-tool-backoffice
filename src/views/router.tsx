@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import type { JSX } from 'react/jsx-runtime'
 import { Layout } from '@/components/ui/layout'
 import { LoginTeacher } from './(logout)/login-teacher'
 import { LoginInstitution } from './(logout)/login-insitution'
@@ -16,7 +17,6 @@ import { MatriculeView } from './(logged)/institution/finances/matricules/matric
 import { StudentAssistanceView } from './(logged)/institution/assistance'
 import { AssistanceByDateView } from './(logged)/institution/assistance/assistence-by-date'
 import { NotFoundView } from './not-found.view'
-
 import { TeacherWelcomeView } from './(logged)/teacher/welcome.view'
 import { DailyReportsView } from './(logged)/institution/finances/daily-reports/daily-reports.view'
 import { FinancialReportsView } from './(logged)/institution/finances/financial-reports/financial-reports.view'
@@ -24,6 +24,7 @@ import { TaskScheduleView } from './(logged)/teacher/task-schedule/task-schedule
 import { TaskScheduleForUserInsitutionView } from './(logged)/institution/task-schedule/task-schedule.view'
 import { ClassScheduleView } from './(logged)/institution/class-schedule/class-schedule.view'
 import { getSubdomain } from '@/hooks/sub-domain'
+import type { Subdomain } from '@/dtos/types/subdomain'
 
 export const ProtectedRoutesTeacher = () => (
   <Layout>
@@ -58,7 +59,7 @@ export const ProtectedRoutesUserInstitution = () => (
   </Layout>
 )
 
-const SUBDOMAIN_LOGIN_MAP: Record<string, () => JSX.Element> = {
+const SUBDOMAIN_LOGIN_MAP: Record<Subdomain, () => JSX.Element> = {
   root: LoginRoot,
   institucion: LoginInstitution,
   profesor: LoginTeacher,
