@@ -14,8 +14,6 @@ export const ClassScheduleView = () => {
 
   const { data: classSchedule } = useClassSchedule(filters.courseId, filters.year)
 
-  console.log(classSchedule)
-
   return (
     <ViewContainer className='flex flex-col gap-4'>
       <div className='flex justify-between items-center'>

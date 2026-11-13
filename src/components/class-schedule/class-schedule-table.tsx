@@ -2,12 +2,16 @@ import { WEEK_DAYS } from '@/constants/calendar-events.constant'
 import type { ClassScheduleResponse } from '@/dtos/outputs/class-schedule-output'
 import { Button } from '../ui/button'
 import { RowAddSchedule } from './row-add-schedule'
+import { useAsignatures } from '@/hooks/API/use-asignatures'
 
 interface Props {
   classSchedule: ClassScheduleResponse[]
 }
 
 export const ClassScheduleDataTable = ({ classSchedule }: Props) => {
+  const { data: asignatures } = useAsignatures()
+
+
   return (
     <table className='bg-white rounded shadow'>
       <thead>
@@ -31,7 +35,7 @@ export const ClassScheduleDataTable = ({ classSchedule }: Props) => {
           </tr>
         ))}
 
-        <RowAddSchedule />
+        <RowAddSchedule asignatures={asignatures || []} />
       </tbody>
     </table>
   )

@@ -1,14 +1,19 @@
 import { WEEK_DAYS } from '@/constants/calendar-events.constant'
-import { CalendarPlus } from 'lucide-react'
 import { useState } from 'react'
 import { Input } from '../ui/input'
+import type { AsignatureResponse } from '@/dtos/outputs/asignature-output'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, } from '../ui/select'
 
 interface Hour {
   start: string
   end: string
 }
 
-export const RowAddSchedule = () => {
+interface Props {
+  asignatures: AsignatureResponse[]
+}
+
+export const RowAddSchedule = ({ asignatures = [] }: Props) => {
   const [hours, setHours] = useState<Hour>({
     start: '',
     end: ''
@@ -35,8 +40,20 @@ export const RowAddSchedule = () => {
       {WEEK_DAYS.map((_, index) => (
         <td key={index} className='px-4'>
           <div className='flex flex-col items-center justify-center border h-16 border-dashed rounded-lg'>
-            <CalendarPlus size={32} />
-            Agregar Horario
+            <Select >
+              <SelectTrigger >
+                <SelectValue placeholder='Elegir asignatura' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {asignatures.map(asignature => (
+                    <SelectItem key={asignature._id} value={asignature._id}>
+                      <b>{asignature.name}</b> <span className='muted'>{asignature.description}</span>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </td>
       ))}
