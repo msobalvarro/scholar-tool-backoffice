@@ -75,13 +75,13 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-125 rounded-3xl p-8 border-none shadow-2xl bg-white'>
+      <DialogContent className='sm:max-w-125 rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground'>
         <DialogHeader className='mb-6'>
-          <div className='w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4'>
+          <div className='w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4'>
             <PlusCircle className='w-6 h-6' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>Crear Nuevo Curso</DialogTitle>
-          <DialogDescription className='text-gray-400 mt-1'>
+          <DialogTitle className='text-2xl font-bold text-foreground'>Crear Nuevo Curso</DialogTitle>
+          <DialogDescription className='text-muted-foreground mt-1'>
             Ingresa los detalles para registrar un nuevo curso en el sistema.
           </DialogDescription>
         </DialogHeader>
@@ -89,13 +89,13 @@ export const CreateCourseModal = ({ isOpen, onClose }: CreateCourseModalProps) =
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
           <div className='grid grid-cols-2 gap-4'>
             <div className='space-y-2 col-span-2'>
-              <label className='text-sm font-bold text-gray-700 ml-1 flex items-center gap-2'>
-                <GraduationCap className='w-4 h-4 text-blue-500' />
+              <label className='text-sm font-bold text-foreground ml-1 flex items-center gap-2'>
+                <GraduationCap className='w-4 h-4 text-primary' />
                 Nombre del Curso
               </label>
               <Input
                 placeholder='Ej: Matemáticas'
-                className={`rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${errors.name ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`}
+                className={`rounded-xl bg-muted/40 border border-border focus-visible:ring-2 focus-visible:ring-primary h-11 ${errors.name ? 'ring-2 ring-destructive focus-visible:ring-destructive' : ''}`}
                 {...register('name', { required: 'El nombre del curso es obligatorio' })}
               />
               {errors.name && (

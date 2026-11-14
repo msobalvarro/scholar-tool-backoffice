@@ -91,13 +91,13 @@ export const EditCourseDialog = ({ isOpen, onOpenChange }: EditCourseDialogProps
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-125 rounded-3xl p-8 border-none shadow-2xl bg-white'>
+      <DialogContent className='sm:max-w-125 rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground'>
         <DialogHeader className='mb-6'>
-          <div className='w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4'>
+          <div className='w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4'>
             <Edit2 className='w-6 h-6' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>Editar Curso</DialogTitle>
-          <DialogDescription className='text-gray-400 mt-1'>
+          <DialogTitle className='text-2xl font-bold text-foreground'>Editar Curso</DialogTitle>
+          <DialogDescription className='text-muted-foreground mt-1'>
             Modifica los detalles del curso y guarda los cambios.
           </DialogDescription>
         </DialogHeader>

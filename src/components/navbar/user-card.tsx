@@ -7,17 +7,16 @@ export const UserCard = () => {
   const [user] = useSimpleLocalStorage<UsersResponse>(KEYSTORE_NAMES.USER)
 
   return (
-    <div className='flex items-center gap-2 rounded-md hover:bg-[#00000020] py-2 px-3 cursor-pointer'>
+    <div className='flex items-center gap-2 rounded-md hover:bg-muted/80 p-2 cursor-pointer transition-colors'>
       <Avatar>
-        <AvatarFallback className='bg-sky-600 p-2 rounded-full'>
+        <AvatarFallback className='bg-primary/10 text-primary font-bold p-2 rounded-full'>
           {user?.name.split(' ').map((name) => name[0]).join('')}
         </AvatarFallback>
       </Avatar>
 
       <div className='flex flex-col'>
-        <span>{user?.name}</span>
-        <span className='text-xs opacity-50'>{user?.email}</span>
-
+        <span className='text-sm font-medium text-foreground'>{user?.name}</span>
+        <span className='text-xs text-muted-foreground'>{user?.email}</span>
       </div>
     </div>
   )

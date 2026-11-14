@@ -66,32 +66,32 @@ export const AssignStudentDialog = ({ isOpen, onOpenChange }: AssignStudentDialo
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-md rounded-3xl p-8 border-none shadow-2xl bg-white'>
+      <DialogContent className='sm:max-w-md rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground'>
         <DialogHeader className='mb-6'>
-          <div className='w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4'>
+          <div className='w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4'>
             <UserPlus className='w-6 h-6' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>Asignar Estudiante</DialogTitle>
-          <DialogDescription className='text-gray-400 mt-1'>
+          <DialogTitle className='text-2xl font-bold text-foreground'>Asignar Estudiante</DialogTitle>
+          <DialogDescription className='text-muted-foreground mt-1'>
             Busca y selecciona un estudiante para asignarlo al curso {course?.name}.
           </DialogDescription>
         </DialogHeader>
 
         <div className='space-y-6'>
           <div className='relative'>
-            <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400' />
+            <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder='Buscar por nombre o correo...'
-              className='pl-10 rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11'
+              className='pl-10 rounded-xl bg-muted/40 border border-border focus-visible:ring-2 focus-visible:ring-primary h-11'
             />
           </div>
 
           <div className='max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar'>
             {isLoadingStudents ? (
               <div className='flex justify-center py-8'>
-                <LoaderCircle className='w-6 h-6 text-blue-500 animate-spin' />
+                <LoaderCircle className='w-6 h-6 text-primary animate-spin' />
               </div>
             ) : filteredStudents.length > 0 ? (
               filteredStudents.map((student) => (
@@ -99,19 +99,19 @@ export const AssignStudentDialog = ({ isOpen, onOpenChange }: AssignStudentDialo
                   key={student._id}
                   onClick={() => setSelectedStudentId(student._id)}
                   className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer transition-all ${selectedStudentId === student._id
-                    ? 'bg-blue-50 border-2 border-blue-500 shadow-sm'
-                    : 'bg-white border-2 border-transparent hover:bg-gray-50'
+                    ? 'bg-primary/10 border-2 border-primary shadow-xs'
+                    : 'bg-card border-2 border-transparent hover:bg-muted/50'
                     }`}
                 >
                   <div className='flex items-center gap-3'>
-                    <Avatar className='w-10 h-10 border-2 border-white shadow-sm'>
+                    <Avatar className='w-10 h-10 border-2 border-border shadow-xs'>
                       <AvatarImage src={student.photo} />
-                      <AvatarFallback className='bg-blue-100 text-accent text-xs font-bold'>
+                      <AvatarFallback className='bg-primary/10 text-primary text-xs font-bold'>
                         {student.firstName[0]}{student.lastName[0]}
                       </AvatarFallback>
                     </Avatar>
                     <div className='flex flex-col'>
-                      <span className='font-bold text-gray-900 leading-tight'>
+                      <span className='font-bold text-foreground leading-tight'>
                         {student.firstName} {student.lastName}
                       </span>
                       <span className='text-xs text-gray-400 truncate max-w-37.5'>{student.email}</span>

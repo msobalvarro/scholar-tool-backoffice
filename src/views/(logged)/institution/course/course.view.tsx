@@ -17,20 +17,20 @@ export const CoursesView = () => {
       {/* Page Header */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8'>
         <div>
-          <h1 className='text-4xl font-extrabold'>
+          <h1 className='text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight'>
             Grupos Académicos
           </h1>
-          <p className='text-gray-500 text-lg font-medium'>
+          <p className='text-muted-foreground text-sm sm:text-base font-medium mt-1'>
             Gestiona la asignación de estudiantes y profesores.
           </p>
         </div>
         <div className='flex items-center gap-3'>
-          <Button variant='outline' className='rounded-xl border-gray-200 h-11 px-6 font-bold shadow-sm hover:bg-gray-50'>
+          <Button variant='outline' className='rounded-xl border-border h-11 px-6 font-bold shadow-xs hover:bg-muted'>
             <Download className='w-5 h-5 mr-2' />
             Importar
           </Button>
           <Button
-            className='rounded-xl h-11 px-6 font-bold shadow-lg shadow-blue-200 transition-all active:scale-95'
+            className='rounded-xl h-11 px-6 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95'
             onClick={() => setIsModalOpen(true)}
           >
             <Plus className='w-5 h-5 mr-2' />

@@ -184,10 +184,10 @@ export const StudentSearchSelect = ({
 
           {/* Menú desplegable flotante con scroll */}
           {isOpen && (
-            <div className='absolute left-0 right-0 top-full mt-2 z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 max-h-60 overflow-y-auto space-y-1 custom-scrollbar animate-in fade-in-50 zoom-in-95 duration-150'>
+            <div className='absolute left-0 right-0 top-full mt-2 z-50 bg-popover text-popover-foreground rounded-2xl shadow-2xl border border-border p-2 max-h-60 overflow-y-auto space-y-1 custom-scrollbar animate-in fade-in-50 zoom-in-95 duration-150'>
               {isLoading ? (
-                <div className='flex items-center justify-center py-6 gap-2 text-sm text-gray-400'>
-                  <Loader2 className='w-4 h-4 animate-spin text-blue-500' />
+                <div className='flex items-center justify-center py-6 gap-2 text-sm text-muted-foreground'>
+                  <Loader2 className='w-4 h-4 animate-spin text-primary' />
                   Cargando estudiantes...
                 </div>
               ) : filteredStudents.length > 0 ? (
@@ -199,14 +199,14 @@ export const StudentSearchSelect = ({
                       onClick={() => handleSelect(s._id)}
                       className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-colors ${
                         isSelected
-                          ? 'bg-blue-50 text-blue-900 font-medium'
-                          : 'hover:bg-gray-50 text-gray-700'
+                          ? 'bg-primary/10 text-primary font-medium'
+                          : 'hover:bg-muted/60 text-foreground'
                       }`}
                     >
                       <div className='flex items-center gap-2.5 min-w-0'>
                         <Avatar className='w-8 h-8 shrink-0'>
                           <AvatarImage src={s.photo} />
-                          <AvatarFallback className='bg-blue-100 text-blue-700 text-xs font-bold'>
+                          <AvatarFallback className='bg-primary/10 text-primary text-xs font-bold'>
                             {s.firstName?.[0]}
                             {s.lastName?.[0]}
                           </AvatarFallback>
@@ -216,11 +216,11 @@ export const StudentSearchSelect = ({
                             {s.firstName} {s.lastName}
                           </span>
                           {s.email && (
-                            <span className='text-xs text-gray-400 truncate'>{s.email}</span>
+                            <span className='text-xs text-muted-foreground truncate'>{s.email}</span>
                           )}
                         </div>
                       </div>
-                      {isSelected && <Check className='w-4 h-4 text-blue-600 shrink-0 ml-2' />}
+                      {isSelected && <Check className='w-4 h-4 text-primary shrink-0 ml-2' />}
                     </div>
                   )
                 })

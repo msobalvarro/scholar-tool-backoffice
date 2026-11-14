@@ -39,22 +39,20 @@ export const RowAddSchedule = ({ asignatures = [] }: Props) => {
 
       {WEEK_DAYS.map((_, index) => (
         <td key={index} className='px-4'>
-          <div className='flex flex-col items-center justify-center border h-16 border-dashed rounded-lg'>
-            <Select >
-              <SelectTrigger >
-                <SelectValue placeholder='Elegir asignatura' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {asignatures.map(asignature => (
-                    <SelectItem key={asignature._id} value={asignature._id}>
-                      <b>{asignature.name}</b> <span className='muted'>{asignature.description}</span>
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+          <Select >
+            <SelectTrigger >
+              <SelectValue placeholder='Elegir asignatura' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {asignatures.map(asignature => (
+                  <SelectItem key={asignature._id} value={asignature._id}>
+                    <b>{asignature.name}</b> <span className='muted'>{asignature.description}</span>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </td>
       ))}
     </tr>

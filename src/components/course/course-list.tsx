@@ -12,13 +12,13 @@ export const CourseList = ({ groups }: GroupListProps) => {
   const { setCourse, course } = useCourseStore()
 
   return (
-    <div className='bg-background rounded-2xl p-4 shadow-sm border w-full lg:w-80 min-h-[50vh]'>
+    <div className='bg-card text-card-foreground rounded-2xl p-4 shadow-xs border border-border w-full lg:w-80 min-h-[50vh]'>
 
       <div className='relative mb-6'>
-        <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400' />
+        <Search className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
         <Input
           placeholder='Filtrar grupos...'
-          className='pl-10 bg-gray-50 border-none rounded-xl focus-visible:ring-blue-500'
+          className='pl-10 bg-muted/40 border border-border rounded-xl focus-visible:ring-primary'
         />
       </div>
 

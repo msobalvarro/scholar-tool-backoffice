@@ -75,8 +75,8 @@ export const AsignaturesView = () => {
     <ViewContainer className='flex flex-col'>
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4'>
         <div>
-          <h1 className='text-3xl font-extrabold text-[#111827]'>Gestión de Materias</h1>
-          <p className='text-gray-500 mt-1 font-medium'>
+          <h1 className='text-3xl font-extrabold text-foreground tracking-tight'>Gestión de Materias</h1>
+          <p className='text-muted-foreground mt-1 font-medium'>
             Administra las materias disponibles para los estudiantes.
           </p>
         </div>
@@ -94,7 +94,7 @@ export const AsignaturesView = () => {
             }}
           />
 
-          <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden text-sm'>
+          <div className='bg-card text-card-foreground rounded-2xl border border-border shadow-xs overflow-hidden text-sm'>
             <AsignatureTable
               data={paginatedData}
               isLoading={isLoadingList}

@@ -178,7 +178,7 @@ export function AppSidebar() {
     <Sidebar variant='sidebar' className='border-r border-sidebar-border/50'>
       <SidebarHeader className='p-4 border-b border-sidebar-border/30'>
         <div className='flex items-center gap-3 px-2'>
-          <div className='flex aspect-square size-9 items-center justify-center rounded-xl bg-linear-to-tr from-accent to-violet-500 text-white shadow-lg shadow-accent/20'>
+          <div className='flex aspect-square size-9 items-center justify-center rounded-xl bg-linear-to-tr from-primary to-accent text-white shadow-lg shadow-primary/20'>
             <GraduationCap className='size-5' />
           </div>
           <div className='flex flex-col leading-tight overflow-hidden'>
@@ -212,21 +212,21 @@ export function AppSidebar() {
                         className={cn(
                           'transition-all duration-200 h-10 px-3 cursor-pointer select-none justify-between w-full',
                           isItemActive
-                            ? 'bg-accent/10 text-accent hover:bg-accent/20 font-medium'
-                            : 'text-muted-foreground hover:bg-black/10'
+                            ? 'bg-primary/10 text-primary hover:bg-primary/15 font-semibold'
+                            : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                         )}
                       >
                         <div className='flex items-center gap-3 min-w-0'>
                           <item.icon className={cn(
                             'size-5 transition-transform duration-200 shrink-0',
-                            isItemActive ? 'text-accent' : 'text-muted-foreground/70'
+                            isItemActive ? 'text-primary' : 'text-muted-foreground/70'
                           )} />
                           <span className='text-sm truncate'>{item.title}</span>
                         </div>
                         <ChevronDown
                           className={cn(
                             'size-4 transition-transform duration-200 shrink-0 text-muted-foreground/70',
-                            isOpen ? 'rotate-180 text-accent' : ''
+                            isOpen ? 'rotate-180 text-primary' : ''
                           )}
                         />
                       </SidebarMenuButton>
@@ -243,20 +243,20 @@ export function AppSidebar() {
                                   className={cn(
                                     'transition-all duration-200 h-8 px-3 rounded-md',
                                     isSubActive
-                                      ? 'bg-accent/10 text-accent font-medium hover:bg-accent/20'
-                                      : 'text-muted-foreground hover:bg-black/5 hover:text-foreground'
+                                      ? 'bg-primary/10 text-primary font-semibold hover:bg-primary/15'
+                                      : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                                   )}
                                 >
                                   <Link to={subItem.url} className='flex items-center gap-2'>
                                     {subItem.icon && (
                                       <subItem.icon className={cn(
                                         'size-3.5 shrink-0 transition-colors duration-200',
-                                        isSubActive ? 'text-accent' : 'text-muted-foreground/70'
+                                        isSubActive ? 'text-primary' : 'text-muted-foreground/70'
                                       )} />
                                     )}
                                     <span className='text-xs'>{subItem.title}</span>
                                     {isSubActive && (
-                                      <div className='ml-auto size-1.5 rounded-full bg-accent shadow-sm' />
+                                      <div className='ml-auto size-1.5 rounded-full bg-primary shadow-xs' />
                                     )}
                                   </Link>
                                 </SidebarMenuSubButton>
@@ -277,18 +277,18 @@ export function AppSidebar() {
                       className={cn(
                         'transition-all duration-200 h-10 px-3',
                         isActivePath(item.url)
-                          ? 'bg-accent/10 text-accent hover:bg-accent/70 hover:text-white font-medium'
-                          : 'text-muted-foreground hover:bg-black/10'
+                          ? 'bg-primary/10 text-primary hover:bg-primary/15 font-semibold'
+                          : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                       )}
                     >
                       <Link to={item.url} className='flex items-center gap-3'>
                         <item.icon className={cn(
                           'size-5 transition-transform duration-200',
-                          isActivePath(item.url) ? 'text-accent' : 'text-muted-foreground/70'
+                          isActivePath(item.url) ? 'text-primary' : 'text-muted-foreground/70'
                         )} />
                         <span className='text-sm'>{item.title}</span>
                         {isActivePath(item.url) && (
-                          <div className='ml-auto size-1.5 rounded-full bg-accent shadow-sm' />
+                          <div className='ml-auto size-1.5 rounded-full bg-primary shadow-xs' />
                         )}
                       </Link>
                     </SidebarMenuButton>

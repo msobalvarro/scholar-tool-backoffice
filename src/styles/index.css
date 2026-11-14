@@ -32,6 +32,13 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -52,85 +59,134 @@
 
 :root {
   --radius: 0.625rem;
-  /* Modern Minimalist + Ocean Breeze Hybrid - Light Mode */
-  --background: hsl(210 40% 98%);
-  --foreground: hsl(215 25% 27%);
-  --background-light: hsl(210 40% 98%);
-  --background-dark: hsl(215 28% 17%);
-  --text-light: hsl(215 25% 27%);
+
+  /* Lúmina Modern Academic Design Tokens - Light Mode */
+  --background: hsl(214 32% 98%);
+  --foreground: hsl(222.2 47.4% 11.2%);
+  --background-light: hsl(214 32% 98%);
+  --background-dark: hsl(222.2 84% 4.9%);
+  --text-light: hsl(222.2 47.4% 11.2%);
   --text-dark: hsl(210 40% 98%);
-  --input-border-light: hsl(210 30% 91%);
-  --input-border-dark: hsl(215 20% 35%);
+  --input-border-light: hsl(214.3 31.8% 91.4%);
+  --input-border-dark: hsl(217.2 32.6% 17.5%);
+
   --card: hsl(0 0% 100%);
-  --card-foreground: hsl(215 25% 27%);
+  --card-foreground: hsl(222.2 47.4% 11.2%);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(215 25% 27%);
-  --primary: hsl(195 92% 48%);
+  --popover-foreground: hsl(222.2 47.4% 11.2%);
+
+  /* Primary: Vibrant Sapphire / Academic Indigo-Blue */
+  --primary: hsl(221.2 83.2% 53.3%);
   --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(220 90% 56%);
-  --secondary-foreground: hsl(0 0% 100%);
-  --muted: hsl(210 40% 96%);
-  --muted-foreground: hsl(215 16% 47%);
-  --accent: hsl(175 70% 41%);
+
+  /* Secondary: Soft Slate Blue */
+  --secondary: hsl(214 32% 91%);
+  --secondary-foreground: hsl(222.2 47.4% 11.2%);
+
+  /* Accent: Luminous Emerald-Teal */
+  --accent: hsl(173 80% 36%);
   --accent-foreground: hsl(0 0% 100%);
-  --destructive: hsl(0 84% 60%);
-  --border: hsl(210 30% 91%);
-  --input: hsl(210 30% 91%);
-  --ring: hsl(195 92% 48%);
-  --chart-1: hsl(195 92% 48%);
-  --chart-2: hsl(175 70% 41%);
-  --chart-3: hsl(220 90% 56%);
-  --chart-4: hsl(142 71% 45%);
-  --chart-5: hsl(280 70% 60%);
-  --sidebar: hsl(210 40% 98%);
-  --sidebar-foreground: hsl(215 25% 27%);
-  --sidebar-primary: hsl(195 92% 48%);
+
+  /* Muted Surfaces & Text */
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  /* Status Tokens */
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --success: hsl(142.1 76.2% 36.3%);
+  --success-foreground: hsl(0 0% 100%);
+  --warning: hsl(38 92% 50%);
+  --warning-foreground: hsl(0 0% 100%);
+  --info: hsl(199 89% 48%);
+  --info-foreground: hsl(0 0% 100%);
+
+  /* Borders & Focus Rings */
+  --border: hsl(214.3 31.8% 91.4%);
+  --input: hsl(214.3 31.8% 91.4%);
+  --ring: hsl(221.2 83.2% 53.3%);
+
+  /* Charts */
+  --chart-1: hsl(221.2 83.2% 53.3%);
+  --chart-2: hsl(173 80% 36%);
+  --chart-3: hsl(262.1 83.3% 57.8%);
+  --chart-4: hsl(142.1 76.2% 36.3%);
+  --chart-5: hsl(38 92% 50%);
+
+  /* Sidebar */
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(222.2 47.4% 11.2%);
+  --sidebar-primary: hsl(221.2 83.2% 53.3%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(210 40% 96%);
-  --sidebar-accent-foreground: hsl(215 25% 27%);
-  --sidebar-border: hsl(210 30% 91%);
-  --sidebar-ring: hsl(195 92% 48%);
+  --sidebar-accent: hsl(210 40% 96.1%);
+  --sidebar-accent-foreground: hsl(222.2 47.4% 11.2%);
+  --sidebar-border: hsl(214.3 31.8% 91.4%);
+  --sidebar-ring: hsl(221.2 83.2% 53.3%);
 }
 
 .dark {
-  /* Modern Minimalist + Ocean Breeze Hybrid - Dark Mode */
-  --background: hsl(215 28% 17%);
+  /* Lúmina Modern Academic Design Tokens - Dark Mode (Obsidian & Deep Slate) */
+  --background: hsl(222.2 84% 4.9%);
   --foreground: hsl(210 40% 98%);
-  --background-light: hsl(210 40% 98%);
-  --background-dark: hsl(215 28% 17%);
-  --text-light: hsl(215 25% 27%);
+  --background-light: hsl(214 32% 98%);
+  --background-dark: hsl(222.2 84% 4.9%);
+  --text-light: hsl(222.2 47.4% 11.2%);
   --text-dark: hsl(210 40% 98%);
-  --input-border-light: hsl(210 30% 91%);
-  --input-border-dark: hsl(215 20% 35%);
-  --card: hsl(217 33% 17%);
+  --input-border-light: hsl(214.3 31.8% 91.4%);
+  --input-border-dark: hsl(217.2 32.6% 17.5%);
+
+  --card: hsl(222.2 47% 9.5%);
   --card-foreground: hsl(210 40% 98%);
-  --popover: hsl(217 33% 17%);
+  --popover: hsl(222.2 47% 9.5%);
   --popover-foreground: hsl(210 40% 98%);
-  --primary: hsl(195 85% 55%);
-  --primary-foreground: hsl(215 28% 17%);
-  --secondary: hsl(220 85% 60%);
-  --secondary-foreground: hsl(0 0% 100%);
-  --muted: hsl(217 33% 22%);
-  --muted-foreground: hsl(215 20% 65%);
-  --accent: hsl(175 65% 45%);
-  --accent-foreground: hsl(0 0% 100%);
-  --destructive: hsl(0 72% 65%);
-  --border: hsl(215 20% 30%);
-  --input: hsl(215 20% 25%);
-  --ring: hsl(195 85% 55%);
-  --chart-1: hsl(195 85% 55%);
-  --chart-2: hsl(175 65% 45%);
-  --chart-3: hsl(220 85% 60%);
-  --chart-4: hsl(142 65% 48%);
-  --chart-5: hsl(280 65% 62%);
-  --sidebar: hsl(215 28% 17%);
+
+  /* Primary: Electric Indigo-Blue */
+  --primary: hsl(217.2 91.2% 59.8%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  /* Secondary: Elevated Dark Slate */
+  --secondary: hsl(217.2 32.6% 17.5%);
+  --secondary-foreground: hsl(210 40% 98%);
+
+  /* Accent: Luminous Emerald-Teal */
+  --accent: hsl(172 75% 45%);
+  --accent-foreground: hsl(222.2 84% 4.9%);
+
+  /* Muted Surfaces & Text */
+  --muted: hsl(217.2 32.6% 15%);
+  --muted-foreground: hsl(215 20.2% 65.1%);
+
+  /* Status Tokens */
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --success: hsl(142.1 70.6% 45.3%);
+  --success-foreground: hsl(0 0% 100%);
+  --warning: hsl(43 96% 56%);
+  --warning-foreground: hsl(222.2 84% 4.9%);
+  --info: hsl(199 89% 58%);
+  --info-foreground: hsl(222.2 84% 4.9%);
+
+  /* Borders & Focus Rings */
+  --border: hsl(217.2 32.6% 17.5%);
+  --input: hsl(217.2 32.6% 17.5%);
+  --ring: hsl(217.2 91.2% 59.8%);
+
+  /* Charts */
+  --chart-1: hsl(217.2 91.2% 59.8%);
+  --chart-2: hsl(172 75% 45%);
+  --chart-3: hsl(263.4 70% 50.4%);
+  --chart-4: hsl(142.1 70.6% 45.3%);
+  --chart-5: hsl(43 96% 56%);
+
+  /* Sidebar */
+  --sidebar: hsl(222.2 47% 7.5%);
   --sidebar-foreground: hsl(210 40% 98%);
-  --sidebar-primary: hsl(195 85% 55%);
-  --sidebar-primary-foreground: hsl(215 28% 17%);
-  --sidebar-accent: hsl(217 33% 22%);
+  --sidebar-primary: hsl(217.2 91.2% 59.8%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(217.2 32.6% 13%);
   --sidebar-accent-foreground: hsl(210 40% 98%);
-  --sidebar-border: hsl(215 20% 30%);
-  --sidebar-ring: hsl(195 85% 55%);
+  --sidebar-border: hsl(217.2 32.6% 15%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
 @layer base {

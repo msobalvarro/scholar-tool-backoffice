@@ -54,14 +54,14 @@ export const TeachersView = () => {
     <ViewContainer>
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8'>
         <div>
-          <h1 className='text-3xl font-extrabold text-[#111827]'>Gestión de Profesores</h1>
-          <p className='text-gray-500 mt-1 font-medium'>
+          <h1 className='text-3xl font-extrabold text-foreground tracking-tight'>Gestión de Profesores</h1>
+          <p className='text-muted-foreground mt-1 font-medium'>
             Administra el personal docente y sus permisos.
           </p>
         </div>
         <Button
           onClick={() => setOpenDialog(true)}
-          className='bg-accent text-white font-bold px-6 py-6 rounded-xl shadow-lg transition-all active:scale-95'
+          className='font-bold px-6 py-6 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95'
         >
           <Plus className='mr-2 h-5 w-5 stroke-3' />
           Añadir Profesor
@@ -72,17 +72,17 @@ export const TeachersView = () => {
 
       <div className='flex flex-col md:flex-row items-center gap-4 mb-6'>
         <div className='relative flex-1 w-full'>
-          <Search className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
+          <Search className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground' />
           <Input
             placeholder='Buscar por nombre, email o ID...'
-            className='pl-12 py-6 bg-white border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 transition-all'
+            className='pl-12 py-6 bg-card border-border rounded-xl focus:ring-2 focus:ring-primary/20 transition-all'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className='flex items-center gap-3 w-full md:w-auto'>
           <Select>
-            <SelectTrigger className='w-full md:w-45 py-6 bg-white border-gray-200 rounded-xl'>
+            <SelectTrigger className='w-full md:w-45 py-6 bg-card border-border rounded-xl'>
               <SelectValue placeholder="Departamento" />
             </SelectTrigger>
             <SelectContent>
@@ -92,7 +92,7 @@ export const TeachersView = () => {
             </SelectContent>
           </Select>
           <Select>
-            <SelectTrigger className='w-full md:w-35 py-6 bg-white border-gray-200 rounded-xl'>
+            <SelectTrigger className='w-full md:w-35 py-6 bg-card border-border rounded-xl'>
               <SelectValue placeholder="Estado" />
             </SelectTrigger>
             <SelectContent>
@@ -101,7 +101,7 @@ export const TeachersView = () => {
               <SelectItem value="inactive">Inactivos</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant='outline' size='icon' className='p-6 border-gray-200 text-gray-400 hover:text-gray-600 rounded-xl'>
+          <Button variant='outline' size='icon' className='p-6 border-border text-muted-foreground hover:text-foreground rounded-xl'>
             <Filter className='h-5 w-5' />
           </Button>
         </div>

@@ -24,7 +24,7 @@ export const ClassScheduleFilters = ({ onChange }: Props) => {
   useEffect(() => { onChange?.({ courseId, year }) }, [courseId, year])
 
   return (
-    <div className='flex items-center gap-2 bg-white w-fit p-2 rounded-xl border shadow-sm'>
+    <div className='flex items-center gap-2 bg-card text-card-foreground w-fit p-2 rounded-xl border border-border shadow-xs'>
       <Select value={courseId} onValueChange={setCourseId}>
         <SelectTrigger className="w-full max-w-48 border-none">
           <SelectValue placeholder='Seleccionar curso' />

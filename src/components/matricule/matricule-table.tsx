@@ -12,10 +12,10 @@ export const MatriculeTable = ({ enrollments }: Props) => {
   const [showCreate, toggleCreate] = useState(false)
 
   return (
-    <section className='bg-white border shadow rounded-lg p-4'>
-      <div className='flex justify-between mb-4'>
-        <h1 className='font-bold text-lg'>Todas las matriculas</h1>
-        <Button onClick={() => toggleCreate(true)}>Agregar Matricula</Button>
+    <section className='bg-card text-card-foreground border border-border shadow-xs rounded-2xl p-6'>
+      <div className='flex justify-between items-center mb-4'>
+        <h1 className='font-bold text-lg text-foreground'>Todas las matrículas</h1>
+        <Button onClick={() => toggleCreate(true)}>Agregar Matrícula</Button>
       </div>
 
       <div className=' flex flex-col gap-2'>

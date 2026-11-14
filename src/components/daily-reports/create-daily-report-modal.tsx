@@ -88,17 +88,17 @@ export const CreateDailyReportModal = ({ isOpen, onClose }: CreateDailyReportMod
   }
 
   const fieldClass = (hasError: boolean) =>
-    `rounded-xl bg-gray-50 border-none focus-visible:ring-2 focus-visible:ring-blue-500 h-11 ${hasError ? 'ring-2 ring-red-500 focus-visible:ring-red-500' : ''}`
+    `rounded-xl bg-muted/40 border border-border focus-visible:ring-2 focus-visible:ring-primary h-11 ${hasError ? 'ring-2 ring-destructive focus-visible:ring-destructive' : ''}`
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-2xl rounded-3xl p-8 border-none shadow-2xl bg-white max-h-[90vh] overflow-y-auto'>
+      <DialogContent className='sm:max-w-2xl rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground max-h-[90vh] overflow-y-auto'>
         <DialogHeader className='mb-4'>
-          <div className='w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4'>
+          <div className='w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-4'>
             <PlusCircle className='w-6 h-6' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>Nuevo Reporte Diario</DialogTitle>
-          <DialogDescription className='text-gray-400 mt-1'>
+          <DialogTitle className='text-2xl font-bold text-foreground'>Nuevo Reporte Diario</DialogTitle>
+          <DialogDescription className='text-muted-foreground mt-1'>
             Registra un nuevo movimiento financiero del día.
           </DialogDescription>
         </DialogHeader>

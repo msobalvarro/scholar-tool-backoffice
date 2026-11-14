@@ -49,83 +49,83 @@ export const TeacherTable = ({ data, searchQuery, onEdit, onDelete }: TeacherTab
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
 
   return (
-    <div className='bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden'>
+    <div className='bg-card text-card-foreground rounded-2xl shadow-xs border border-border overflow-hidden'>
       <div className='overflow-x-auto'>
         <table className='w-full text-sm text-left'>
-          <thead className='bg-gray-50/50 border-b border-gray-100'>
+          <thead className='bg-muted/40 border-b border-border'>
             <tr>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Profesor
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Correo Electrónico
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Teléfono
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Estado
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Asignaturas
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs'>
                 Cursos
               </th>
-              <th className='px-6 py-4 font-semibold text-gray-500 uppercase tracking-wider text-right'>
+              <th className='px-6 py-4 font-semibold text-muted-foreground uppercase tracking-wider text-xs text-right'>
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className='divide-y divide-gray-100'>
+          <tbody className='divide-y divide-border'>
             {paginatedData.length === 0 ? (
               <tr>
-                <td colSpan={6} className='px-6 py-10 text-center text-gray-400'>
+                <td colSpan={6} className='px-6 py-10 text-center text-muted-foreground'>
                   No se encontraron profesores
                 </td>
               </tr>
             ) : (
               paginatedData.map((teacher) => (
-                <tr key={teacher._id} className='hover:bg-gray-50/50 transition-colors'>
+                <tr key={teacher._id} className='hover:bg-muted/50 transition-colors'>
                   <td className='px-6 py-4'>
                     <div className='flex items-center gap-3'>
-                      <Avatar className='h-10 w-10 border border-gray-200'>
+                      <Avatar className='h-10 w-10 border border-border'>
                         <AvatarImage src={teacher.photo} />
-                        <AvatarFallback className='bg-blue-50 text-blue-600 font-medium'>
+                        <AvatarFallback className='bg-primary/10 text-primary font-bold'>
                           {teacher.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div className='flex flex-col'>
-                        <span className='font-bold text-gray-900'>{teacher.name}</span>
-                        <span className='text-xs text-gray-500'>{teacher.email}</span>
+                        <span className='font-bold text-foreground'>{teacher.name}</span>
+                        <span className='text-xs text-muted-foreground'>{teacher.email}</span>
                       </div>
                     </div>
                   </td>
                   <td className='px-6 py-4'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 text-foreground'>
                       {teacher.email}
                     </div>
                   </td>
                   <td className='px-6 py-4'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 text-foreground'>
                       {teacher.phoneNumber}
                     </div>
                   </td>
                   <td className='px-6 py-4'>
-                    <Badge
-                      variant="secondary"
-                      className={
-                        teacher.status === 'active'
-                          ? 'bg-green-50 text-green-600 border-green-100'
-                          : 'bg-gray-50 text-gray-500 border-gray-100'
-                      }
-                    >
-                      <div className={`h-1.5 w-1.5 rounded-full mr-1.5 ${teacher.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
-                      {teacher.status === 'active' ? 'Activo' : 'Inactivo'}
-                    </Badge>
+                    {teacher.status === 'active' ? (
+                      <Badge variant="success">
+                        <div className='h-1.5 w-1.5 rounded-full mr-1.5 bg-emerald-500' />
+                        Activo
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className='text-muted-foreground'>
+                        <div className='h-1.5 w-1.5 rounded-full mr-1.5 bg-muted-foreground' />
+                        Inactivo
+                      </Badge>
+                    )}
                   </td>
                   <td className='px-6 py-4'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 text-foreground'>
                       {teacher.asignatures?.map((asignature) => asignature.name).join(', ')}
                     </div>
                   </td>

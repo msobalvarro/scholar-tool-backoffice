@@ -7,26 +7,14 @@ export const GroupsStats = () => {
       title: "TOTAL GRUPOS",
       value: "24",
       icon: Bookmark,
-      color: "bg-blue-50 text-blue-600",
+      color: "bg-primary/10 text-primary",
     },
     {
       title: "ESTUDIANTES",
       value: "850",
       icon: Users,
-      color: "bg-green-50 text-green-600",
+      color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     },
-    // {
-    //   title: "SIN ASIGNAR",
-    //   value: "12",
-    //   icon: UserPlus,
-    //   color: "bg-orange-50 text-orange-600",
-    // },
-    // {
-    //   title: "PROMEDIO / GRUPO",
-    //   value: "35",
-    //   icon: BarChart3,
-    //   color: "bg-purple-50 text-purple-600",
-    // },
   ]
 
   return (

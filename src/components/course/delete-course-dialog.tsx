@@ -37,14 +37,14 @@ export const DeleteCourseDialog = ({ isOpen, onOpenChange }: DeleteCourseDialogP
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-100 rounded-3xl p-8 border-none shadow-2xl bg-white'>
+      <DialogContent className='sm:max-w-100 rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground'>
         <DialogHeader className='flex flex-col items-center text-center'>
-          <div className='w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6'>
+          <div className='w-16 h-16 bg-destructive/10 text-destructive rounded-2xl flex items-center justify-center mb-6'>
             <Trash2 className='w-8 h-8' />
           </div>
-          <DialogTitle className='text-2xl font-bold text-gray-900'>¿Eliminar curso?</DialogTitle>
-          <DialogDescription className='text-gray-400 mt-2'>
-            Esta acción no se puede deshacer. Se eliminarán permanentemente los datos dcel curso <span className='font-bold text-gray-900'>{course.name}</span>.
+          <DialogTitle className='text-2xl font-bold text-foreground'>¿Eliminar curso?</DialogTitle>
+          <DialogDescription className='text-muted-foreground mt-2'>
+            Esta acción no se puede deshacer. Se eliminarán permanentemente los datos del curso <span className='font-bold text-foreground'>{course.name}</span>.
           </DialogDescription>
         </DialogHeader>
 
@@ -52,14 +52,15 @@ export const DeleteCourseDialog = ({ isOpen, onOpenChange }: DeleteCourseDialogP
           <Button
             variant='ghost'
             onClick={() => onOpenChange(false)}
-            className='rounded-xl h-12 flex-1 font-bold text-gray-500 hover:bg-gray-100'
+            className='rounded-xl h-12 flex-1 font-bold text-muted-foreground hover:bg-muted'
           >
             Cancelar
           </Button>
           <Button
+            variant='destructive'
             onClick={handleDelete}
             disabled={isActionLoading}
-            className='rounded-xl h-12 flex-1 font-bold bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-200'
+            className='rounded-xl h-12 flex-1 font-bold'
           >
             {isActionLoading ? 'Eliminando...' : 'Sí, eliminar'}
           </Button>

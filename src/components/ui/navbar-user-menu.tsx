@@ -50,13 +50,13 @@ export function NavbarUserMenu() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className='bg-transparent hover:bg-black/5'>
+          <Button variant='ghost' className='h-auto py-1 px-2 hover:bg-muted/60'>
             <div className='hidden flex-col items-end md:flex'>
-              <span className='text-sm font-medium leading-none text-accent'>{user?.name}</span>
+              <span className='text-sm font-semibold leading-none text-foreground'>{user?.name}</span>
               <span className='text-xs text-muted-foreground'>{user?.email}</span>
             </div>
             <Avatar className='h-8 w-8 border border-border/50'>
-              <AvatarFallback className='bg-accent text-[10px] text-white'>
+              <AvatarFallback className='bg-primary/10 text-primary font-bold text-xs'>
                 {user?.name?.split(' ').map((n) => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
@@ -95,15 +95,15 @@ export function NavbarUserMenu() {
       </DropdownMenu>
 
       <Dialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
-        <DialogContent className='sm:max-w-100 rounded-3xl p-8 border-none shadow-2xl bg-white dark:bg-zinc-900'>
+        <DialogContent className='sm:max-w-100 rounded-3xl p-8 border border-border shadow-2xl bg-card text-card-foreground'>
           <DialogHeader className='flex flex-col items-center text-center'>
-            <div className='w-16 h-16 bg-red-50 dark:bg-red-950/50 text-red-500 rounded-2xl flex items-center justify-center mb-4'>
+            <div className='w-16 h-16 bg-destructive/10 text-destructive rounded-2xl flex items-center justify-center mb-4'>
               <LogOut className='w-8 h-8' />
             </div>
-            <DialogTitle className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
+            <DialogTitle className='text-2xl font-bold text-foreground'>
               ¿Cerrar sesión?
             </DialogTitle>
-            <DialogDescription className='text-gray-500 dark:text-gray-400 mt-2'>
+            <DialogDescription className='text-muted-foreground mt-2'>
               ¿Estás seguro de que deseas cerrar sesión? Deberás ingresar tus credenciales para volver a acceder.
             </DialogDescription>
           </DialogHeader>
@@ -117,8 +117,9 @@ export function NavbarUserMenu() {
               Cancelar
             </Button>
             <Button
+              variant='destructive'
               onClick={handleLogout}
-              className='rounded-xl h-11 flex-1 font-semibold bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-200 dark:shadow-none'
+              className='rounded-xl h-11 flex-1 font-semibold'
             >
               Cerrar sesión
             </Button>
